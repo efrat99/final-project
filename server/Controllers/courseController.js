@@ -43,24 +43,21 @@ const createCourse = async (req, res) => {
 //put
 const updateCourse = async (req, res) => {
     const { _id, language, teacher, students, levels } = req.body
-    if (!language)
+    if (!_id)
         return res.status(400).json({ message: 'language  is required' })
-    if (!teacher)
-        return res.status(400).json({ message: 'teacher is required' })
-    if (!students)
-        return res.status(400).json({ message: 'students  is required' })
-    if (!levels)
-        return res.status(400).json({ message: 'levels is required' })
-
-
+    
     const course = await Course.findById(_id).exec()
     if (!course) {
         return res.status(400).json({ message: 'course is not found' })
     }
-    course.language = language
-    course.teacher = teacher
-    course.students = students
-    course.levels = levels
+    if (language)
+        course.language = language
+    if (teacher)
+        course.teacher = teacher
+    if (students)
+        course.students = students
+    if (levels)
+        course.levels = levels
     const updatedCourse = await course.save()
     res.json(`'${updatedCourse._id}' is updated`)
 }

@@ -21,15 +21,15 @@ const getLevelById=async(req,res)=>{
 
 //post
 const createLevel = async (req, res) => {
-    const { number, id_learning, id_practice} = req.body
+    const { number, learning, practice} = req.body
     if (!number)
         return res.status(400).json({ message: 'number is required' })
-    if (!id_learning)
+    if (!learning)
         return res.status(400).json({ message: 'learning is required' })
-    if (!id_practice)
+    if (!practice)
         return res.status(400).json({ message: 'practice is required' })
 
-    const level = await Level.create({ id_learning, id_practice})
+    const level = await Level.create({ number, learning, practice})
     if (level) {
         res.json(level)//.status(201).json({message: 'Post is created successfully'})
     }
@@ -40,20 +40,20 @@ const createLevel = async (req, res) => {
 
 //put
 const updateLevel = async (req, res) => {
-    const { number, learning, practice} = req.body
-    if (!number)
-        return res.status(400).json({ message: 'number is required' })
-    if (!learning)
-        return res.status(400).json({ message: 'learning is required' })
-    if (!practice)
-        return res.status(400).json({ message: 'practice is required' })
+    const {_id, number, learning, practice} = req.body
+    if (!_id)
+        return res.status(400).json({ message: 'id is required' })
 
     const level = await Level.findById(_id).exec()
     if (!level) {
         return res.status(400).json({ messege: 'level is not found' })
     }
-    level.learning=learning
-    level.practice=practice
+    if(number)
+        level.number=number
+    if(learning)
+        level.learning=learning
+    if(practice)
+        level.practice=practice
     const updatedLevel = await level.save()
     res.json(`'${updatedLevel._id}' is updated`)
 }

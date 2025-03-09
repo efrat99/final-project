@@ -10,7 +10,9 @@ const getAllGrades = async (req, res) => {
 
 //get grade by Id
 const getGradeById = async (req, res) => {
-    const { _id } = req.paramas
+    const {_id} = req.params
+    if (!_id) 
+        return res.status(400).json({ message: '_id is not found' })
     const grade = await Grade.findById(_id).exec()
     if (!grade) {
         return res.status(400).json({ message: 'Grade is not found' })
@@ -20,7 +22,7 @@ const getGradeById = async (req, res) => {
 
 //get all student's grades
 const getAllStudentGrades = async (req, res) => {
-    const { _id } = req.paramas
+    const { _id } = req.params
     const grades = await Grade.find({student: {_id: _id}}).exec()
     if (!grades?.length)
         return res.status(400).json({ message: 'There are no grades for this student' })
@@ -32,7 +34,7 @@ const getAllStudentGrades = async (req, res) => {
 const createGrade = async (req, res) => {
     const { mark, student, course, level } = req.body
     if (!mark)
-        return res.status(400).json({ message: 'Grade is required' })
+        return res.status(400).json({ message: 'Mark is required' })
     if (!student)
         return res.status(400).json({ message: 'Student is required' })
     if (!course)
@@ -49,23 +51,22 @@ const createGrade = async (req, res) => {
 //put
 const updateGrade = async (req, res) => {
     const { _id, mark, student, course, level } = req.body
-    if (!mark)
-        return res.status(400).json({ message: 'Grade is required' })
-    if (!student)
-        return res.status(400).json({ message: 'Student is required' })
-    if (!course)
-        return res.status(400).json({ message: 'Course is required' })
-    if (!level)
-        return res.status(400).json({ message: 'Level is required' })
-
+    
+    if(!_id)
+        return res.status(400).json({ message: '_id is required' })
+    
     const grade = await Grade.findById(_id).exec()
     if (!grade)
         return res.status(400).json({ message: 'Grade is not found' })
 
-    grade.mark = mark
-    grade.student = student
-    grade.course = course
-    grade.level = level
+    if (mark)
+        grade.mark = mark
+    if (student)
+        grade.student = student
+    if (course)
+        grade.course = course
+    if (level)
+        grade.level = level
 
     const updatedGrade = await grade.save()
     res.json(`'${updatedGrade.mark}' '${updatedGrade.student}' '${updatedGrade.course}' '${updatedGrade.level}' is updated`)

@@ -3,7 +3,7 @@ const router = express.Router()
 const learningController = require("../Controllers/learningController")
 
 
-// //get
+//get
 router.get("/", learningController.getAllLearnings)
 
 //getById

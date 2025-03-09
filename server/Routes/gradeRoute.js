@@ -9,6 +9,9 @@ router.get("/", gradeController.getAllGrades)
 //getById
 router.get("/:_id", gradeController.getGradeById)
 
+//get all student's grades
+router.get("/student/:_id", gradeController.getAllStudentGrades)
+
 //post
 router.post("/", gradeController.createGrade)
 

@@ -10,12 +10,14 @@ const levelSchema = new mongoose.Schema({
     learning: {
         type: ObjectId,
         ref: Learning,
-        required: true
+        required: true,
+        unique: true 
     },
     practice: {
         type: ObjectId,
         ref: Practice,
-        required: true
+        required: true,
+        unique: true
     }
 }, {
     timestamps: true
