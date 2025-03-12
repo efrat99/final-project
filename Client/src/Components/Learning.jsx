@@ -27,7 +27,6 @@ const Learning = () => {
                 console.log(res.data)
             }
         } catch (e) {
-            //getUsers();
             //alert("Name and email are both required")
             console.error(e)
         }
@@ -56,6 +55,7 @@ const Learning = () => {
                 <Button type="Add" label="Add" className="mt-2" />
             </form>
         </div>
+        
     )
 }
 
