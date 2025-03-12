@@ -5,6 +5,12 @@ const Student = require('./studentModel')
 const Level = require('./levelModel')
 
 const gradeSchema = new mongoose.Schema({
+    mark: {
+        type: Number,
+        min: 0,
+        max: 100,
+        required: true
+    },
     student: {
         type: ObjectId,
         ref: Student,
@@ -18,12 +24,6 @@ const gradeSchema = new mongoose.Schema({
     level: {
         type: ObjectId,
         ref: Level,
-        required: true
-    },
-    mark: {
-        type: Number,
-        min: 0,
-        max: 100,
         required: true
     }
 }, {

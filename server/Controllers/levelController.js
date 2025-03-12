@@ -1,7 +1,7 @@
 const Level = require("../Models/levelModel")
 
 // getAllLevels
-const getAllLevels= async (req, res) => {
+const getAllLevels = async (req, res) => {
     const levels = await Level.find().lean()
     if (!levels?.length) {
         return res.status(400).json({ message: 'There are no levels' })
@@ -10,26 +10,33 @@ const getAllLevels= async (req, res) => {
 }
 
 //getById
-const getLevelById=async(req,res)=>{
-     const {_id} = req.params
-    const level=await Level.findById(_id).exec()
-    if(!level){
-        return res.status(400).json({ message:'Level is not found' }) 
+const getLevelById = async (req, res) => {
+    const { _id } = req.params
+    const level = await Level.findById(_id).exec()
+    if (!level) {
+        return res.status(400).json({ message: 'Level is not found' })
     }
     res.json(level)
 }
 
 //post
 const createLevel = async (req, res) => {
-    const { number, learning, practice} = req.body
+    const { number, learning, practice } = req.body
     if (!number)
         return res.status(400).json({ message: 'number is required' })
     if (!learning)
         return res.status(400).json({ message: 'learning is required' })
+    const learningExists = await Teacher.findOne({ learning: learning }).exec();
+    if (learningExists)
+        return res.status(400).json({ message: 'Learning is already in use in other level. Please choose another' })
     if (!practice)
         return res.status(400).json({ message: 'practice is required' })
+    const practiceExists = await Teacher.findOne({ practice: practice }).exec();
+    if (practiceExists)
+        return res.status(400).json({ message: 'Practice is already in use in other level. Please choose another' })
+   
 
-    const level = await Level.create({ number, learning, practice})
+    const level = await Level.create({ number, learning, practice })
     if (level) {
         res.json(level)//.status(201).json({message: 'Post is created successfully'})
     }
@@ -40,7 +47,7 @@ const createLevel = async (req, res) => {
 
 //put
 const updateLevel = async (req, res) => {
-    const {_id, number, learning, practice} = req.body
+    const { _id, number, learning, practice } = req.body
     if (!_id)
         return res.status(400).json({ message: 'id is required' })
 
@@ -48,12 +55,12 @@ const updateLevel = async (req, res) => {
     if (!level) {
         return res.status(400).json({ messege: 'level is not found' })
     }
-    if(number)
-        level.number=number
-    if(learning)
-        level.learning=learning
-    if(practice)
-        level.practice=practice
+    if (number)
+        level.number = number
+    if (learning)
+        level.learning = learning
+    if (practice)
+        level.practice = practice
     const updatedLevel = await level.save()
     res.json(`'${updatedLevel._id}' is updated`)
 }

@@ -10,8 +10,8 @@ const getAllGrades = async (req, res) => {
 
 //get grade by Id
 const getGradeById = async (req, res) => {
-    const {_id} = req.params
-    if (!_id) 
+    const { _id } = req.params
+    if (!_id)
         return res.status(400).json({ message: '_id is not found' })
     const grade = await Grade.findById(_id).exec()
     if (!grade) {
@@ -23,7 +23,7 @@ const getGradeById = async (req, res) => {
 //get all student's grades
 const getAllStudentGrades = async (req, res) => {
     const { _id } = req.params
-    const grades = await Grade.find({student: {_id: _id}}).exec()
+    const grades = await Grade.find({ student: { _id: _id } }).exec()
     if (!grades?.length)
         return res.status(400).json({ message: 'There are no grades for this student' })
     res.json(grades)
@@ -35,6 +35,8 @@ const createGrade = async (req, res) => {
     const { mark, student, course, level } = req.body
     if (!mark)
         return res.status(400).json({ message: 'Mark is required' })
+    if (mark < 0 || mark > 100)
+        return res.status(400).json({ message: 'Mark must be at 0-100 range' })
     if (!student)
         return res.status(400).json({ message: 'Student is required' })
     if (!course)
@@ -51,16 +53,19 @@ const createGrade = async (req, res) => {
 //put
 const updateGrade = async (req, res) => {
     const { _id, mark, student, course, level } = req.body
-    
-    if(!_id)
+
+    if (!_id)
         return res.status(400).json({ message: '_id is required' })
-    
+
     const grade = await Grade.findById(_id).exec()
     if (!grade)
         return res.status(400).json({ message: 'Grade is not found' })
 
-    if (mark)
+    if (mark) {
+        if (mark < 0 || mark > 100)
+            return res.status(400).json({ message: 'Mark must be at 0-100 range' })
         grade.mark = mark
+    }
     if (student)
         grade.student = student
     if (course)
