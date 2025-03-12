@@ -1,39 +1,5 @@
 import axios from 'axios'
 
-// const login = () => {
-
-//     const firstNameRef = useRef("")
-//     const lastNameRef = useRef("")
-//     const emailRef = useRef("")
-//     const phoneRef = useRef("")
-
-
-
-//     //post
-//     const createTeacher = async () => {
-//         const newTeacher = {
-//             name: nameRef.current.value,
-//             userName: userNameRef.current.value,
-//             email: emailRef.current.value,
-//             phone: phoneRef.current.value
-//         }
-//         try {
-//             const res = await axios.post('http://localhost:6661/teachers/', newUser)
-
-//             if (res.status === 200) {
-//                 console.log(res.data)
-//                 //getUsers()
-
-//             }
-//         } catch (e) {
-//             //getUsers();
-//             //alert("Name and email are both required")
-//             console.error(e)
-//         }
-
-//     }
-// }
-
 
 
 import React, { useEffect, useState } from 'react';
@@ -53,6 +19,7 @@ import { classNames } from 'primereact/utils';
 export const Login = () => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
+
     const defaultValues = {
         firstName: '',
         lastName: '',
@@ -60,7 +27,7 @@ export const Login = () => {
         email: '',
         phone: ''
     }
-    const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
+    const { control, formState: { errors }, handleSubmit, reset, setError } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
 
@@ -80,6 +47,7 @@ export const Login = () => {
         setShowMessage(true);
         reset();
     };
+
 
     const getFormErrorMessage = (name) => {
         return errors[name] && <small className="p-error">{errors[name].message}</small>
@@ -111,7 +79,7 @@ export const Login = () => {
                     </p>
                 </div>
             </Dialog>
-
+            {/* <Dialog> */}
             <div className="flex justify-content-center">
                 <div className="card">
                     <h5 className="text-center">Register</h5>
@@ -120,7 +88,7 @@ export const Login = () => {
 
                         <div className="field">
                             <span className="p-float-label">
-                                <Controller name="firstName" control={control} rules={{ required: 'firstName is required.',  pattern: { value: /^[A-Z]{2,}$/i, message: 'First name must be at least two chars long' } }} render={({ field, fieldState }) => (
+                                <Controller name="firstName" control={control} rules={{ required: 'firstName is required.', pattern: { value: /^[A-Z]{2,}$/i, message: 'First name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
                                 <label htmlFor="firstName" className={classNames({ 'p-error': errors.name })}>firstName*</label>
@@ -131,7 +99,7 @@ export const Login = () => {
                         <br></br>
                         <div className="field">
                             <span className="p-float-label">
-                                <Controller name="lastName" control={control} rules={{ required: 'lastName is required.' }} render={({ field, fieldState }) => (
+                                <Controller name="lastName" control={control} rules={{ required: 'lastName is required.', pattern: { value: /^[A-Z]{2,}$/i, message: 'Last name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
                                 <label htmlFor="lastName" className={classNames({ 'p-error': errors.name })}>lastName*</label>
@@ -152,7 +120,7 @@ export const Login = () => {
                             <span className="p-float-label p-input-icon-right">
                                 {/* <i className="pi pi-envelope" /> */}
                                 <Controller name="email" control={control}
-                                    rules={{ required: 'Email is required.', unique: true, pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: 'Invalid email address. E.g. example@email.com' } }}
+                                    rules={{ required: 'Email is required.', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: 'Invalid email address. E.g. example@email.com' } }}
                                     render={({ field, fieldState }) => (
                                         <InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.invalid })} />
                                     )} />
@@ -194,7 +162,9 @@ export const Login = () => {
                     </form>
                 </div>
             </div>
+            {/* </Dialog> */}
         </div>
+
     );
 }
 export default Login;
