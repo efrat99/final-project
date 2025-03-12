@@ -27,7 +27,19 @@
 .App-link {
   color: #61dafb;
 }
+/* Ensure the card class has proper styling */
+.card {
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
+/* Ensure the Menubar is displayed correctly */
+.p-menubar {
+  width: 100%;
+  background-color: #f4f4f4;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
