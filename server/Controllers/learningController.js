@@ -26,7 +26,6 @@ const createLearning = async (req, res) => {
         return res.status(400).json({ message: 'word is required' })
     if (!translatedWord)
         return res.status(400).json({ message: 'translatedWord is required' })
-
     const learning = await Learning.create({ word, translatedWord })
     if (learning) {
         res.json(learning)//.status(201).json({message: 'Post is created successfully'})

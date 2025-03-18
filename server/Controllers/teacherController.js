@@ -35,13 +35,17 @@ const createTeacher = async (req, res) => {
     const emailExists = await Teacher.findOne({ email: email }).exec();
     if (emailExists)
         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
-
+    
+    try {
     const teacher = await Teacher.create({ firstName, lastName, email, phone })
     if (teacher) {
         res.json(teacher)//.status(201).json({message: 'Post is created successfully'})
     }
     else {
         res.status(400).json({ message: 'Creation has failed' })
+    }
+    } catch (e) {
+        res.status(500).json({ message: 'Internal server error', error: error.message })
     }
 }
 

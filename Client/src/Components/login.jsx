@@ -1,7 +1,4 @@
 import axios from 'axios'
-
-
-
 import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
@@ -16,7 +13,7 @@ import { classNames } from 'primereact/utils';
 //import { CountryService } from '../service/CountryService';
 //import '.';
 
-export const Login = () => {
+export const Login = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
 
@@ -32,10 +29,16 @@ export const Login = () => {
     const onSubmit = async (data) => {
 
         try {
-            const res = await axios.post('http://localhost:6661/teachers/', data)
+            const res = await axios.post('http://localhost:6660/teachers/', data)
             if (res.status === 200) {
                 console.log(res.data)
                 //getUsers()
+                setFormData(data);
+        
+       alert(data.firstName+"  Registration Successful!");
+        setShowMessage(true);
+        reset();
+        onClose();
 
             }
         } catch (e) {
@@ -43,9 +46,7 @@ export const Login = () => {
             //alert("Name and email are both required")
             console.error(e)
         }
-        setFormData(data);
-        setShowMessage(true);
-        reset();
+        
     };
 
 
@@ -70,7 +71,7 @@ export const Login = () => {
 
     return (
         <div className="form-demo">
-            <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
+            {/* <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
                 <div className="flex justify-content-center flex-column pt-6 px-3">
                     <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
                     <h5>Registration Successful!</h5>
@@ -78,7 +79,7 @@ export const Login = () => {
                         <b>{formData.firstName}</b> - You have successfully registered.
                     </p>
                 </div>
-            </Dialog>
+            </Dialog> */}
             {/* <Dialog> */}
             <div className="flex justify-content-center">
                 <div className="card">
@@ -88,7 +89,7 @@ export const Login = () => {
 
                         <div className="field">
                             <span className="p-float-label">
-                                <Controller name="firstName" control={control} rules={{ required: 'firstName is required.', pattern: { value: /^[A-Z]{2,}$/i, message: 'First name must be at least two chars long' } }} render={({ field, fieldState }) => (
+                                <Controller name="firstName" control={control} rules={{ required: 'firstName is required.', pattern: { value: /^[A-Zא-ת]{2,}$/i, message: 'First name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
                                 <label htmlFor="firstName" className={classNames({ 'p-error': errors.name })}>firstName*</label>
@@ -99,7 +100,7 @@ export const Login = () => {
                         <br></br>
                         <div className="field">
                             <span className="p-float-label">
-                                <Controller name="lastName" control={control} rules={{ required: 'lastName is required.', pattern: { value: /^[A-Z]{2,}$/i, message: 'Last name must be at least two chars long' } }} render={({ field, fieldState }) => (
+                                <Controller name="lastName" control={control} rules={{ required: 'lastName is required.', pattern: { value: /^[A-Zא-ת]{2,}$/i, message: 'Last name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
                                 <label htmlFor="lastName" className={classNames({ 'p-error': errors.name })}>lastName*</label>

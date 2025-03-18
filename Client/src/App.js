@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
-import Login from './Components/login';
+//import Login from './Components/login';
 import Learning from './Components/Learning';
+import Home from './Components/Home';
 
 import './App.css';
 import './login.css'
@@ -38,11 +39,18 @@ function App() {
       <div className="card">
         <Menubar model={items} />
       </div>
-      <Login />
-
+      {/* <Login /> */}
+      <Home/>
       <Learning />
     </>
   );
 }
 
 export default App;
+
+//////////לסדר את הבעיה של מייל כפול בדחיפות!!!!!!!!!!!!!!!!
+// עוד דברים לעשות:
+// 1. להוסיף עמוד להוספת תלמידים ומורים וציונים
+// 2. להוסיף עמוד להוספת תלמידים ומורים וציונים ולהציג אותם בטבלה
+// 3. להוסיף עמוד להצגת תלמידים ומורים וציונים בטבלה    
+//............................................  
