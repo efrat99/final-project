@@ -4,7 +4,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { InputNumber } from 'primereact/inputnumber';
 import 'primeicons/primeicons.css';
-import { PrimeIcons } from 'primereact/api'
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
@@ -18,14 +17,14 @@ const Learning = () => {
 
     const [products, setProducts] = useState([]);
     const columns = [
-        {field: 'word', header: 'word'},
-        {field: 'translatedWord', header: 'translatedWord'}
+        { field: 'word', header: 'word' },
+        { field: 'translatedWord', header: 'translatedWord' }
     ];
-    
+
     useEffect(() => {
         axios.get('http://localhost:6660/learnings/')
-        .then(response => setProducts(response.data))
-        .catch(error => console.error('Error fetching data:', error));
+            .then(response => setProducts(response.data))
+            .catch(error => console.error('Error fetching data:', error));
     }, []);
 
 
@@ -44,7 +43,8 @@ const Learning = () => {
             const res = await axios.post('http://localhost:6660/learnings/', data)
             if (res.status === 200) {
                 console.log(res.data)
-                setProducts([...products, res.data]); 
+                setProducts([...products, res.data]);
+                reset();
             }
         } catch (e) {
             //alert("Name and email are both required")
@@ -52,41 +52,40 @@ const Learning = () => {
         }
         setFormData(data);
         // setShowMessage(true);
-        reset();
+
     };
 
     return (
-        <div className="card flex flex-column md:flex-row gap-3">
-            <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-                <div className="p-inputgroup flex-1">
-                    <span className="p-inputgroup-addon">
-                        <i className="pi pi-arrow-right-arrow-left"></i>
-                    </span>
-                    {/* <InputText placeholder="Word" /> */}
-                    {<Controller name="word" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
-                        <InputText id={field.name} {...field} placeholder="word" className={classNames({ 'p-invalid': fieldState.invalid })} />)} />}
-                    <span className="p-inputgroup-addon">
-                        <i className="pi pi-arrow-right-arrow-left"></i>
-                    </span>
-                    {<Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
-                        <InputText id={field.name} {...field} placeholder="translate" className={classNames({ 'p-invalid': fieldState.invalid })} />)} />}
-                    {/* <InputText placeholder="Translate" /> */}
+          <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '5vw',  marginRight: '5vw' }}>
+            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end',  marginRight: '15vw'  }}>
+                <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+                    <div className="p-inputgroup flex-1">
+                        <span className="p-inputgroup-addon">
+                            <i className="pi pi-arrow-right-arrow-left"></i>
+                        </span>
+                        <Controller name="word" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
+                            <InputText id={field.name} {...field} placeholder="word" className={classNames({ 'p-invalid': fieldState.invalid })} />)} />
+                        <span className="p-inputgroup-addon">
+                            <i className="pi pi-arrow-right-arrow-left"></i>
+                        </span>
+                        <Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
+                            <InputText id={field.name} {...field} placeholder="translate" className={classNames({ 'p-invalid': fieldState.invalid })} />)} />
+                    </div>
+                    <br />
+                    <Button type="submit" label="Add" className="mt-2" />
+                </form>
+            </div>
+
+            <div style={{ flex: 2 }}>
+                <div className="card">
+                    <DataTable value={products} responsiveLayout="scroll">
+                        {columns.map((col, i) => (
+                            <Column key={col.field} field={col.field} header={col.header} />
+                        ))}
+                    </DataTable>
                 </div>
-                <br />
-                <Button type="submit" label="Add" className="mt-2" />
-            </form>
-
-
-            <div className="card">
-            <DataTable value={products} tableStyle={{ minWidth: '50rem' }}>
-                {columns.map((col, i) => (
-                    <Column key={col.field} field={col.field} header={col.header} />
-                ))}
-            </DataTable>
+            </div>
         </div>
-        </div>
-
-
     )
 }
 
