@@ -1,55 +1,33 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
+
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
-import { InputNumber } from 'primereact/inputnumber';
-import 'primeicons/primeicons.css';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
-import axios from 'axios'
+import axios from 'axios';
 import { classNames } from 'primereact/utils';
 
-
 const Practice = () => {
-    const [formData, setFormData] = useState({});
-    const [answers, setAnswers] = useState([]);
     const [products, setProducts] = useState([]);
-    const columns = [
-        { field: 'word', header: 'word' },
-        { field: 'translatedWord', header: 'translatedWord' }
-    ];
+    const [editId, setEditId] = useState(null);
+    const [editedData, setEditedData] = useState({});
 
     useEffect(() => {
         axios.get('http://localhost:6660/practices/')
             .then(response => {
-                console.log(response.data);
                 setProducts(response.data);
             })
             .catch(error => console.error('Error fetching data:', error));
     }, []);
-
-
 
     const defaultValues = {
         question: '',
         answers: ['', '', '', ''],
         correctAnswer: ''
     };
-    const renderAnswersTable = (answers, correctAnswer) => {
-        if (!answers || !Array.isArray(answers) || answers.length === 0) {
-            return null;
-        }
 
-        return (
-            <DataTable value={answers.map((text, index) => ({ text, index: index + 1 }))} responsiveLayout="scroll">
-                <Column field="text" header="Answer" />
-                <Column header="Correct?" body={(data) => (data.index === correctAnswer ? "✔️" : "❌")} />
-            </DataTable>
-        );
-    };
-
-    const { control, formState: { errors }, handleSubmit, reset, setError } = useForm({ defaultValues });
+    const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
         if (products.length >= 10) {
@@ -57,22 +35,55 @@ const Practice = () => {
             return;
         }
         try {
-            const res = await axios.post('http://localhost:6660/practices/', data)
+            const res = await axios.post('http://localhost:6660/practices/', data);
             if (res.status === 200) {
                 setProducts([...products, res.data]);
                 reset();
             }
         } catch (e) {
-            console.error(e)
+            console.error(e);
         }
-        setFormData(data);
-        // setShowMessage(true);
-
     };
 
+    const handleEdit = (product) => {
+        setEditId(product._id);
+        setEditedData({ ...product });
+    };
+
+    const handleInputChange = (e, field, index = null) => {
+        setEditedData((prevData) => {
+            const updatedData = { ...prevData };
+
+            if (index !== null) {
+                updatedData.answers[index] = e.target.value;
+            } else {
+                updatedData[field] = e.target.value;
+            }
+
+            return updatedData;
+        });
+    };
+
+    const handleSave = async () => {
+        try {
+            const updatedPractice = {
+                _id: editId,
+                question: editedData.question,
+                answers: editedData.answers,
+                correctAnswer: parseInt(editedData.correctAnswer, 10) // להמיר למספר
+            };
+
+            const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
+            if (res.status === 200) {
+                setProducts(products.map((p) => (p._id === editId ? updatedPractice : p)));
+                setEditId(null);
+            }
+        } catch (error) {
+            console.error("Error updating question:", error);
+        }
+    };
 
     const handleDelete = async (_id) => {
-        console.log("Sending request to delete _id:", _id); // בדיקה
         try {
             await axios.delete(`http://localhost:6660/practices/${_id}`);
             setProducts(products.filter(product => product._id !== _id));
@@ -85,8 +96,8 @@ const Practice = () => {
         <div className="card flex flex-column md:flex-row gap-3">
             <div className="card" style={{ display: 'flex', gap: '20px' }}>
 
+                {/* טופס להוספת שאלה */}
                 <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" style={{ flex: 1 }}>
-
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-question"></i></span>
                         <Controller name="question" control={control} rules={{ required: true }} render={({ field }) => (
@@ -101,6 +112,7 @@ const Practice = () => {
                                 <InputText {...field} placeholder={`Answer ${index + 1}`} className={classNames({ 'p-invalid': errors.answers?.[index] })} />
                             )} />
                         </div>
+
                     ))}
 
                     <div className="p-inputgroup">
@@ -113,33 +125,61 @@ const Practice = () => {
                     <Button type="submit" label="Add Question" className="mt-3" />
                 </form>
 
-
+                {/* טבלת השאלות */}
                 <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-                        <DataTable value={products} responsiveLayout="scroll">
-                            <Column body={(rowData) => (
-                                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
+                    <DataTable value={products} responsiveLayout="scroll">
+                        <Column body={(rowData) => (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px' }}>
+                                {/* הצגת השאלה */}
+                                {editId === rowData._id ? (
+                                    <>
+                                        <strong>שאלה:</strong>
+                                        <InputText value={editedData.question} onChange={(e) => handleInputChange(e, "question")} />
+                                    </>
+                                ) : (
+                                    <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>{rowData.question}</div>
+                                )}
+
+                                {/* הצגת תשובות */}
+                                {rowData.answers.map((answer, index) => (
+                                    <div key={index}>
+                                        {editId === rowData._id ? (
+                                            <>
+                                                <strong>תשובה {index + 1}:</strong>
+                                                <InputText value={editedData.answers[index]} onChange={(e) => handleInputChange(e, "answers", index)} />
+                                            </>
+                                        ) : (
+                                            <div>
+                                                {answer} {rowData.correctAnswer === index + 1 ? "✔️" : "❌"}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+
+                                {/* עריכת תשובה נכונה */}
+                                {editId === rowData._id && (
                                     <div>
-                                        <div style={{ marginTop: 'auto', marginBottom: '10px', textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>{rowData.question}</div>
-                                        {renderAnswersTable(rowData.answers, rowData.correctAnswer)}
+                                        <strong>תשובה נכונה:</strong>
+                                        <InputText value={editedData.correctAnswer} onChange={(e) => handleInputChange(e, "correctAnswer")} />
                                     </div>
-                                    <div style={{ marginBottom: '10px' }}></div>
-                                    <div style={{ marginTop: 'auto', textAlign: 'center', marginBottom: '10px' }}>
-                                        {/* <Button label="Update" className="p-button-warning p-button-sm" onClick={() => handleUpdate(rowData._id)}>
-                                        Update
-                                        </Button> */}
-                                        <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)}>
-                                            Delete
-                                        </Button>
-                                    </div>
+                                )}
+
+                                {/* כפתור עדכון ושמירה */}
+                                <div style={{ textAlign: 'center' }}>
+                                    {editId === rowData._id ? (
+                                        <Button label="Save" className="p-button-success p-button-sm" onClick={handleSave} />
+                                    ) : (
+                                        <Button label="Update" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                    )}
+                                    <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                 </div>
-                            )} />
-                        </DataTable>
-                    </div>
+                            </div>
+                        )} />
+                    </DataTable>
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Practice;
