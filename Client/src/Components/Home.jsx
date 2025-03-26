@@ -52,7 +52,7 @@ const Home = () => {
             <Dialog visible={ShowSignInDialog} onHide={hideSignInDialog} header="Sign In" modal>
                 <SignIn onClose={hideSignInDialog}/>
             </Dialog>
-
+            
             <Dialog visible={showLoginDialog} onHide={hideLoginDialog} header="Login" modal>
                 <Login onClose={hideLoginDialog}/>
             </Dialog>

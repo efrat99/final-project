@@ -13,6 +13,7 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 
 import './index.css';
 import './flags.css';
+import Level from './Components/Level';
 
 function App() {
   const items = [
@@ -44,6 +45,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/learning" element={<Learning />} />
         <Route path="/practice" element={<Practice />} />
+        <Route path="/level" element={<Level />} />
       </Routes>
     </Router>
   );
