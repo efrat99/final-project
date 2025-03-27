@@ -7,12 +7,34 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 import { classNames } from 'primereact/utils';
+import { useNavigate } from 'react-router-dom';
+import { CascadeSelect } from 'primereact/cascadeselect';
 
-const Practice = () => {
+const Practice = (learning) => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
 
+    const navigate = useNavigate();
+        const [selectedNum, setSelectedNum] = useState(null);
+        const numbers = [
+            {
+                cname: 'Level 1',
+                number: [{ cname: '1' }]
+            },
+            {
+                cname: 'Level 2',
+                number: [{ cname: '2' }]
+            },
+            {
+                cname: 'Level 3',
+                number: [{ cname: '3' }]
+            },
+            {
+                cname: 'Level 4',
+                number: [{ cname: '4' }]
+            }
+        ];   
     useEffect(() => {
         axios.get('http://localhost:6660/practices/')
             .then(response => {
@@ -62,8 +84,8 @@ const Practice = () => {
 
             return updatedData;
         });
-    };
-
+    };  
+ 
     const handleSave = async () => {
         try {
             const updatedPractice = {
@@ -177,8 +199,17 @@ const Practice = () => {
                         )} />
                     </DataTable>
                 </div>
-            </div>
-        </div>
+                <div> 
+                    {products.length === 10 && (   <div className="card flex justify-content-center">
+                        <CascadeSelect value={selectedNum} onChange={(e) => setSelectedNum(e.value)} options={numbers} 
+                            optionLabel="cname" optionGroupLabel="number" optionGroupChildren="number"
+                            className="w-full md:w-14rem" breakpoint="767px" placeholder="Select a level" style={{ minWidth: '14rem' }}  />
+                    </div>)}
+                    <Button label="Add Level" className="mt-2" disabled={products.length !== 10} onClick={() =>{ <Level practice={products} learning={learning} level={selectedNum} />}}/>
+                        {/* navigate('/Level'), {state:{ practice:  products ,learning:learning,level:selectedNum}} }}/> */}
+                
+                   
+        </div></div></div>
     );
 };
 

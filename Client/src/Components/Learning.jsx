@@ -9,13 +9,19 @@ import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import axios from 'axios'
 import { classNames } from 'primereact/utils';
+import Practice from './Practice';
+import { useNavigate } from 'react-router-dom';
+
 //import { ProductService } from '../service/ProductService';
 
 const Learning = () => {
+
     // const [showMessage, setShowMessage] = useState(false);
+
     const [formData, setFormData] = useState({});
 
     const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
     const columns = [
         { field: 'word', header: 'word' },
         { field: 'translatedWord', header: 'translatedWord' }
@@ -26,7 +32,7 @@ const Learning = () => {
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
-
+  
 
     const defaultValues = {
         word: '',
@@ -75,6 +81,7 @@ const Learning = () => {
                     <Button type="submit" label="Add" className="mt-2" />
                 </form>
             </div>
+           
 
             <div style={{ flex: 2 }}>
                 <div className="card">
@@ -85,6 +92,7 @@ const Learning = () => {
                     </DataTable>
                 </div>
             </div>
+        <Button  label="Add Learning" className="mt-2" disabled={products.length !== 10} onClick={() =>navigate('/practice', { learning: { products } }) }/>
         </div>
     )
 }
