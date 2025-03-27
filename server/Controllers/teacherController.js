@@ -21,7 +21,7 @@ const getTeacherById = async (req, res) => {
 
 //post
 const createTeacher = async (req, res) => {
-    const { firstName, lastName, email, phone } = req.body
+    const { firstName, lastName, email, phone, password} = req.body
     if (!firstName)
         return res.status(400).json({ message: 'firstName is required' })
     if (firstName.length < 2)
@@ -32,12 +32,15 @@ const createTeacher = async (req, res) => {
         return res.status(400).json({ message: 'lastName must be at least two chars long' })
     if (!email)
         return res.status(400).json({ message: 'email is required' })
+    if(!password)
+        return res.status(400).json({ message: 'email is required' })
+
     const emailExists = await Teacher.findOne({ email: email }).exec();
     if (emailExists)
         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
     
     try {
-    const teacher = await Teacher.create({ firstName, lastName, email, phone })
+    const teacher = await Teacher.create({ firstName, lastName, email, phone, password })
     if (teacher) {
         res.json(teacher)//.status(201).json({message: 'Post is created successfully'})
     }

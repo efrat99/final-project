@@ -70,7 +70,7 @@ const Practice = () => {
                 _id: editId,
                 question: editedData.question,
                 answers: editedData.answers,
-                correctAnswer: parseInt(editedData.correctAnswer, 10) // להמיר למספר
+                correctAnswer: parseInt(editedData.correctAnswer, 10)
             };
 
             const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
@@ -96,7 +96,7 @@ const Practice = () => {
         <div className="card flex flex-column md:flex-row gap-3">
             <div className="card" style={{ display: 'flex', gap: '20px' }}>
 
-                {/* טופס להוספת שאלה */}
+                
                 <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" style={{ flex: 1 }}>
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-question"></i></span>
@@ -125,7 +125,7 @@ const Practice = () => {
                     <Button type="submit" label="Add Question" className="mt-3" />
                 </form>
 
-                {/* טבלת השאלות */}
+            
                 <div style={{ flex: 1 }}>
                     <DataTable value={products} responsiveLayout="scroll">
                         <Column body={(rowData) => (
@@ -133,7 +133,7 @@ const Practice = () => {
                                 {/* הצגת השאלה */}
                                 {editId === rowData._id ? (
                                     <>
-                                        <strong>שאלה:</strong>
+                                        <strong>Question:</strong> <br/>
                                         <InputText value={editedData.question} onChange={(e) => handleInputChange(e, "question")} />
                                     </>
                                 ) : (
@@ -145,7 +145,7 @@ const Practice = () => {
                                     <div key={index}>
                                         {editId === rowData._id ? (
                                             <>
-                                                <strong>תשובה {index + 1}:</strong>
+                                                <strong>Answer {index + 1}:</strong> <br/>
                                                 <InputText value={editedData.answers[index]} onChange={(e) => handleInputChange(e, "answers", index)} />
                                             </>
                                         ) : (
@@ -159,7 +159,7 @@ const Practice = () => {
                                 {/* עריכת תשובה נכונה */}
                                 {editId === rowData._id && (
                                     <div>
-                                        <strong>תשובה נכונה:</strong>
+                                        <strong>Correct answer:</strong> <br/>
                                         <InputText value={editedData.correctAnswer} onChange={(e) => handleInputChange(e, "correctAnswer")} />
                                     </div>
                                 )}
