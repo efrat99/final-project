@@ -1,23 +1,24 @@
 
 import React, { useState } from "react";
 import axios from 'axios';
-//import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
-const Level = (props) => {
+const Level = () => {
     const [products, setProducts] = useState([]); 
-  //  const location = useLocation();
-  //  const { practice, learning, level } = location.state || {}; // קבלת הנתונים שנשלחו
+   const location = useLocation();
+   const { practice, learning, level } = location.state || {}; // קבלת הנתונים שנשלחו
     const saveLevel = async () => {
        
 
         const data = {
-            level:props. level,
-            learning: props.learning._id,//??
-            practice: props.practice._id//??
+            number:Number(level.number[0].cname),
+            learning:learning.map(i=>i._id),//??
+            practice:practice.map(i=>i._id)//??
         }
 
         try {
-            const res = await axios.post('http://localhost:6660/practices/', data);
+            console.log(data)
+            const res = await axios.post('http://localhost:6660/levels/', data);
             if (res.status === 200) {
                 setProducts([...products, res.data]);
                 // reset();

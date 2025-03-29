@@ -9,11 +9,14 @@ import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { CascadeSelect } from 'primereact/cascadeselect';
-
-const Practice = (learning) => {
+import { useLocation } from 'react-router-dom';
+import Level from './Level';
+const Practice = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
+     const location = useLocation();   
+    const { learning } = location.state || {}; // קבלת הנתונים שנשלחו
 
     const navigate = useNavigate();
         const [selectedNum, setSelectedNum] = useState(null);
@@ -205,8 +208,8 @@ const Practice = (learning) => {
                             optionLabel="cname" optionGroupLabel="number" optionGroupChildren="number"
                             className="w-full md:w-14rem" breakpoint="767px" placeholder="Select a level" style={{ minWidth: '14rem' }}  />
                     </div>)}
-                    <Button label="Add Level" className="mt-2" disabled={products.length !== 10} onClick={() =>{ <Level practice={products} learning={learning} level={selectedNum} />}}/>
-                        {/* navigate('/Level'), {state:{ practice:  products ,learning:learning,level:selectedNum}} }}/> */}
+             { console.log('Learning:',)}
+                    <Button label="Add Level" className="mt-2" disabled={products.length !== 10} onClick={() =>{navigate('/Level', {state:{ practice:  products ,learning:learning,level:selectedNum}}) }}/>
                 
                    
         </div></div></div>

@@ -92,7 +92,7 @@ const Learning = () => {
                     </DataTable>
                 </div>
             </div>
-        <Button  label="Add Learning" className="mt-2" disabled={products.length !== 10} onClick={() =>navigate('/practice', { learning: { products } }) }/>
+        <Button  label="Add Learning" className="mt-2" disabled={products.length !== 10} onClick={() =>navigate('/practice', {state:{ learning: products }}) }/>
         </div>
     )
 }

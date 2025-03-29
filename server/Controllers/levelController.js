@@ -22,27 +22,35 @@ const getLevelById = async (req, res) => {
 //post
 const createLevel = async (req, res) => {
     const { number, learning, practice } = req.body
+    console.log('Request body:', req.body);
+    // console.log(typeof Number(levelnum))
+    // number=Number(number)
     if (!number)
-        return res.status(400).json({ message: 'number is required' })
+        return res.status(400).json({ message: 'number is required' }) 
+      
     if (!learning)
         return res.status(400).json({ message: 'learning is required' })
-    const learningExists = await Teacher.findOne({ learning: learning }).exec();
-    if (learningExists)
-        return res.status(400).json({ message: 'Learning is already in use in other level. Please choose another' })
+    //const learningExists = await Teacher.findOne({ learning: learning }).exec();
+    // if (learningExists)
+    //     return res.status(400).json({ message: 'Learning is already in use in other level. Please choose another' })
     if (!practice)
         return res.status(400).json({ message: 'practice is required' })
-    const practiceExists = await Teacher.findOne({ practice: practice }).exec();
-    if (practiceExists)
-        return res.status(400).json({ message: 'Practice is already in use in other level. Please choose another' })
+    //const practiceExists = await Teacher.findOne({ practice: practice }).exec();
+    // if (practiceExists)
+    //     return res.status(400).json({ message: 'Practice is already in use in other level. Please choose another' })
    
-
-    const level = await Level.create({ number, learning, practice })
+    try{
+    const level = await Level.create({number , learning, practice })
     if (level) {
         res.json(level)//.status(201).json({message: 'Post is created successfully'})
     }
     else {
         res.status(400).json({ message: 'Invalid creation' })
     }
+}
+catch (err) {
+    console.error(err)      
+}
 }
 
 //put
