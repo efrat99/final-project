@@ -20,37 +20,37 @@ const getTeacherById = async (req, res) => {
 }
 
 //post
-const createTeacher = async (req, res) => {
-    const { firstName, lastName, email, phone, password} = req.body
-    if (!firstName)
-        return res.status(400).json({ message: 'firstName is required' })
-    if (firstName.length < 2)
-        return res.status(400).json({ message: 'firstName must be at least two chars long' })
-    if (!lastName)
-        return res.status(400).json({ message: 'lastName is required' })
-    if (lastName.length < 2)
-        return res.status(400).json({ message: 'lastName must be at least two chars long' })
-    if (!email)
-        return res.status(400).json({ message: 'email is required' })
-    if(!password)
-        return res.status(400).json({ message: 'email is required' })
+// const createTeacher = async (req, res) => {
+//     const { firstName, lastName, email, phone, password} = req.body
+//     if (!firstName)
+//         return res.status(400).json({ message: 'firstName is required' })
+//     if (firstName.length < 2)
+//         return res.status(400).json({ message: 'firstName must be at least two chars long' })
+//     if (!lastName)
+//         return res.status(400).json({ message: 'lastName is required' })
+//     if (lastName.length < 2)
+//         return res.status(400).json({ message: 'lastName must be at least two chars long' })
+//     if (!email)
+//         return res.status(400).json({ message: 'email is required' })
+//     if(!password)
+//         return res.status(400).json({ message: 'email is required' })
 
-    const emailExists = await Teacher.findOne({ email: email }).exec();
-    if (emailExists)
-        return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
+//     const emailExists = await Teacher.findOne({ email: email }).exec();
+//     if (emailExists)
+//         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
     
-    try {
-    const teacher = await Teacher.create({ firstName, lastName, email, phone, password })
-    if (teacher) {
-        res.json(teacher)//.status(201).json({message: 'Post is created successfully'})
-    }
-    else {
-        res.status(400).json({ message: 'Creation has failed' })
-    }
-    } catch (e) {
-        res.status(500).json({ message: 'Internal server error', error: error.message })
-    }
-}
+//     try {
+//     const teacher = await Teacher.create({ firstName, lastName, email, phone, password })
+//     if (teacher) {
+//         res.json(teacher)//.status(201).json({message: 'Post is created successfully'})
+//     }
+//     else {
+//         res.status(400).json({ message: 'Creation has failed' })
+//     }
+//     } catch (e) {
+//         res.status(500).json({ message: 'Internal server error', error: error.message })
+//     }
+// }
 
 //put
 const updateTeacher = async (req, res) => {
@@ -96,7 +96,7 @@ const deleteTeacher = async (req, res) => {//req params????
 module.exports = {
     getAllTeachers,
     getTeacherById,
-    createTeacher,
+    // createTeacher,
     updateTeacher,
     deleteTeacher
 }

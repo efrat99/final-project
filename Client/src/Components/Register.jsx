@@ -13,7 +13,7 @@ import { classNames } from 'primereact/utils';
 //import { CountryService } from '../service/CountryService';
 //import '.';
 
-export const Login = ({ onClose }) => {
+export const Register = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
 
@@ -29,21 +29,19 @@ export const Login = ({ onClose }) => {
     const onSubmit = async (data) => {
 
         try {
-            const res = await axios.post('http://localhost:6660/teachers/', data)
+            const res = await axios.post('http://localhost:6660/api/auth/', data)
             if (res.status === 200) {
                 console.log(res.data)
                 //getUsers()
                 setFormData(data);
         
-       alert(data.firstName+"  Registration Successful!");
+       alert(data.firstName+"  נרשמת בהצלחה!🤞😊💪");
         setShowMessage(true);
         reset();
         onClose();
 
             }
         } catch (e) {
-            //getUsers();
-            //alert("Name and email are both required")
             console.error(e)
         }
         
@@ -54,7 +52,7 @@ export const Login = ({ onClose }) => {
         return errors[name] && <small className="p-error">{errors[name].message}</small>
     };
 
-    const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
+    // const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
         <React.Fragment>
@@ -83,7 +81,7 @@ export const Login = ({ onClose }) => {
             {/* <Dialog> */}
             <div className="flex justify-content-center">
                 <div className="card">
-                    <h5 className="text-center">Register</h5>
+                  
 
                     <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
 
@@ -168,4 +166,4 @@ export const Login = ({ onClose }) => {
 
     );
 }
-export default Login;
+export default Register;

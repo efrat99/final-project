@@ -3,21 +3,21 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom'; 
-import Login from './login';
+import Register from './Register';
 import SignIn from './SignIn';
 
 const Home = () => {
-    const [showLoginDialog, setShowLoginDialog] = useState(false);
+    const [showRegisterDialog, setShowRegisterDialog] = useState(false);
     const [ShowSignInDialog, setShowSignInDialog] = useState(false);
     const navigate = useNavigate(); 
 
-    const handleLoginClick = () => {
-        setShowLoginDialog(true);
-        console.log('Login button clicked');
+    const handleRegisterClick = () => {
+        setShowRegisterDialog(true);
+        console.log('Register button clicked');
     };
 
-    const hideLoginDialog = () => {
-        setShowLoginDialog(false);
+    const hideRegisterDialog = () => {
+        setShowRegisterDialog(false);
     };
 
     const handleSignInClick = () => {
@@ -42,7 +42,7 @@ const Home = () => {
 
     return (
         <div>
-            <Button onClick={handleLoginClick}>Login</Button>
+            <Button onClick={handleRegisterClick}>הרשמה</Button>
             <Button onClick={handleSignInClick}>Sign In</Button>
             <br/> <br/>
             <Button onClick={handleLearningClick}>Move to Learning Page</Button>
@@ -53,8 +53,8 @@ const Home = () => {
                 <SignIn onClose={hideSignInDialog}/>
             </Dialog>
             
-            <Dialog visible={showLoginDialog} onHide={hideLoginDialog} header="Login" modal>
-                <Login onClose={hideLoginDialog}/>
+            <Dialog visible={showRegisterDialog} onHide={hideRegisterDialog} header="הרשמה" modal>
+                <Register onClose={hideRegisterDialog}/>
             </Dialog>
         </div>
     );

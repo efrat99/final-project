@@ -10,7 +10,7 @@ router.get("/", teacherController.getAllTeachers)
 router.get("/:_id", teacherController.getTeacherById)
 
 //post
-router.post("/", teacherController.createTeacher)
+// router.post("/", teacherController.createTeacher)
 
 //put
 router.put("/", teacherController.updateTeacher)

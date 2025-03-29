@@ -1,58 +1,44 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { CascadeSelect } from 'primereact/cascadeselect';
 import { useLocation } from 'react-router-dom';
-import Level from './Level';
+
 const Practice = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
-     const location = useLocation();   
-    const { learning } = location.state || {}; // קבלת הנתונים שנשלחו
+    const [selectedNum, setSelectedNum] = useState(null);
+    const numbers = [
+        { cname: 'Level 1', number: [{ cname: '1' }] },
+        { cname: 'Level 2', number: [{ cname: '2' }] },
+        { cname: 'Level 3', number: [{ cname: '3' }] },
+        { cname: 'Level 4', number: [{ cname: '4' }] }
+    ];
+
+    const { control, formState: { errors }, handleSubmit, reset } = useForm({
+        defaultValues: {
+            question: '',
+            answers: ['', '', '', ''],
+            correctAnswer: ''
+        }
+    });
+
+    const location = useLocation();
+    const { learning } = location.state || {};
 
     const navigate = useNavigate();
-        const [selectedNum, setSelectedNum] = useState(null);
-        const numbers = [
-            {
-                cname: 'Level 1',
-                number: [{ cname: '1' }]
-            },
-            {
-                cname: 'Level 2',
-                number: [{ cname: '2' }]
-            },
-            {
-                cname: 'Level 3',
-                number: [{ cname: '3' }]
-            },
-            {
-                cname: 'Level 4',
-                number: [{ cname: '4' }]
-            }
-        ];   
+
     useEffect(() => {
         axios.get('http://localhost:6660/practices/')
-            .then(response => {
-                setProducts(response.data);
-            })
+            .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
-
-    const defaultValues = {
-        question: '',
-        answers: ['', '', '', ''],
-        correctAnswer: ''
-    };
-
-    const { control, formState: { errors }, handleSubmit, reset } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
         if (products.length >= 10) {
@@ -87,8 +73,8 @@ const Practice = () => {
 
             return updatedData;
         });
-    };  
- 
+    };
+
     const handleSave = async () => {
         try {
             const updatedPractice = {
@@ -119,9 +105,8 @@ const Practice = () => {
 
     return (
         <div className="card flex flex-column md:flex-row gap-3">
-            <div className="card" style={{ display: 'flex', gap: '20px' }}>
-
-                
+            <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: '20px', flex: 1 }}>
+                {/* Form to add a new question */}
                 <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" style={{ flex: 1 }}>
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-question"></i></span>
@@ -137,7 +122,6 @@ const Practice = () => {
                                 <InputText {...field} placeholder={`Answer ${index + 1}`} className={classNames({ 'p-invalid': errors.answers?.[index] })} />
                             )} />
                         </div>
-
                     ))}
 
                     <div className="p-inputgroup">
@@ -150,29 +134,36 @@ const Practice = () => {
                     <Button type="submit" label="Add Question" className="mt-3" />
                 </form>
 
-            
+                {/* Display existing questions */}
                 <div style={{ flex: 1 }}>
-                    <DataTable value={products} responsiveLayout="scroll">
-                        <Column body={(rowData) => (
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px' }}>
-                                {/* הצגת השאלה */}
+                    <div style={{
+                        display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'flex-start', width: '100%',
+                    }}>
+                        {products.map((rowData) => (
+                            <div key={rowData._id} style={{
+                                display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', border: '1px solid #ddd', borderRadius: '8px',
+                                minWidth: '200px', flexGrow: 1, maxWidth: 'calc(33% - 20px)', flexBasis: 'auto', width: 'auto',
+                            }}>
+                                {/* Display question */}
                                 {editId === rowData._id ? (
-                                    <>
-                                        <strong>Question:</strong> <br/>
+                                    <div>
+                                        <strong>Question:</strong> <br />
                                         <InputText value={editedData.question} onChange={(e) => handleInputChange(e, "question")} />
-                                    </>
+                                    </div>
                                 ) : (
-                                    <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>{rowData.question}</div>
+                                    <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
+                                        {rowData.question}
+                                    </div>
                                 )}
 
-                                {/* הצגת תשובות */}
+                                {/* Display answers */}
                                 {rowData.answers.map((answer, index) => (
                                     <div key={index}>
                                         {editId === rowData._id ? (
-                                            <>
-                                                <strong>Answer {index + 1}:</strong> <br/>
+                                            <div>
+                                                <strong>Answer {index + 1}:</strong> <br />
                                                 <InputText value={editedData.answers[index]} onChange={(e) => handleInputChange(e, "answers", index)} />
-                                            </>
+                                            </div>
                                         ) : (
                                             <div>
                                                 {answer} {rowData.correctAnswer === index + 1 ? "✔️" : "❌"}
@@ -181,38 +172,57 @@ const Practice = () => {
                                     </div>
                                 ))}
 
-                                {/* עריכת תשובה נכונה */}
+                                {/* Display correct answer edit */}
                                 {editId === rowData._id && (
                                     <div>
-                                        <strong>Correct answer:</strong> <br/>
+                                        <strong>Correct answer:</strong> <br />
                                         <InputText value={editedData.correctAnswer} onChange={(e) => handleInputChange(e, "correctAnswer")} />
                                     </div>
                                 )}
 
-                                {/* כפתור עדכון ושמירה */}
+                                {/* Edit and Delete buttons */}
                                 <div style={{ textAlign: 'center' }}>
                                     {editId === rowData._id ? (
                                         <Button label="Save" className="p-button-success p-button-sm" onClick={handleSave} />
                                     ) : (
-                                        <Button label="Update" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                        <Button label="Edit" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
                                     )}
                                     <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                 </div>
                             </div>
-                        )} />
-                    </DataTable>
+                        ))}
+                    </div>
                 </div>
-                <div> 
-                    {products.length === 10 && (   <div className="card flex justify-content-center">
-                        <CascadeSelect value={selectedNum} onChange={(e) => setSelectedNum(e.value)} options={numbers} 
-                            optionLabel="cname" optionGroupLabel="number" optionGroupChildren="number"
-                            className="w-full md:w-14rem" breakpoint="767px" placeholder="Select a level" style={{ minWidth: '14rem' }}  />
-                    </div>)}
-             { console.log('Learning:',)}
-                    <Button label="Add Level" className="mt-2" disabled={products.length !== 10} onClick={() =>{navigate('/Level', {state:{ practice:  products ,learning:learning,level:selectedNum}}) }}/>
-                
-                   
-        </div></div></div>
+
+                {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
+                {products.length >= 10 && (
+                    <div className="card flex justify-content-center mt-2">
+                        <CascadeSelect 
+                            value={selectedNum} 
+                            onChange={(e) => setSelectedNum(e.value)} 
+                            options={numbers}
+                            optionLabel="cname" 
+                            optionGroupLabel="number" 
+                            optionGroupChildren="number"
+                            className="w-full md:w-14rem" 
+                            breakpoint="767px" 
+                            placeholder="Select a level" 
+                            style={{ minWidth: '14rem' }} 
+                        />
+                    </div>
+                )}
+
+                {/* Display Add Level button, it will be enabled only if there are 10 questions */}
+                <Button 
+                    label="Add Level" 
+                    className="mt-2" 
+                    disabled={products.length < 10} 
+                    onClick={() => {
+                        navigate('/Level', { state: { practice: products, learning: learning, level: selectedNum } });
+                    }} 
+                />
+            </div>
+        </div>
     );
 };
 

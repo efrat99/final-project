@@ -48,4 +48,17 @@
     transform: rotate(360deg);
   }
 }
+.questions-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.question {
+  flex-grow: 1;
+  min-width: 150px; /* רוחב מינימלי של שאלה */
+  max-width: calc(33.33% - 10px); /* מקסימום של 3 שאלות בשורה */
+  box-sizing: border-box;
+}
 
