@@ -14,7 +14,7 @@ app.use(express.json())
 app.use(express.static("public"))
 
 // app.use("/userRoute", require("./Routes/usersRoute"))
-
+app.use("/api/auth", require("./Routes/authRoute"))
 app.use("/courses", require("./Routes/courseRoute"))
 app.use("/grades", require("./Routes/gradeRoute"))
 app.use("/learnings", require("./Routes/learningRoute"))
@@ -22,6 +22,7 @@ app.use("/levels", require("./Routes/levelRoute"))
 app.use("/practices", require("./Routes/practiceRoute"))
 app.use("/students", require("./Routes/studentRoute"))
 app.use("/teachers", require("./Routes/teacherRoute"))
+
 
 
 app.get('/', (req, res) => {
