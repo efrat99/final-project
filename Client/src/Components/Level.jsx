@@ -8,12 +8,12 @@ const Level = () => {
     const location = useLocation();
     
     // קבלת הנתונים שנשלחו מ-PRACTICE
-    const { practice, learning, level } = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
+    const { practice, learningn, level } = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
 
     // פונקציה לשמירת הנתונים
     const saveLevel = async () => {
         const data = {
-            number: Number(level.number[0].cname),  // המרה למספר
+            number: level,  // הרמה בברירת מחדל, אפשר לשנות אם נדרש
             learning: learning.map(i => i._id),    // מיפוי של ה-ID של כל אובייקט בלמידה
             practice: practice.map(i => i._id)     // מיפוי של ה-ID של כל אובייקט בפרקטיקה
         }
@@ -38,3 +38,4 @@ const Level = () => {
 }
 
 export default Level;
+
