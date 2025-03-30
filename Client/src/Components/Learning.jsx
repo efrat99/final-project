@@ -34,7 +34,7 @@ const Learning = () => {
     });
 
     const onSubmit = async (data) => {
-        if (products.length >= 10) {
+        if (products.length >= 3) {
             alert("You cannot add more than 10 words.");
             return;
         }
@@ -134,7 +134,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 10} onClick={() => navigate('/practice', { state: { learning: products } })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products } })} />
         </div>
     );
 };

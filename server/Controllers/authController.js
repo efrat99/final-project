@@ -1,9 +1,35 @@
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const Teacher = require("../Models/teacherModel")
 
-const login = async (req, res) => {
 
+const login = async (req, res) => {
+    const { email, password } = req.body
+    if (!email)
+        return res.status(400).json({ message: 'email is required' })
+    if (!password)
+        return res.status(400).json({ message: 'password is required' })
+
+    const teacher = await Teacher.findOne({ email: email }).lean()
+    if (!teacher) {
+        debbugger
+        return res.status(401).json({ message: 'Unauthorized' })
+    }
+    const match = await bcrypt.compare(password, teacher.password)
+    if (match) {
+        res.json({ message: 'Login successful', teacher })
+    } else {
+        debbugger
+        res.status(401).json({ message: 'Unauthorized' })
+    }
+    // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+    const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
+    const accessToken = jwt.sign(teacherInfo, process.env.ACCESS_TOKEN_SECRET)
+    res.json({accessToken:accessToken})
 }
+
+
+
 const register = async (req, res) => {
     const { firstName, lastName, email, phone, password } = req.body
     if (!firstName)

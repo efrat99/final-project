@@ -41,7 +41,7 @@ const Practice = () => {
     }, []);
 
     const onSubmit = async (data) => {
-        if (products.length >= 10) {
+        if (products.length >= 3) {
             alert("You cannot add more than 10 questions.");
             return;
         }
@@ -81,7 +81,7 @@ const Practice = () => {
                 _id: editId,
                 question: editedData.question,
                 answers: editedData.answers,
-                correctAnswer: parseInt(editedData.correctAnswer, 10)
+                correctAnswer: parseInt(editedData.correctAnswer, 3)
             };
 
             const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
@@ -195,7 +195,7 @@ const Practice = () => {
                 </div>
 
                 {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
-                {products.length >= 10 && (
+                {products.length >= 3 && (
                     <div className="card flex justify-content-center mt-2">
                         <CascadeSelect 
                             value={selectedNum} 
@@ -216,7 +216,7 @@ const Practice = () => {
                 <Button 
                     label="Add Level" 
                     className="mt-2" 
-                    disabled={products.length < 10} 
+                    disabled={products.length < 3} 
                     onClick={() => {
                         navigate('/Level', { state: { practice: products, learning: learning, level: selectedNum } });
                     }} 

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Learning from './Components/Learning';
 import Home from './Components/Home';
 import Practice from './Components/Practice';
+import StudentLearning from './Components/StudentLearning';
+import Courses from './Components/Courses';
 
 import './App.css';
 import './login.css';
@@ -31,7 +33,7 @@ function App() {
       icon: 'pi pi-search',
     },
     {
-      label: 'Grades',
+      label: 'Courses',
       icon: 'pi pi-envelope',
     }
   ];
@@ -46,8 +48,11 @@ function App() {
         <Route path="/learning" element={<Learning />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
+        <Route path="/studentLearning" element={<StudentLearning />} />
+        <Route path="/courses" elemment={<Courses />} />
       </Routes>
     </Router>
+    
   );
 }
 

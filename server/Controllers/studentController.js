@@ -32,7 +32,7 @@ const createStudent = async (req, res) => {
         return res.status(400).json({ message: 'lastName must be at least two chars long' })
     if (!email)
         return res.status(400).json({ message: 'email is required' })
-    const emailExists = await Teacher.findOne({ email: email }).exec();
+    const emailExists = await Student.findOne({ email: email }).exec();
     if (emailExists)
         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
     // if (!new RegExp(/^\d+$/).test(phone)) {
