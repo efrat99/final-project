@@ -39,7 +39,7 @@ const Learning = () => {
     });
 
     const onSubmit = async (data) => {
-        if (products.length >= 10) {
+        if (products.length >= 3) {
             alert("You cannot add more than 10 words.");
             return;
         }
