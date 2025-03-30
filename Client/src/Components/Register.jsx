@@ -32,14 +32,12 @@ export const Register = ({ onClose }) => {
             const res = await axios.post('http://localhost:6660/api/auth/', data)
             if (res.status === 200) {
                 console.log(res.data)
-                //getUsers()
                 setFormData(data);
-        
-       alert(data.firstName+"  נרשמת בהצלחה!🤞😊💪");
+       alert(data.firstName+"  נרשמת בהצלחה!🤞😊");
+       //יוצרת hush-func
         setShowMessage(true);
         reset();
         onClose();
-
             }
         } catch (e) {
             console.error(e)

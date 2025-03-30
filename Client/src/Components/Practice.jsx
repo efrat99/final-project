@@ -73,7 +73,7 @@ const Practice = () => {
                 _id: editId,
                 question: editedData.question,
                 answers: editedData.answers,
-                correctAnswer: parseInt(editedData.correctAnswer, 10)
+                correctAnswer: parseInt(editedData.correctAnswer, 3)
             };
 
             const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
@@ -186,9 +186,25 @@ const Practice = () => {
                     </div>
                 </div>
 
-                {/* Removed CascadeSelect here */}
-                
-                {/* Button to go to Level, sending only practice and learning */}
+                {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
+                {products.length >= 10 && (
+                    <div className="card flex justify-content-center mt-2">
+                        <CascadeSelect 
+                            value={selectedNum} 
+                            onChange={(e) => setSelectedNum(e.value)} 
+                            options={numbers}
+                            optionLabel="cname" 
+                            optionGroupLabel="number" 
+                            optionGroupChildren="number"
+                            className="w-full md:w-14rem" 
+                            breakpoint="767px" 
+                            placeholder="Select a level" 
+                            style={{ minWidth: '14rem' }} 
+                        />
+                    </div>
+                )}
+
+                {/* Display Add Level button, it will be enabled only if there are 10 questions */}
                 <Button 
                     label="Add Level" 
                     className="mt-2" 

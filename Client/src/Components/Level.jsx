@@ -31,8 +31,8 @@ const Level = () => {
 
     return (
         <div>
-            <h1>Save Level</h1>
-            <button onClick={saveLevel}>Save Level</button>
+            <h1>שמירת רמה</h1>
+            <button onClick={saveLevel}>שמירה</button>
         </div>
     )
 }
