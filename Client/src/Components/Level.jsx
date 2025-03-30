@@ -8,7 +8,7 @@ const Level = () => {
     const location = useLocation();
     
     // קבלת הנתונים שנשלחו מ-PRACTICE
-    const { practice, learningn, level } = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
+    const { practice, learning, level } = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
 
     // פונקציה לשמירת הנתונים
     const saveLevel = async () => {
