@@ -8,11 +8,16 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Learning = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
+
+    const location = useLocation();
+    const { level } = location.state || {}; // קבלת הרמה שנבחרה
+
 
     const navigate = useNavigate();
     const columns = [
@@ -34,7 +39,7 @@ const Learning = () => {
     });
 
     const onSubmit = async (data) => {
-        if (products.length >= 10) {
+        if (products.length >=3 ) {
             alert("You cannot add more than 10 words.");
             return;
         }
@@ -134,7 +139,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 10} onClick={() => navigate('/practice', { state: { learning: products } })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products } })} />
         </div>
     );
 };

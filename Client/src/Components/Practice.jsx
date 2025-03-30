@@ -6,20 +6,12 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
-import { CascadeSelect } from 'primereact/cascadeselect';
 import { useLocation } from 'react-router-dom';
 
 const Practice = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
-    const [selectedNum, setSelectedNum] = useState(null);
-    const numbers = [
-        { cname: 'Level 1', number: [{ cname: '1' }] },
-        { cname: 'Level 2', number: [{ cname: '2' }] },
-        { cname: 'Level 3', number: [{ cname: '3' }] },
-        { cname: 'Level 4', number: [{ cname: '4' }] }
-    ];
 
     const { control, formState: { errors }, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -30,7 +22,7 @@ const Practice = () => {
     });
 
     const location = useLocation();
-    const { learning } = location.state || {};
+    const { learning } = location.state || {};  // קבלת נתוני הלמידה
 
     const navigate = useNavigate();
 
@@ -41,7 +33,7 @@ const Practice = () => {
     }, []);
 
     const onSubmit = async (data) => {
-        if (products.length >= 10) {
+        if (products.length >= 3) {
             alert("You cannot add more than 10 questions.");
             return;
         }
@@ -194,31 +186,20 @@ const Practice = () => {
                     </div>
                 </div>
 
-                {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
-                {products.length >= 10 && (
-                    <div className="card flex justify-content-center mt-2">
-                        <CascadeSelect 
-                            value={selectedNum} 
-                            onChange={(e) => setSelectedNum(e.value)} 
-                            options={numbers}
-                            optionLabel="cname" 
-                            optionGroupLabel="number" 
-                            optionGroupChildren="number"
-                            className="w-full md:w-14rem" 
-                            breakpoint="767px" 
-                            placeholder="Select a level" 
-                            style={{ minWidth: '14rem' }} 
-                        />
-                    </div>
-                )}
-
-                {/* Display Add Level button, it will be enabled only if there are 10 questions */}
+                {/* Removed CascadeSelect here */}
+                
+                {/* Button to go to Level, sending only practice and learning */}
                 <Button 
                     label="Add Level" 
                     className="mt-2" 
-                    disabled={products.length < 10} 
+                    disabled={products.length < 3} 
                     onClick={() => {
-                        navigate('/Level', { state: { practice: products, learning: learning, level: selectedNum } });
+                        navigate('/Level', { 
+                            state: { 
+                                practice: products, 
+                                learning: learning
+                            } 
+                        });
                     }} 
                 />
             </div>
