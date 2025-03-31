@@ -1,7 +1,8 @@
 const Learning = require("../Models/learningModel")
+const Level = require("../Models/levelModel")
 
 //getAllLearnings
-const getAllLearnings= async (req, res) => {
+const getAllLearnings = async (req, res) => {
     const learnings = await Learning.find().lean()
     if (!learnings?.length) {
         return res.status(400).json({ message: 'There are no Learnings' })
@@ -18,7 +19,30 @@ const getLearningById = async (req, res) => {
     }
     res.json(learning)
 }
+//getByLevel
+const getLearningsByLevel = async (req, res) => {
+    const { level } = req.query; // קבלת ה-Level מה-Query String
+    try {
+        // המרת ה-Level למספר
+        const numericLevel = parseInt(level, 10);
+        console.log(numericLevel)
+        if (isNaN(numericLevel)) {
+            return res.status(400).json({ message: 'Invalid level parameter' });
+        }
+        // שליפת ה-Level המתאים לפי המספר
+        console.log(level)
+        const levelData = await Level.findOne({ number: numericLevel }).populate('learning').exec();
+        console.log(levelData)
+        if (!levelData) {
+            return res.status(404).json({ message: 'Level not found' });
+        }
 
+        // החזרת ה-Learnings המשויכים ל-Level
+        res.json(levelData.learning);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching learnings', error });
+    }
+};
 //post
 const createLearning = async (req, res) => {
     const { word, translatedWord } = req.body
@@ -37,7 +61,7 @@ const createLearning = async (req, res) => {
 
 //put
 const updatelearning = async (req, res) => {
-    const {_id, word, translatedWord } = req.body
+    const { _id, word, translatedWord } = req.body
     if (!_id)
         return res.status(400).json({ message: 'id is required' })
 
@@ -47,9 +71,9 @@ const updatelearning = async (req, res) => {
         return res.status(400).json({ messege: 'learning is not found' })
     }
     if (word)
-    learning.word = word
+        learning.word = word
     if (translatedWord)
-    learning.translatedWord = translatedWord
+        learning.translatedWord = translatedWord
 
     const updatedLearning = await learning.save()
     res.json(`'${updatedLearning.word}' '${updatedLearning.translatedWord}' is updated`)
@@ -72,6 +96,7 @@ const deleteLearning = async (req, res) => {
 module.exports = {
     getAllLearnings,
     getLearningById,
+    getLearningsByLevel,
     createLearning,
     updatelearning,
     deleteLearning
