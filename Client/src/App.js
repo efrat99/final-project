@@ -35,6 +35,7 @@ function App() {
     {
       label: 'Courses',
       icon: 'pi pi-envelope',
+      command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     }
   ];
 
@@ -49,7 +50,7 @@ function App() {
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
-        <Route path="/courses" elemment={<Courses />} />
+        <Route path="/courses" element={<Courses />} />
       </Routes>
     </Router>
     
