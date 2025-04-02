@@ -16,7 +16,7 @@ const Learning = () => {
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
 
     const location = useLocation();
-    const { level } = location.state || {}; // קבלת הרמה שנבחרה
+    const { level} = location.state || {}; // קבלת הרמה שנבחרה
 
 
     const navigate = useNavigate();

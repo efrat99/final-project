@@ -8,7 +8,7 @@ const Level = () => {
     const location = useLocation();
     
     // קבלת הנתונים שנשלחו מ-PRACTICE
-    const { practice, learning, level } = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
+    const { practice, learning, level} = location.state || {}; // אם אין נתונים, תשתמש בערך ברירת מחדל
 
     // פונקציה לשמירת הנתונים
     const saveLevel = async () => {
@@ -23,6 +23,7 @@ const Level = () => {
             const res = await axios.post('http://localhost:6660/levels/', data);
             if (res.status === 200) {
                 setProducts([...products, res.data]);  // עדכון רשימת המוצרים
+            // setLevels([...Levels, res.data]);  // עדכון הרמה
             }
         } catch (e) {
             console.error(e);  // טיפול בשגיאות
