@@ -1,26 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from 'axios';
 
 //לא גמור!!
 //צריך ליצור קורס כלשהו ע"מ לבדוק את הנכונות
 
-const Courses = async () => {
+// const Courses = async () => {
+//     const [courses, setCourses] = useState([]);
+//     const _id = "67e990d9f705145ac4f35189" //example id, replace with the actual id
+//     const student = await axios.get(`http://localhost:6660/students/${_id}`);//מיותר אם מקבלים ID של STUDENT
+//     try {
+//         const res = await axios.get("http://localhost:6660/courses/");
+//         if (res.status === 200) {
+//             setCourses(res.data);
+//         }
+//     }
+//     catch (e) {
+//         console.error(e);
+//     }
+//     const studentCourses = courses.filter((course) => {
+//         return course.students.some((student) => student._id === _id);
+//     });
+const Courses = () => {
     const [courses, setCourses] = useState([]);
-    const _id = "67e990d9f705145ac4f35189" //example id, replace with the actual id
-    const student = await axios.get(`http://localhost:6660/students/${_id}`);
-    try {
-        const res = await axios.get("http://localhost:6660/courses/");
-        if (res.status === 200) {
-            setCourses(res.data);
-        }
-    }
-    catch (e) {
-        console.error(e);
-    }
+    const _id = "67e990d9f705145ac4f35189"; // example id, replace with the actual id
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const res = await axios.get("http://localhost:6660/courses/");
+                setCourses(res.data);
+            } catch (e) {
+                console.error(e);
+            }
+        };
+
+        fetchCourses();
+    }, []);
+
     const studentCourses = courses.filter((course) => {
         return course.students.some((student) => student._id === _id);
     });
-
 
     return (
         <div className="myCourses">

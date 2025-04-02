@@ -36,6 +36,7 @@ function App() {
     {
       label: 'Courses',
       icon: 'pi pi-envelope',
+      command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     }
   ];
 
