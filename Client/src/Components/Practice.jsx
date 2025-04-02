@@ -22,12 +22,12 @@ const Practice = () => {
     });
 
     const location = useLocation();
-    const { learning } = location.state || {};  // קבלת נתוני הלמידה
+    const { learning,level } = location.state || {};  // קבלת נתוני הלמידה
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://localhost:6660/practices/')
+        axios.get('http://localhost:6660/practices/', { params: { level } })
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
@@ -187,7 +187,7 @@ const Practice = () => {
                 </div>
 
                 {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
-                {products.length >= 10 && (
+              {/* {products.length >= 10 && (
                     <div className="card flex justify-content-center mt-2">
                         <CascadeSelect 
                             value={selectedNum} 
@@ -202,7 +202,7 @@ const Practice = () => {
                             style={{ minWidth: '14rem' }} 
                         />
                     </div>
-                )}
+                )}*/}  
 
                 {/* Display Add Level button, it will be enabled only if there are 10 questions */}
                 <Button 
@@ -213,7 +213,8 @@ const Practice = () => {
                         navigate('/Level', { 
                             state: { 
                                 practice: products, 
-                                learning: learning
+                                learning: learning,
+                                level: level
                             } 
                         });
                     }} 

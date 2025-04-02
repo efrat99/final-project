@@ -1,4 +1,5 @@
 const Practice = require("../Models/practiceModel")
+const Level = require("../Models/levelModel")
 
 //get all Practices
 const getAllPractices = async (req, res) => {
@@ -17,7 +18,29 @@ const getPracticeById = async (req, res) => {
     }
     res.json(practice)
 }
+//get practice by level
+const getPracticesByLevel = async (req, res) => {
+    const { level } = req.query; // קבלת ה-Level מה-Query String
+    try {
+        const numericLevel = parseInt(level, 10);
+        console.log(numericLevel)
+        if (isNaN(numericLevel)) {
+            return res.status(400).json({ message: 'Invalid level parameter' });
+        }
 
+        // שליפת ה-Level המתאים לפי המספר
+        const levelData = await Level.findOne({ number: numericLevel }).populate('practice').exec();
+        console.log(levelData)
+        if (!levelData) {
+            return res.status(404).json({ message: 'Level not found' });
+        }
+
+        // החזרת ה-Practices המשויכים ל-Level
+        res.json(levelData.practice);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching practices', error });
+    }
+};
 
 //post
 const createPractice = async (req, res) => {
@@ -77,6 +100,7 @@ const deletePractice = async (req, res) => {
 module.exports = {
     getAllPractices,
     getPracticeById,
+    getPracticesByLevel,
     createPractice,
     updatePractice,
     deletePractice

@@ -4,10 +4,13 @@ const learningController = require("../Controllers/learningController")
 
 
 //get
-router.get("/", learningController.getAllLearnings)
+//router.get("/", learningController.getAllLearnings)
 
 //getById
 router.get("/:_id", learningController.getLearningById)
+//getByLevel
+router.get("/", learningController.getLearningsByLevel)
+
 
 //post
 router.post("/", learningController.createLearning)

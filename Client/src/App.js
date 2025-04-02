@@ -5,6 +5,7 @@ import Home from './Components/Home';
 import Practice from './Components/Practice';
 import StudentLearning from './Components/StudentLearning';
 import Courses from './Components/Courses';
+import Course from './Components/Course';
 
 import './App.css';
 import './login.css';
@@ -50,7 +51,8 @@ function App() {
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
-        <Route path="/courses" element={<Courses />} />
+        <Route path="/courses" elemment={<Courses />} />
+        <Route path="/Course" element={<Course />} />
       </Routes>
     </Router>
     

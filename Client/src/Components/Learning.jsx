@@ -26,7 +26,7 @@ const Learning = () => {
     ];
 
     useEffect(() => {
-        axios.get('http://localhost:6660/learnings/')
+        axios.get('http://localhost:6660/learnings/',{ params: { level: level } })
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
@@ -139,7 +139,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products } })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products ,level:level} })} />
         </div>
     );
 };
