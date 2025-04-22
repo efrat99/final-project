@@ -10,41 +10,53 @@ import { Checkbox } from 'primereact/checkbox';
 import { Dialog } from 'primereact/dialog';
 import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
+import { SelectButton } from 'primereact/selectbutton';
+import { InputOtp } from 'primereact/inputotp';
 //import { CountryService } from '../service/CountryService';
 //import '.';
 
 export const Register = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
+    const options = ['Teacher', 'Student'];
+    const [value, setValue] = useState(options[0]);
+    const [token, setTokens] = useState();
+    const [selectedRole, setSelectedRole] = useState('');
+
+    const handleRoleChange = (e) => {
+        setSelectedRole(e.value);
+        setValue('userType', e.value); 
+    };
+    const customInput = ({ events, props }) => <input {...events} {...props} type="text" className="custom-otp-input" />;
 
     const defaultValues = {
         firstName: '',
         lastName: '',
         password: '',
         email: '',
-        phone: ''
+        phone: '',
+        userType:''
     }
     const { control, formState: { errors }, handleSubmit, reset, setError } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
-
+        console.log(data)
         try {
             const res = await axios.post('http://localhost:6660/api/auth/', data)
             if (res.status === 200) {
                 console.log(res.data)
                 setFormData(data);
-       alert(data.firstName+"  נרשמת בהצלחה!🤞😊");
-       //יוצרת hush-func
-        setShowMessage(true);
-        reset();
-        onClose();
+                alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
+                //יוצרת hush-func
+                setShowMessage(true);
+                reset();
+                onClose();
             }
         } catch (e) {
             console.error(e)
         }
-        
-    };
 
+    };
 
     const getFormErrorMessage = (name) => {
         return errors[name] && <small className="p-error">{errors[name].message}</small>
@@ -79,7 +91,7 @@ export const Register = ({ onClose }) => {
             {/* <Dialog> */}
             <div className="flex justify-content-center">
                 <div className="card">
-                  
+
 
                     <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
 
@@ -146,13 +158,50 @@ export const Register = ({ onClose }) => {
                             {getFormErrorMessage('phone')}
                         </div>
                         <br></br>
+                        <div className="field">
+                        {/*  "card flex justify-content-center"> */}
+                        <span className="p-float-label">
+                        <Controller name="userType" control={control} render={({ field, fieldState }) => (
+                            <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} />
+                        )} />
+                          </span>
+                            </div>
+                        <br></br>
 
+                        {selectedRole === 'Teacher' && (
+                       <div className="card flex justify-content-center">
+                            <style scoped>
+                                {`
+                            .custom-otp-input {
+                                width: 40px;
+                                font-size: 36px;
+                                border: 0 none;
+                                appearance: none;
+                                text-align: center;
+                                transition: all 0.2s;
+                                background: transparent;
+                                border-bottom: 2px solid var(--surface-500);
+                            }
+
+                            .custom-otp-input:focus {
+                                outline: 0 none;
+                                border-bottom-color: var(--primary-color);
+                            }
+                        `}
+                            </style>
+
+                            <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput} />
+                        </div>
+                        )}
+                        <br></br>
                         <div className="field-checkbox">
                             <Controller name="accept" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
                                 <Checkbox inputId={field.name} onChange={(e) => field.onChange(e.checked)} checked={field.value} className={classNames({ 'p-invalid': fieldState.invalid })} />
                             )} />
                             <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>I agree to the terms and conditions*</label>
                         </div>
+
+
                         <br></br>
 
                         <Button type="submit" label="Submit" className="mt-2" />
