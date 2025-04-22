@@ -17,11 +17,11 @@ const Signin = ({ onClose }) => {
 
     const onSubmit = async (data) => {
         try {
-            const res = await axios.post("http://localhost:6660/api/auth/", data);
+            const res = await axios.post("http://localhost:6660/api/auth/login", data);
             if (res.status === 200) {
                 console.log(res.data);
                 setFormData(data);
-                alert(data.firstName + "  Registration Successful!");
+                alert(res.data.teacherInfo.email + "  נכנסת סופסוף!!!❤😍");
                 setShowMessage(true);
                 reset();
                 onClose();

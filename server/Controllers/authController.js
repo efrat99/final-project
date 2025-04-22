@@ -16,16 +16,15 @@ const login = async (req, res) => {
         return res.status(401).json({ message: 'Unauthorized' })
     }
     const match = await bcrypt.compare(password, user.password)
-    if (match) {
-        res.json({ message: 'Login successful', user })
-    } else {
-        debbugger
+    if (!match) 
         res.status(401).json({ message: 'Unauthorized' })
-    }
-    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-    const userInfo = { _id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone }
+       // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+   // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
+    const userInfo = { email: user.email }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({accessToken:accessToken})
+    console.log(userInfo)
+    res.json({accessToken:accessToken,userInfo:userInfo})
+
 }
 
 
