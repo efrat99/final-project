@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
-const Teacher = require("../Models/teacherModel")
+const User = require("../Models/userModel")
 
 
 const login = async (req, res) => {
@@ -10,28 +10,28 @@ const login = async (req, res) => {
     if (!password)
         return res.status(400).json({ message: 'password is required' })
 
-    const teacher = await Teacher.findOne({ email: email }).lean()
-    if (!teacher) {
+    const user = await User.findOne({ email: email }).lean()
+    if (!user) {
         debbugger
         return res.status(401).json({ message: 'Unauthorized' })
     }
-    const match = await bcrypt.compare(password, teacher.password)
+    const match = await bcrypt.compare(password, user.password)
     if (match) {
-        res.json({ message: 'Login successful', teacher })
+        res.json({ message: 'Login successful', user })
     } else {
         debbugger
         res.status(401).json({ message: 'Unauthorized' })
     }
-    // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-    const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
-    const accessToken = jwt.sign(teacherInfo, process.env.ACCESS_TOKEN_SECRET)
+    // const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+    const userInfo = { _id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, phone: user.phone }
+    const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
     res.json({accessToken:accessToken})
 }
 
 
 
 const register = async (req, res) => {
-    const { firstName, lastName, email, phone, password } = req.body
+    const { firstName, lastName, email, phone, password, userType } = req.body
     if (!firstName)
         return res.status(400).json({ message: 'firstName is required' })
     if (firstName.length < 2)
@@ -43,19 +43,20 @@ const register = async (req, res) => {
     if (!email)
         return res.status(400).json({ message: 'email is required' })
     if (!password)
-        return res.status(400).json({ message: 'email is required' })
-
-    const emailExists = await Teacher.findOne({ email: email }).exec();
+        return res.status(400).json({ message: 'password is required' })
+    if (!userType)
+        return res.status(400).json({ message: 'userType is required' })
+    const emailExists = await User.findOne({ email: email }).exec();
     if (emailExists)
         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
 
 
     const hashedPwd = await bcrypt.hash(password, 10)
-    const teacherObject = { firstName, lastName, email, phone, password: hashedPwd }
+    const userObject = { firstName, lastName, email, phone, password: hashedPwd,userType }
     try {
-        const teacher = await Teacher.create({ firstName, lastName, email, phone, password: hashedPwd })
-        if (teacher) {
-            res.json(teacher)
+        const user = await User.create({ firstName, lastName, email, phone, password: hashedPwd,userType })
+        if (user) {
+            res.json(user)
         }
         else {
             res.status(400).json({ message: 'Creation has failed' })

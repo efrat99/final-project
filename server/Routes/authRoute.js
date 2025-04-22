@@ -5,6 +5,6 @@ const authController = require("../Controllers/authController")
 
 
 router.post("/login",verifyJWT, authController.login)
-router.post("/",verifyJWT, authController.register)
+router.post("/", authController.register)
 
 module.exports = router

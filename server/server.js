@@ -20,8 +20,8 @@ app.use("/grades", require("./Routes/gradeRoute"))
 app.use("/learnings", require("./Routes/learningRoute"))
 app.use("/levels", require("./Routes/levelRoute"))
 app.use("/practices", require("./Routes/practiceRoute"))
-app.use("/students", require("./Routes/studentRoute"))
-app.use("/teachers", require("./Routes/teacherRoute"))
+//app.use("/students", require("./Routes/studentRoute"))
+app.use("/users", require("./Routes/userRoute"))
 
 
 

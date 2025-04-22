@@ -1,26 +1,26 @@
-const Teacher = require("../Models/teacherModel")
+const User = require("../Models/userModel")
 
-//getAllTeachers
-const getAllTeachers = async (req, res) => {
-    const Teachers = await Teacher.find().lean()
-    if (!Teachers?.length) {
-        return res.status(400).json({ message: 'There are no teachers' })
+//getAllUsers
+const getAllUsers = async (req, res) => {
+    const Users = await User.find().lean()
+    if (!Users?.length) {
+        return res.status(400).json({ message: 'There are no Users' })
     }
-    res.json(Teachers)
+    res.json(Users)
 }
 
 //getById
-const getTeacherById = async (req, res) => {
+const getUserById = async (req, res) => {
     const { _id } = req.params
-    const teacher = await Teacher.findById(_id).exec()
-    if (!teacher) {
-        return res.status(400).json({ message: 'teacher is not found' })
+    const user = await User.findById(_id).exec()
+    if (!user) {
+        return res.status(400).json({ message: 'user is not found' })
     }
-    res.json(teacher)
+    res.json(user)
 }
 
 //post
-// const createTeacher = async (req, res) => {
+// const createUser = async (req, res) => {
 //     const { firstName, lastName, email, phone, password} = req.body
 //     if (!firstName)
 //         return res.status(400).json({ message: 'firstName is required' })
@@ -35,14 +35,14 @@ const getTeacherById = async (req, res) => {
 //     if(!password)
 //         return res.status(400).json({ message: 'email is required' })
 
-//     const emailExists = await Teacher.findOne({ email: email }).exec();
+//     const emailExists = await User.findOne({ email: email }).exec();
 //     if (emailExists)
 //         return res.status(400).json({ message: 'This email is already in use. Please choose another one' })
     
 //     try {
-//     const teacher = await Teacher.create({ firstName, lastName, email, phone, password })
-//     if (teacher) {
-//         res.json(teacher)//.status(201).json({message: 'Post is created successfully'})
+//     const User = await User.create({ firstName, lastName, email, phone, password })
+//     if (User) {
+//         res.json(User)//.status(201).json({message: 'Post is created successfully'})
 //     }
 //     else {
 //         res.status(400).json({ message: 'Creation has failed' })
@@ -53,50 +53,51 @@ const getTeacherById = async (req, res) => {
 // }
 
 //put
-const updateTeacher = async (req, res) => {
+const updateUser = async (req, res) => {
+
     const { _id, firstName, lastName, phone } = req.body
     if (!_id)
         return res.status(400).json({ message: 'id is required' })
 
-    const teacher = await Teacher.findById(_id).exec()
-    if (!teacher) 
-        return res.status(400).json({ messege: 'teacher is not found' })
+    const user = await User.findById(_id).exec()
+    if (!user) 
+        return res.status(400).json({ messege: 'user is not found' })
 
     if (firstName) {
         if (firstName.length < 2)
             return res.status(400).json({ message: 'firstName must be at least two chars long' })
-        teacher.firstName = firstName
+        user.firstName = firstName
     }
     if (lastName) {
         if (lastName.length < 2)
             return res.status(400).json({ message: 'lastName must be at least two chars long' })
-        teacher.lastName = lastName
+        user.lastName = lastName
     }
     if (phone)
-        teacher.phone = phone
+        user.phone = phone
 
-    const updatedTeacher = await teacher.save()
+    const updatedUser = await user.save()
 
-    res.json(`'${updatedTeacher.firstName}' '${updatedTeacher.lastName}' is updated`)
+    res.json(`'${updatedUser.firstName}' '${updatedUser.lastName}' is updated`)
 }
 
 //delete
-const deleteTeacher = async (req, res) => {//req params????
+const deleteUser = async (req, res) => {//req params????
     const { _id } = req.params
-    const teacher = await Teacher.findById(_id).exec()
-    if (!teacher) {
-        return res.status(400).json({ message: 'Teacher is not found' })
+    const user = await User.findById(_id).exec()
+    if (!user) {
+        return res.status(400).json({ message: 'User is not found' })
     }
-    const result = await teacher.deleteOne()
-    const reply = `Teacher '${_id}' is deleted`
+    const result = await user.deleteOne()
+    const reply = `User '${_id}' is deleted`
     res.json(reply)
 }
 
 
 module.exports = {
-    getAllTeachers,
-    getTeacherById,
+    getAllUsers,
+    getUserById,
     // createTeacher,
-    updateTeacher,
-    deleteTeacher
+    updateUser,
+    deleteUser
 }

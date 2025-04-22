@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { ObjectId } = mongoose.Schema.Types
 const Course = require('./courseModel')
-const Student = require('./studentModel')
+const User = require('./userModel')
 const Level = require('./levelModel')
 
 const gradeSchema = new mongoose.Schema({
@@ -13,7 +13,7 @@ const gradeSchema = new mongoose.Schema({
     },
     student: {
         type: ObjectId,
-        ref: Student,
+        ref: User,
         required: true
     },
     course: {
