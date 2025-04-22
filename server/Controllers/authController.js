@@ -12,20 +12,18 @@ const login = async (req, res) => {
 
     const teacher = await Teacher.findOne({ email: email }).lean()
     if (!teacher) {
-        debbugger
         return res.status(401).json({ message: 'Unauthorized' })
     }
     const match = await bcrypt.compare(password, teacher.password)
-    if (match) {
-        res.json({ message: 'Login successful', teacher })
-    } else {
-        debbugger
+    if (!match) 
         res.status(401).json({ message: 'Unauthorized' })
-    }
+
     // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-    const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
+   // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
+    const teacherInfo = { email: teacher.email }
     const accessToken = jwt.sign(teacherInfo, process.env.ACCESS_TOKEN_SECRET)
-    res.json({accessToken:accessToken})
+    console.log(teacherInfo)
+    res.json({accessToken:accessToken,teacherInfo:teacherInfo})
 }
 
 
