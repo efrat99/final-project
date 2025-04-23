@@ -16,7 +16,6 @@ const Home = () => {
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Welcome to Learning App</h2>
-
             <Button onClick={() => setShowRegisterDialog(true)}>הרשמה</Button>
             <Button onClick={() => setShowSignInDialog(true)}>כניסה</Button>
             <br /><br />

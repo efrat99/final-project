@@ -9,7 +9,8 @@ import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken, logOut } from '../redux/tokenSlice'
 const Learning = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
@@ -17,6 +18,7 @@ const Learning = () => {
 
     const location = useLocation();
     const { level} = location.state || {}; // קבלת הרמה שנבחרה
+    const {token} = useSelector((state) => state.token)
 
 
     const navigate = useNavigate();
@@ -26,7 +28,8 @@ const Learning = () => {
     ];
 
     useEffect(() => {
-        axios.get('http://localhost:6660/level/learnings/',{ params: { level: level } })
+        axios.get('http://localhost:6660/level/learnings/',{ params: { level: level } },                { headers: {Authorization : `bearer ${token}`}}
+        )
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
@@ -44,7 +47,11 @@ const Learning = () => {
             return;
         }
         try {
-            const res = await axios.post('http://localhost:6660/learnings/', data);
+            console.log(token)
+
+            const res = await axios.post('http://localhost:6660/learnings/', data,
+                { headers: {Authorization : `bearer ${token}`}}
+            );
             if (res.status === 200) {
                 setProducts([...products, res.data]);
                 reset();

@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router()
 const courseController = require("../Controllers/courseController")
-
+const verifyJWT =require('../middleware/verifyJWT')
 
 //get
 router.get("/", courseController.getAllCourses)

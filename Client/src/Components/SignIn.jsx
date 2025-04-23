@@ -5,11 +5,13 @@ import classNames from "classnames";
 import { InputText } from "primereact/inputtext";
 import { Password } from "primereact/password";
 import { Button } from "primereact/button";
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken, logOut,setUser } from '../redux/tokenSlice'
 const Signin = ({ onClose }) => {
     const { handleSubmit, control, formState: { errors }, reset } = useForm();
     const [formData, setFormData] = useState({});
     const [showMessage, setShowMessage] = useState(false);
+    const dispatch = useDispatch();
 
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = <small>Make it strong!</small>;
@@ -19,6 +21,9 @@ const Signin = ({ onClose }) => {
         try {
             const res = await axios.post("http://localhost:6660/api/auth/login", data);
             if (res.status === 200) {
+                dispatch(setToken(res.data.accessToken))
+                dispatch(setUser(res.data.userInfo))
+
                 console.log(res.data);
                 setFormData(data);
                 alert(res.data.teacherInfo.email + "  נכנסת סופסוף!!!❤😍");

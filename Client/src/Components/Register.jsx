@@ -162,10 +162,11 @@ export const Register = ({ onClose }) => {
                         {/*  "card flex justify-content-center"> */}
                         <span className="p-float-label">
                         <Controller name="userType" control={control} render={({ field, fieldState }) => (
-                            <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} />
+                            <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
                         )} />
                           </span>
                             </div>
+                        
                         <br></br>
 
                         {selectedRole === 'Teacher' && (
@@ -200,8 +201,6 @@ export const Register = ({ onClose }) => {
                             )} />
                             <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>I agree to the terms and conditions*</label>
                         </div>
-
-
                         <br></br>
 
                         <Button type="submit" label="Submit" className="mt-2" />
