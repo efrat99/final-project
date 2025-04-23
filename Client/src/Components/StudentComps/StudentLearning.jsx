@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Card } from 'primereact/card';
-import '../FlipCard.css'; // נקרא לקובץ CSS שבו נמצא האפקט
+import '../../FlipCard.css'; // נקרא לקובץ CSS שבו נמצא האפקט
 
 const StudentLearning = () => {
     const [flipped, setFlipped] = useState(false);

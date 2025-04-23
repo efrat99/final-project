@@ -10,7 +10,7 @@ import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setToken, logOut } from '../redux/tokenSlice'
+import { setToken, logOut } from '../../redux/tokenSlice'
 const Learning = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);

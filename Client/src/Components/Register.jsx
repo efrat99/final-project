@@ -24,6 +24,7 @@ export const Register = ({ onClose }) => {
     const [selectedRole, setSelectedRole] = useState('');
 
     const handleRoleChange = (e) => {
+        console.log("Selected role:", e.value);
         setSelectedRole(e.value);
         setValue('userType', e.value); 
     };
@@ -162,7 +163,17 @@ export const Register = ({ onClose }) => {
                         {/*  "card flex justify-content-center"> */}
                         <span className="p-float-label">
                         <Controller name="userType" control={control} render={({ field, fieldState }) => (
-                            <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
+                            // <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
+                            <SelectButton value={value} onChange={(e) => {  console.log("SelectButton onChange triggered");setValue(e.value); handleRoleChange(e) }} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
+/* <SelectButton 
+  value={value} 
+  onChange={(e) => {
+    console.log("SelectButton onChange triggered", e); // הדפסת האירוע
+    setValue(e.value);  // עדכון ערך הסטייט
+    handleRoleChange(e); // הפעלת פונקציית שינוי תפקיד
+  }} 
+  options={options} 
+/> */
                         )} />
                           </span>
                             </div>

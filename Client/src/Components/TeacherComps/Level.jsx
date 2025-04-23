@@ -13,7 +13,7 @@ const Level = () => {
     // פונקציה לשמירת הנתונים
     const saveLevel = async () => {
         const data = {
-            number: level,  // הרמה בברירת מחדל, אפשר לשנות אם נדרש
+            number: level,  
             learning: learning.map(i => i._id),    // מיפוי של ה-ID של כל אובייקט בלמידה
             practice: practice.map(i => i._id)     // מיפוי של ה-ID של כל אובייקט בפרקטיקה
         }

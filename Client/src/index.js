@@ -10,19 +10,18 @@ import { store } from './redux/store'
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor } from './redux/store'; // Make sure your store is configured correctly
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
 // import reportWebVitals from './reportWebVitals';
 import { PrimeReactProvider, PrimeReactContext } from 'primereact/api';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <PrimeReactProvider>
-     <Provider store={store} >
-     <PersistGate loading={null} persistor={persistor}>
-    {/* <BrowserRouter> */}
-      <App/>
-      </PersistGate>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </Provider>
-    {/* </BrowserRouter> */}
   </PrimeReactProvider>
 );
 // reportWebVitals();

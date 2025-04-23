@@ -1,11 +1,14 @@
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Learning from './Components/Learning';
-import Home from './Components/Home';
-import Practice from './Components/Practice';
-import StudentLearning from './Components/StudentLearning';
-import Courses from './Components/Courses';
-import Course from './Components/Course';
+import Learning from './Components/TeacherComps/Learning';
+import Home from './Components/AccesPage';
+import Practice from './Components/TeacherComps/Practice';
+import StudentLearning from './Components/StudentComps/StudentLearning';
+import Courses from './Components/TeacherComps/Courses';
+import Course from './Components/TeacherComps/Course';
+import Level from './Components/TeacherComps/Level';
+import TeacherHomePage from './Components/TeacherComps/Home';
+import StudentHomePage from './Components/StudentComps/Home';
 
 import './App.css';
 import './login.css';
@@ -13,10 +16,11 @@ import './login.css';
 import { Menubar } from 'primereact/menubar'; // Import Menubar from primereact
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import { useSelector } from 'react-redux';
 
 import './index.css';
 import './flags.css';
-import Level from './Components/Level';
+
 
 function App() {
   const items = [
@@ -39,6 +43,8 @@ function App() {
       command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     }
   ];
+  const user = useSelector(state => state.token.user);
+  console.log("Current user in Redux:", user);
 
   return (
     <Router>
@@ -51,11 +57,19 @@ function App() {
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
-        <Route path="/courses" elemment={<Courses />} />
-        <Route path="/Course" element={<Course />} />
+        <Route path="/courses" element={<Courses />} />
+        <Route path="/course" element={<Course />} />
+        <Route path="/student" element={<StudentLearning />} />
+        {/* <Route path="/dashboard" element={user?.role === 'teacher' ? <TeacherDashboard /> : <StudentDashboard />} /> */}
+        {user && (
+          <Route
+            path="/home"
+            element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
+          />
+        )}
       </Routes>
     </Router>
-    
+
   );
 }
 

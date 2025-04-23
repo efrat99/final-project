@@ -3,7 +3,7 @@ import React, { useState,useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { MultiSelect } from 'primereact/multiselect';
 import { useNavigate } from 'react-router-dom';
-import first from '../Images/2.png';
+import first from '../../Images/2.png';
 import { Dropdown } from 'primereact/dropdown';
 const Course= () => {
     const navigate = useNavigate();

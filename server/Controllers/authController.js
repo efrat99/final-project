@@ -15,14 +15,14 @@ const login = async (req, res) => {
         return res.status(401).json({ message: 'Unauthorized' })
     }
     const match = await bcrypt.compare(password, user.password)
-    if (!match) 
+    if (!match)
         res.status(401).json({ message: 'Unauthorized' })
-       // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-   // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
-    const userInfo = { email: user.email,role:user.userType }
+    // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
+    // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
+    const userInfo = { email: user.email, role: user.userType }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
     console.log(userInfo)
-    res.json({accessToken:accessToken,userInfo:userInfo})
+    res.json({ accessToken: accessToken, userInfo: userInfo })
 
 }
 
@@ -50,9 +50,9 @@ const register = async (req, res) => {
 
 
     const hashedPwd = await bcrypt.hash(password, 10)
-    const userObject = { firstName, lastName, email, phone, password: hashedPwd,userType }
+    const userObject = { firstName, lastName, email, phone, password: hashedPwd, userType }
     try {
-        const user = await User.create({ firstName, lastName, email, phone, password: hashedPwd,userType })
+        const user = await User.create({ firstName, lastName, email, phone, password: hashedPwd, userType })
         if (user) {
             res.json(user)
         }
