@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom';
 const Home = () => {
 
   const navigate = useNavigate();
-  const studentCourses = courses.filter((course) => {
-    return course.student.some((student) => student._id ===_id);
-});
+  // const studentCourses = courses.filter((course) => {
+  //   return course.student.some((student) => student._id ===_id);
+// });
   return (
     <div className="home">
       <h1>Student Home Page</h1>
