@@ -3,8 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
-// import { Dropdown } from 'primereact/dropdown';
-// import { Calendar } from 'primereact/calendar';
 import { Password } from 'primereact/password';
 import { Checkbox } from 'primereact/checkbox';
 import { Dialog } from 'primereact/dialog';
@@ -12,8 +10,7 @@ import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { SelectButton } from 'primereact/selectbutton';
 import { InputOtp } from 'primereact/inputotp';
-//import { CountryService } from '../service/CountryService';
-//import '.';
+
 import {useNavigate} from 'react-router-dom'
 
 export const Register = ({ onClose }) => {
@@ -135,14 +132,6 @@ export const Register = ({ onClose }) => {
                             {getFormErrorMessage('lastName')}
                         </div>
 
-                        {/* <div className="field">
-                            <span className="p-float-label">
-                                <Controller name="lastName" control={control} rules={{ required: 'lastName is required.' }} render={({ field}) => (
-                                    <InputText id={field.name} value={field.value} onChange={(e) => field.onChange(e.value)} />//dateFormat="dd/mm/yy" mask="99/99/9999" showIcon 
-                                )} />
-                                <label htmlFor="lastName">LastName*</label>
-                            </span>
-                        </div> */}
                         <br></br>
                         <div className="field">
                             <span className="p-float-label p-input-icon-right">

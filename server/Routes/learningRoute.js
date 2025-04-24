@@ -8,9 +8,12 @@ const learningController = require("../Controllers/learningController")
 
 //getById
 router.get("/:_id", learningController.getLearningById)
-//getByLevel
-router.get("/", learningController.getLearningsByLevel)
 
+//getByLevelObject
+router.get("/", learningController.getLearningsByLevelObject)
+
+//getLearningByLevelNumber
+router.get("/:level", learningController.getLearningByLevelNumber)
 
 //post
 router.post("/", learningController.createLearning)

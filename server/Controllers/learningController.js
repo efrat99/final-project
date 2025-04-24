@@ -19,8 +19,8 @@ const getLearningById = async (req, res) => {
     }
     res.json(learning)
 }
-//getByLevel
-const getLearningsByLevel = async (req, res) => {
+//getByLevelObject
+const getLearningsByLevelObject = async (req, res) => {
     const { level } = req.query; // קבלת ה-Level מה-Query String
     try {
         // המרת ה-Level למספר
@@ -34,7 +34,7 @@ const getLearningsByLevel = async (req, res) => {
         const levelData = await Level.findOne({ number: numericLevel }).populate('learning').exec();
         console.log(levelData)
         if (!levelData) {
-            return res.status(404).json({ message: 'Level not found' });
+            return res.status(404).json({ message: 'Level was not found' });
         }
 
         // החזרת ה-Learnings המשויכים ל-Level
@@ -43,14 +43,26 @@ const getLearningsByLevel = async (req, res) => {
         res.status(500).json({ message: 'Error fetching learnings', error });
     }
 };
+
+//getByLevelNumber
+const getLearningByLevelNumber = async (req, res) => {
+    const { level } = req.params
+    const learning = await Learning.find(level).exec()
+    if (!learning) {
+        return res.status(400).json({ message: 'learning is not found' })
+    }
+    res.json(learning)
+}
 //post
 const createLearning = async (req, res) => {
-    const { word, translatedWord } = req.body
+    const { word, translatedWord, level } = req.body
     if (!word)
         return res.status(400).json({ message: 'word is required' })
     if (!translatedWord)
         return res.status(400).json({ message: 'translatedWord is required' })
-    const learning = await Learning.create({ word, translatedWord })
+    if (!level)
+        return res.status(400).json({ message: 'level is required' })
+    const learning = await Learning.create({ word, translatedWord, level })
     if (learning) {
         res.json(learning)//.status(201).json({message: 'Post is created successfully'})
     }
@@ -96,7 +108,8 @@ const deleteLearning = async (req, res) => {
 module.exports = {
     getAllLearnings,
     getLearningById,
-    getLearningsByLevel,
+    getLearningsByLevelObject,
+    getLearningByLevelNumber,
     createLearning,
     updatelearning,
     deleteLearning

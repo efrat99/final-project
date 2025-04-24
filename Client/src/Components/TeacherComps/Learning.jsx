@@ -17,8 +17,8 @@ const Learning = () => {
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
 
     const location = useLocation();
-    const { level} = location.state || {}; // קבלת הרמה שנבחרה
-    const {token} = useSelector((state) => state.token)
+    const { level } = location.state || {}; // קבלת הרמה שנבחרה
+    const { token } = useSelector((state) => state.token)
 
 
     const navigate = useNavigate();
@@ -28,11 +28,14 @@ const Learning = () => {
     ];
 
     useEffect(() => {
-        axios.get('http://localhost:6660/level/learnings/',{ params: { level: level } },                { headers: {Authorization : `bearer ${token}`}}
+        axios.get('http://localhost:6660/learnings/',
+            // ${level}
+            //  { params: { level: level } }, 
+             { headers: { Authorization: `bearer ${token}` } }
         )
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
-    }, []);
+    }, [level, token]);
 
     const { control, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -48,9 +51,11 @@ const Learning = () => {
         }
         try {
             console.log(token)
+            data.level=level
+            console.log({data})
 
-            const res = await axios.post('http://localhost:6660/learnings/', data,
-                { headers: {Authorization : `bearer ${token}`}}
+            const res = await axios.post(`http://localhost:6660/learnings/`, data,
+                { headers: { Authorization: `bearer ${token}` } }
             );
             if (res.status === 200) {
                 setProducts([...products, res.data]);
@@ -146,7 +151,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products ,level:level} })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products, level: level } })} />
         </div>
     );
 };

@@ -8,10 +8,11 @@ import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-const Practice = () => {
+const Practice = (props) => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
+    const [practices, setPractices] = useState(null);
 
     const { control, formState: { errors }, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -20,6 +21,9 @@ const Practice = () => {
             correctAnswer: ''
         }
     });
+
+
+
 
     const location = useLocation();
     const { learning,level } = location.state || {};  // קבלת נתוני הלמידה

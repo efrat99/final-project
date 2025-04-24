@@ -23,7 +23,11 @@ const practiceSchema = new mongoose.Schema({
         max: 4,
         min: 1,
         required: true
-    }
+    },
+    // level:{
+    //     type: Number,
+    //     required: true
+    // }
 }, {
     timestamps: true
 })
