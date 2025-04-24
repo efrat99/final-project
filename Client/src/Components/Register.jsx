@@ -10,6 +10,8 @@ import { Divider } from 'primereact/divider';
 import { classNames } from 'primereact/utils';
 import { SelectButton } from 'primereact/selectbutton';
 import { InputOtp } from 'primereact/inputotp';
+import { useDispatch, useSelector } from 'react-redux';
+import { setToken, logOut, setUser } from '../redux/tokenSlice'
 
 import {useNavigate} from 'react-router-dom'
 
@@ -21,6 +23,7 @@ export const Register = ({ onClose }) => {
     const [token, setTokens] = useState(0);
     const [selectedRole, setSelectedRole] = useState(false);
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     // const handleRoleChange = (e) => {
     //     console.log("Selected role:", e.value);
@@ -44,7 +47,6 @@ export const Register = ({ onClose }) => {
             setSelectedRole(true)
         }
         else {
-            console.log(data)
 
             if (data.userType == "Teacher" && token != 1234)
                 alert("הכנס קוד תקין")
@@ -53,6 +55,9 @@ export const Register = ({ onClose }) => {
                 try {
                     const res = await axios.post('http://localhost:6660/api/auth/', data)
                     if (res.status === 200) {
+                        console.log(res.data);
+                          dispatch(setToken(res.data.accessToken))
+                         dispatch(setUser(res.data.userInfo))
                         console.log(res.data)
                         setFormData(data);
                         alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
@@ -62,6 +67,18 @@ export const Register = ({ onClose }) => {
                         reset();
                         onClose();
                         navigate('/home')
+                        
+                        // dispatch(setToken(res.data.accessToken))
+                        // dispatch(setUser(res.data.userInfo))
+                        // // const user = useSelector(state => state.token.user)
+                        // console.log(user);
+                        // console.log(res.data);
+                        // setFormData(data);
+                        // alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
+                        // setShowMessage(true);
+                        // reset();
+                        // onClose();
+                        // navigate('/home')
                     }
                 }
                 catch (e) {

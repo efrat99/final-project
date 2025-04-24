@@ -50,17 +50,19 @@ const register = async (req, res) => {
 
 
     const hashedPwd = await bcrypt.hash(password, 10)
-    const userObject = { firstName, lastName, email, phone, password: hashedPwd, userType }
+    // const userObject = { firstName, lastName, email, phone, password: hashedPwd, userType }
     try {
         const user = await User.create({ firstName, lastName, email, phone, password: hashedPwd, userType })
         if (user) {
-            res.json(user)
+            const userInfo = { firstName: firstName, email: user.email, role: user.userType }
+            const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
+            res.json({ accessToken: accessToken, userInfo: userInfo })
         }
         else {
             res.status(400).json({ message: 'Creation has failed' })
         }
     } catch (e) {
-        res.status(500).json({ message: 'Internal server error', error: error.message })
+        res.status(500).json({ message: 'Internal server error' })
     }
 }
 module.exports = { login, register }

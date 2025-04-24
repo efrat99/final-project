@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
 const Home = () => {
   const navigate = useNavigate();
+
   const _id = useSelector(state => state.token.user._id)
   const studentCourses = courses.filter((course) => {
     return course.student.some((student) => student._id === _id);
@@ -19,6 +20,7 @@ const footer = (
         <Button label="Cancel" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} />
     </>
 );
+
   return (
     <div className="home">
       <h1>Student Home Page</h1>
