@@ -14,20 +14,22 @@ import { SelectButton } from 'primereact/selectbutton';
 import { InputOtp } from 'primereact/inputotp';
 //import { CountryService } from '../service/CountryService';
 //import '.';
+import {useNavigate} from 'react-router-dom'
 
 export const Register = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
     const options = ['Teacher', 'Student'];
     const [value, setValue] = useState(options[0]);
-    const [token, setTokens] = useState();
-    const [selectedRole, setSelectedRole] = useState('');
+    const [token, setTokens] = useState(0);
+    const [selectedRole, setSelectedRole] = useState(false);
+    const navigate = useNavigate();
 
-    const handleRoleChange = (e) => {
-        console.log("Selected role:", e.value);
-        setSelectedRole(e.value);
-        setValue('userType', e.value); 
-    };
+    // const handleRoleChange = (e) => {
+    //     console.log("Selected role:", e.value);
+    //     setSelectedRole(e.value);
+    //     setValue('userType', e.value);
+    // };
     const customInput = ({ events, props }) => <input {...events} {...props} type="text" className="custom-otp-input" />;
 
     const defaultValues = {
@@ -36,25 +38,41 @@ export const Register = ({ onClose }) => {
         password: '',
         email: '',
         phone: '',
-        userType:''
+        userType: ''
     }
     const { control, formState: { errors }, handleSubmit, reset, setError } = useForm({ defaultValues });
 
     const onSubmit = async (data) => {
-        console.log(data)
-        try {
-            const res = await axios.post('http://localhost:6660/api/auth/', data)
-            if (res.status === 200) {
-                console.log(res.data)
-                setFormData(data);
-                alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
-                //יוצרת hush-func
-                setShowMessage(true);
-                reset();
-                onClose();
+        if (data.userType == "Teacher" && !selectedRole) {
+            setSelectedRole(true)
+        }
+        else {
+            console.log(data)
+
+            if (data.userType == "Teacher" && token != 1234)
+                alert("הכנס קוד תקין")
+            else {
+
+                try {
+                    const res = await axios.post('http://localhost:6660/api/auth/', data)
+                    if (res.status === 200) {
+                        console.log(res.data)
+                        setFormData(data);
+                        alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
+                        //יוצרת hush-func
+                        setShowMessage(true);
+                        setSelectedRole(false)
+                        reset();
+                        onClose();
+                        navigate('/home')
+                    }
+                }
+                catch (e) {
+                    console.error(e)
+                }
             }
-        } catch (e) {
-            console.error(e)
+           
+
         }
 
     };
@@ -159,31 +177,33 @@ export const Register = ({ onClose }) => {
                             {getFormErrorMessage('phone')}
                         </div>
                         <br></br>
-                        <div className="field">
-                        {/*  "card flex justify-content-center"> */}
-                        <span className="p-float-label">
-                        <Controller name="userType" control={control} render={({ field, fieldState }) => (
-                            // <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
-                            <SelectButton value={value} onChange={(e) => {  console.log("SelectButton onChange triggered");setValue(e.value); handleRoleChange(e) }} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
-/* <SelectButton 
-  value={value} 
-  onChange={(e) => {
-    console.log("SelectButton onChange triggered", e); // הדפסת האירוע
-    setValue(e.value);  // עדכון ערך הסטייט
-    handleRoleChange(e); // הפעלת פונקציית שינוי תפקיד
-  }} 
-  options={options} 
-/> */
-                        )} />
-                          </span>
-                            </div>
-                        
+                        <div className=
+                            "card flex justify-content-center">
+                            <span className="p-float-label">
+                                <Controller name="userType" onChange={(e) => { setSelectedRole(e.value) }} control={control} render={({ field, fieldState }) => (
+                                    // <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
+                                    <SelectButton value={value} onChange={(e) => {
+                                        console.log("SelectButton onChange triggered");
+                                    }} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
+                                    /* <SelectButton 
+                                    value={value} 
+                                    onChange={(e) => {
+                                        console.log("SelectButton onChange triggered", e); // הדפסת האירוע
+                                        setValue(e.value);  // עדכון ערך הסטייט
+                                        handleRoleChange(e); // הפעלת פונקציית שינוי תפקיד
+                                    }} 
+                                    options={options} 
+                                    /> */
+                                )} />
+                            </span>
+                        </div>
+
                         <br></br>
 
-                        {selectedRole === 'Teacher' && (
-                       <div className="card flex justify-content-center">
-                            <style scoped>
-                                {`
+                        {selectedRole && (
+                            <div className="card flex justify-content-center">
+                                <style scoped>
+                                    {`
                             .custom-otp-input {
                                 width: 40px;
                                 font-size: 36px;
@@ -200,10 +220,10 @@ export const Register = ({ onClose }) => {
                                 border-bottom-color: var(--primary-color);
                             }
                         `}
-                            </style>
+                                </style>
 
-                            <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput} />
-                        </div>
+                                <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput} />
+                            </div>
                         )}
                         <br></br>
                         <div className="field-checkbox">
