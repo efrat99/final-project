@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from 'axios';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import { Dropdown } from 'primereact/dropdown';
+import { useSelector } from 'react-redux';
 
 //לא גמור!!
 //צריך ליצור קורס כלשהו ע"מ לבדוק את הנכונות
@@ -23,9 +25,75 @@ import { useNavigate } from 'react-router-dom';
 //         return course.students.some((student) => student._id === _id);
 //     });
 const Courses = () => {
+    const language = [
+        { "value": "ar", "label": "ערבית 🇸🇦" },
+        { "value": "en", "label": "אנגלית 🇬🇧🇺🇸" },
+        { "value": "es", "label": "ספרדית 🇪🇸" },
+        { "value": "fr", "label": "צרפתית 🇫🇷" },
+        { "value": "de", "label": "גרמנית 🇩🇪" },
+        { "value": "ru", "label": "רוסית 🇷🇺" },
+        { "value": "zh", "label": "סינית 🇨🇳" },
+        { "value": "hi", "label": "הינדי 🇮🇳" },
+        { "value": "pt", "label": "פורטוגזית 🇵🇹🇧🇷" },
+        { "value": "ja", "label": "יפנית 🇯🇵" },
+        { "value": "it", "label": "איטלקית 🇮🇹" },
+        { "value": "nl", "label": "הולנדית 🇳🇱" },
+        { "value": "ko", "label": "קוריאנית 🇰🇷" },
+        { "value": "tr", "label": "טורקית 🇹🇷" },
+        { "value": "he", "label": "עברית 🇮🇱" },
+        { "value": "fa", "label": "פרסית 🇮🇷" },
+        { "value": "pl", "label": "פולנית 🇵🇱" },
+        { "value": "uk", "label": "אוקראינית 🇺🇦" },
+        { "value": "sv", "label": "שוודית 🇸🇪" },
+        { "value": "fi", "label": "פינית 🇫🇮" },
+        { "value": "no", "label": "נורווגית 🇳🇴" },
+        { "value": "da", "label": "דנית 🇩🇰" },
+        { "value": "cs", "label": "צ'כית 🇨🇿" },
+        { "value": "el", "label": "יוונית 🇬🇷" },
+        { "value": "th", "label": "תאית 🇹🇭" },
+        { "value": "id", "label": "אינדונזית 🇮🇩" },
+        { "value": "vi", "label": "וייטנאמית 🇻🇳" },
+        { "value": "hu", "label": "הונגרית 🇭🇺" },
+        { "value": "ro", "label": "רומנית 🇷🇴" },
+        { "value": "bg", "label": "בולגרית 🇧🇬" },
+        { "value": "sr", "label": "סרבית 🇷🇸" },
+        { "value": "sk", "label": "סלובקית 🇸🇰" },
+        { "value": "sl", "label": "סלובנית 🇸🇮" },
+        { "value": "hr", "label": "קרואטית 🇭🇷" },
+        { "value": "lt", "label": "ליטאית 🇱🇹" },
+        { "value": "lv", "label": "לטבית 🇱🇻" },
+        { "value": "et", "label": "אסטונית 🇪🇪" },
+        { "value": "ms", "label": "מלאית 🇲🇾" },
+        { "value": "bn", "label": "בנגלית 🇧🇩" },
+        { "value": "tl", "label": "טאגאלוג 🇵🇭" },
+        { "value": "sw", "label": "סוואהילית 🇰🇪" },
+        { "value": "mt", "label": "מלטזית 🇲🇹" },
+        { "value": "is", "label": "איסלנדית 🇮🇸" },
+        { "value": "ga", "label": "אירית 🇮🇪" },
+        { "value": "cy", "label": "וולשית 🇬🇧" }
+    ]
+    const user = useSelector(state => state.token.user);
+
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
+    const [selectedlanguage, setSelectedlanguage] = useState([]);
+
     const _id = "680a06bf8d8af53d9b7ba981"; // example id, replace with the actual id
+    const data = {
+        language: selectedlanguage,
+        teacher: user._id,
+        students: [],
+        levels: []
+    }
+    const saveCourse = async () => {
+        try {
+            const res = await axios.post("http://localhost:6660/courses", data);
+             navigate('/Course', { state: { language: language } });
+        } catch (e) {
+            console.error(e);
+        }
+
+    }
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -41,12 +109,17 @@ const Courses = () => {
     }, []);
 
     const teacherCourses = courses.filter((course) => {
-        return course.teacher.some((teacher) => teacher._id === _id);
+        return course.teacher((teacher) => teacher._id === _id);
     });
 
     return (
         <div className="myCourses">
-            <h1>My Courses</h1>
+
+            <h1>הקורסים שלי</h1>
+            <div className="card flex justify-content-center">
+            <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={language} optionLabel="label"
+                placeholder="Select a language" className="w-full md:w-14rem" />
+        </div>
             <div className="courseListPerUser">
                 {teacherCourses.map((course) => (
                     <div key={course._id} className="courseCard">
@@ -56,7 +129,7 @@ const Courses = () => {
                     </div>
                 ))}
             </div>
-            <Button onClick={() =>  navigate('/Course')}>הוספת קורס</Button>
+            <Button onClick={() => {saveCourse()}}>הוספת קורס</Button>
             {/* ליצור ניתוב כלשהו לכל הקורסים שלא נמצאים ברשימת הקורסים של התלמיד, ככרטיס שנפתח
             או בדף אחר */}
             {/* add course */}
@@ -64,7 +137,7 @@ const Courses = () => {
                 {courses.map((course) => (
                     <div key={course._id} className="courseCard">
                         <h2>{course.language}</h2>
-                        {/* <p>{course.description}</p> */}
+                        {/* <p>{course.deslanguagecription}</p> */}
                         {/* <button onClick={() => handleEnroll(course._id)}>Enroll</button> */}
                     </div>
                 ))}

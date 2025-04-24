@@ -19,7 +19,7 @@ const login = async (req, res) => {
         res.status(401).json({ message: 'Unauthorized' })
     // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
     // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
-    const userInfo = { email: user.email, role: user.userType }
+    const userInfo = { email: user.email, role: user.userType ,_id:user._id}
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
     console.log(userInfo)
     res.json({ accessToken: accessToken, userInfo: userInfo })
