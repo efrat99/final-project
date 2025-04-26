@@ -45,7 +45,6 @@ const updateCourse = async (req, res) => {
     const { _id, language, teacher, students, levels } = req.body
     if (!_id)
         return res.status(400).json({ message: 'language  is required' })
-    
     const course = await Course.findById(_id).exec()
     if (!course) {
         return res.status(400).json({ message: 'course is not found' })

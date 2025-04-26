@@ -26,7 +26,7 @@ const Practice = (props) => {
 
 
     const location = useLocation();
-    const { learning,level } = location.state || {};  // קבלת נתוני הלמידה
+    const { learning,level,courseId } = location.state || {};  // קבלת נתוני הלמידה
 
     const navigate = useNavigate();
 
@@ -37,7 +37,7 @@ const Practice = (props) => {
     }, []);
 
     const onSubmit = async (data) => {
-        if (products.length >= 3) {
+        if (products.length >= 1) {
             alert("You cannot add more than 10 questions.");
             return;
         }
@@ -45,6 +45,7 @@ const Practice = (props) => {
             const res = await axios.post('http://localhost:6660/practices/', data);
             if (res.status === 200) {
                 setProducts([...products, res.data]);
+
                 reset();
             }
         } catch (e) {
@@ -212,13 +213,14 @@ const Practice = (props) => {
                 <Button 
                     label="Add Level" 
                     className="mt-2" 
-                    disabled={products.length < 3} 
+                    disabled={products.length < 1} 
                     onClick={() => {
                         navigate('/Level', { 
                             state: { 
                                 practice: products, 
                                 learning: learning,
-                                level: level
+                                level: level,
+                                courseId:courseId
                             } 
                         });
                     }} 

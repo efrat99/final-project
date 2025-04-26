@@ -55,14 +55,14 @@ const getLearningByLevelNumber = async (req, res) => {
 }
 //post
 const createLearning = async (req, res) => {
-    const { word, translatedWord, level } = req.body
+    const { word, translatedWord } = req.body
     if (!word)
         return res.status(400).json({ message: 'word is required' })
     if (!translatedWord)
         return res.status(400).json({ message: 'translatedWord is required' })
-    if (!level)
-        return res.status(400).json({ message: 'level is required' })
-    const learning = await Learning.create({ word, translatedWord, level })
+    // if (!level)
+    //     return res.status(400).json({ message: 'level is required' })
+    const learning = await Learning.create({ word, translatedWord })
     if (learning) {
         res.json(learning)//.status(201).json({message: 'Post is created successfully'})
     }

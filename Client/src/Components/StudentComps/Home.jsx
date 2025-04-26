@@ -1,14 +1,35 @@
 import React from 'react';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { Card } from 'primereact/card';
+import { useEffect, useState } from 'react';
+import axios from 'axios';  
 const Home = () => {
   const navigate = useNavigate();
-
+  const [studentCourses, setStudentCourses] = useState([]);
   const _id = useSelector(state => state.token.user._id)
-  const studentCourses = courses.filter((course) => {
-    return course.student.some((student) => student._id === _id);
-  });
+  useEffect(() => {
+      const fetchCourses = async () => {
+          try {
+              const res = await axios.get("http://localhost:6660/courses/");
+              if (res.status === 200) {
+                  const filteredCourses = res.data.filter((course) => {
+                      return course.student.some((student) => student._id === _id);
+                  });
+                  setStudentCourses(filteredCourses); // Update state
+              }
+          } catch (e) {
+              console.error(e);
+          }
+      };
+      fetchCourses();
+  }, [_id]);
+
+
+
+
+
 
 
   const header = (

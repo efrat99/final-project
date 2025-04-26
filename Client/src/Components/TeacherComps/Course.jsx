@@ -11,13 +11,13 @@ const Course = () => {
     const [Levels, setLevels] = useState([]);
    
     const location = useLocation();
-    const { language } = location.state || {}; // קבלת הרמה שנבחרה
+    const { language ,courseId} = location.state || {}; // קבלת הרמה שנבחרה
 
 
   
 
     const handleLearningClick = (level) => {
-        navigate('/learning', { state: { level: level } });
+        navigate('/learning', { state: { level: level ,courseId:courseId} });
     };
     const header = (
         <img alt="Card" src={first} style={{ width: '300px', height: '200px' }} />

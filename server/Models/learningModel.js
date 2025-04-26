@@ -17,11 +17,11 @@ const learningSchema = new mongoose.Schema({
     translatedWord: {
         type: String,
         required: true
-    },
-    level:{
-        type: Number,
-        required: true
-    }
+    }// ,
+    // level:{
+    //     type: Number,
+    //     required: true
+    // }
 }, {
     timestamps: true
 })

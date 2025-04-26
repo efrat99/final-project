@@ -20,9 +20,10 @@ const Learning = () => {
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
-    const { language } = location.state || {}; // קבלת הרמה שנבחרה
+    const { language,level,courseId } = location.state || {}; // קבלת הרמה שנבחרה
 
     const navigate = useNavigate();
+    
     const columns = [
         { field: 'word', header: 'Word' },
         { field: 'translatedWord', header: 'Translated Word' }
@@ -36,23 +37,24 @@ const Learning = () => {
         )
             .then(response => setProducts(response.data))
             .catch(error => console.error('Error fetching data:', error));
-    }, [level, token]);
+    }, [token]);
 
     const { control, handleSubmit, reset } = useForm({
         defaultValues: {
             word: '',
             translatedWord: ''
+
         }
     });
 
     const onSubmit = async (data) => {
-        if (products.length >= 3) {
+        if (products.length >= 1) {
             alert("You cannot add more than 10 words.");
             return;
         }
         try {
             console.log(token)
-            data.level=level
+            // data.level=level
             console.log({data})
 
             const res = await axios.post(`http://localhost:6660/learnings/`, data,
@@ -152,7 +154,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 3} onClick={() => navigate('/practice', { state: { learning: products, level: level } })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products,level:level,courseId:courseId} })} />
         </div>
     );
 };

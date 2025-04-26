@@ -78,7 +78,7 @@ const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [selectedlanguage, setSelectedlanguage] = useState([]);
 
-    const _id = "680a06bf8d8af53d9b7ba981"; // example id, replace with the actual id
+    const _id = useSelector(state => state.token.user._id); // example id, replace with the actual id
     const data = {
         language: selectedlanguage,
         teacher: user._id,
@@ -88,7 +88,7 @@ const Courses = () => {
     const saveCourse = async () => {
         try {
             const res = await axios.post("http://localhost:6660/courses", data);
-             navigate('/Course', { state: { language: language } });
+            navigate('/Course', { state: { language: language, courseId: res.data._id } });
         } catch (e) {
             console.error(e);
         }
@@ -99,52 +99,59 @@ const Courses = () => {
         const fetchCourses = async () => {
             try {
                 const res = await axios.get("http://localhost:6660/courses/");
-                setCourses(res.data);
-            } catch (e) {
+                if (res.status === 200) {
+                    
+                    const filteredCourses = res.data.filter((course) => {
+                        return course.teacher === _id;
+                    });
+
+                    setCourses(filteredCourses); // Update state
+                }
+            }
+            catch (e) {
                 console.error(e);
             }
         };
 
         fetchCourses();
-    }, []);
+    }, [_id]);
+    
+    const handleEnterCourse = (courseId) => {
+        navigate(`/Course/`, { state: { courseId } });
+    };
+return (
+    <div className="myCourses">
 
-    const teacherCourses = courses.filter((course) => {
-        return course.teacher((teacher) => teacher._id === _id);
-    });
-
-    return (
-        <div className="myCourses">
-
-            <h1>הקורסים שלי</h1>
-            <div className="card flex justify-content-center">
+        <h1>הקורסים שלי</h1>
+        <div className="card flex justify-content-center">
             <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={language} optionLabel="label"
                 placeholder="Select a language" className="w-full md:w-14rem" />
         </div>
-            <div className="courseListPerUser">
-                {teacherCourses.map((course) => (
-                    <div key={course._id} className="courseCard">
-                        <h2>{course.name}</h2>
-                        {/* <p>{course.description}</p> */}
-                        {/* <button onClick={() => handleEnroll(course._id)}>Enroll</button> */}
-                    </div>
-                ))}
-            </div>
-            <Button onClick={() => {saveCourse()}}>הוספת קורס</Button>
-            {/* ליצור ניתוב כלשהו לכל הקורסים שלא נמצאים ברשימת הקורסים של התלמיד, ככרטיס שנפתח
-            או בדף אחר */}
-            {/* add course */}
-            <div className="courseList">
-                {courses.map((course) => (
-                    <div key={course._id} className="courseCard">
-                        <h2>{course.language}</h2>
-                        {/* <p>{course.deslanguagecription}</p> */}
-                        {/* <button onClick={() => handleEnroll(course._id)}>Enroll</button> */}
-                    </div>
-                ))}
-            </div>
+        <div className="courseListPerUser">
+            {courses.map((course) => (
+                <div key={course._id} className="courseCard">
+                    <h2>{course.name}</h2>
+                    {/* <p>{course.description}</p> */}
+                    {/* <button onClick={() => handleEnroll(course._id)}>Enroll</button> */}
+                </div>
+            ))}
         </div>
+        <Button onClick={() => { saveCourse() }}>הוספת קורס</Button>
+        {/* ליצור ניתוב כלשהו לכל הקורסים שלא נמצאים ברשימת הקורסים של התלמיד, ככרטיס שנפתח
+            או בדף אחר */}
+        {/* add course */}
+        <div className="courseList">
+            {courses.map((course) => (
+              <div key={course._id} className="courseCard">
+              <h2>{course.name}</h2>
+              <h1>שפה:{course.language}</h1>
+              <Button label="כניסה לקורס" onClick={() => handleEnterCourse(course._id)} />
+          </div>
+            ))}
+        </div>
+    </div>
 
 
-    );
+);
 }
 export default Courses
