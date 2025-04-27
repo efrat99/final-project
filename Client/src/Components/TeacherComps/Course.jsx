@@ -13,7 +13,7 @@ const Course = () => {
     const location = useLocation();
     const { language ,courseId} = location.state || {}; // קבלת הרמה שנבחרה
 
-
+    // const isLevelExists = Levels.some((l) => l.number === level);
   
 
     const handleLearningClick = (level) => {
@@ -23,16 +23,15 @@ const Course = () => {
         <img alt="Card" src={first} style={{ width: '300px', height: '200px' }} />
     );
     const footer = (level) => (
+        
         <Button label="הוסף" onClick={() => handleLearningClick(level)} />
+    //     <Button
+    //     label={isLevelExists ? "עדכן" : "הוסף"}
+    //     onClick={() => handleLearningClick(level)}
+    // />
     );
     return (<>
         <h1>הוספת קורס</h1>
-
-        {/* <div className="card flex justify-content-center">
-            <MultiSelect value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={language} optionLabel="label" 
-                placeholder="Select Cities" maxSelectedLabels={1} className="w-full md:w-20rem" />
-        </div>
-         */}
       
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
             <Card title="שלב 4" footer={footer('4')} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
@@ -40,7 +39,6 @@ const Course = () => {
             <Card title="שלב 2" footer={footer('2')} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
             <Card title="1 שלב" footer={footer('1')} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
         </div>
-        {/* <Button label="הוסף קורס" onClick={saveCourse} /> */}
     </>
     );
 }

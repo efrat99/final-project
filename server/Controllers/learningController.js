@@ -44,25 +44,37 @@ const getLearningsByLevelObject = async (req, res) => {
     }
 };
 
+
 //getByLevelNumber
 const getLearningByLevelNumber = async (req, res) => {
-    const { level } = req.params
-    const learning = await Learning.find(level).exec()
-    if (!learning) {
-        return res.status(400).json({ message: 'learning is not found' })
+    const { level } = req.query; // קבלת level מתוך ה-query
+    if (!level) {
+        return res.status(400).json({ message: 'Level is required' });
+    }  
+    try {
+        const learning = await Learning.find({ level }).exec(); // חיפוש לפי level
+
+        if (!learning || learning.length === 0) {
+            return res.status(404).json({ message: 'Learning was not found for this level' });
+        }
+        res.json(learning);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
     }
-    res.json(learning)
-}
+};
+
+
 //post
 const createLearning = async (req, res) => {
-    const { word, translatedWord } = req.body
+    const { word, translatedWord, level} = req.body
     if (!word)
         return res.status(400).json({ message: 'word is required' })
     if (!translatedWord)
         return res.status(400).json({ message: 'translatedWord is required' })
-    // if (!level)
-    //     return res.status(400).json({ message: 'level is required' })
-    const learning = await Learning.create({ word, translatedWord })
+    if (!level)
+        return res.status(400).json({ message: 'level is required' })
+    const learning = await Learning.create({ word, translatedWord, level })
     if (learning) {
         res.json(learning)//.status(201).json({message: 'Post is created successfully'})
     }

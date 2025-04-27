@@ -8,13 +8,16 @@ import { Button } from "primereact/button";
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, logOut, setUser } from '../redux/tokenSlice'
 import { useNavigate } from 'react-router-dom'
+import '../login.css';
 
 
 const Signin = ({ onClose }) => {
     const { handleSubmit, control, formState: { errors }, reset } = useForm();
     const [formData, setFormData] = useState({});
     const [showMessage, setShowMessage] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
+
 
     // const passwordHeader = <h6>Pick a password</h6>;
     // const passwordFooter = <small>Make it strong!</small>;
@@ -33,16 +36,20 @@ const Signin = ({ onClose }) => {
                 setShowMessage(true);
                 reset();
                 onClose();
-
-                // if (res.data.userInfo.role === 'teacher')
-                //     navigate('/teacherDashboard')
-                // else if (res.data.userInfo.role === 'student')
-                //     navigate('/studentDashboard')
                 navigate('/home')
+
+                //  else {
+                //     alert("שם המשתמש או הסיסמה שגויים.");
 
             }
         } catch (e) {
-            console.error(e);
+            if (e.response && e.response.status === 401) {
+                // alert('שם משתמש או סיסמה שגויים');
+                setErrorMessage("שם המשתמש או הסיסמה שגויים");
+            }
+            else {
+                console.error(e);  // שגיאות אחרות
+            }
         }
     };
 
@@ -68,15 +75,19 @@ const Signin = ({ onClose }) => {
                         <div className="field">
                             <span className="p-float-label">
                                 <Controller name="password" control={control} rules={{ required: "Password is required." }} render={({ field, fieldState }) => (
-                                    <Password id={field.name} {...field} toggleMask feedback={false} className={classNames({ "p-invalid": fieldState.invalid })} 
+                                    <Password id={field.name} {...field} toggleMask feedback={false} className={classNames({ "p-invalid": fieldState.invalid })}
                                     // header={passwordHeader} footer={passwordFooter}
-                                     />
+                                    />
                                 )} />
                                 <label htmlFor="password" className={classNames({ "p-error": errors.password })}>Password*</label>
                             </span>
                             {/* {getFormErrorMessage("password")} */}
                         </div>
                         <br />
+                        {/* {errorMessage && <div style={{ color: 'red', marginTop: '10px' }}>{errorMessage}</div>} הצגת הודעת שגיאה */}
+                        {errorMessage && (
+                            <div className="error-message">{errorMessage}</div>
+                        )}
                         <Button type="submit" label="Submit" className="mt-2" />
                     </form>
                 </div>

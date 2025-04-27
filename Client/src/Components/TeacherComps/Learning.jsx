@@ -21,6 +21,7 @@ const Learning = () => {
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
     const { language,level,courseId } = location.state || {}; // קבלת הרמה שנבחרה
+    console.log(level)
 
     const navigate = useNavigate();
     
@@ -29,15 +30,35 @@ const Learning = () => {
         { field: 'translatedWord', header: 'Translated Word' }
     ];
 
+    // useEffect(() => {
+    //     if (!token) return;
+    //     axios.get(`http://localhost:6660/learnings`,
+    //          { headers: { Authorization: `bearer ${token}` } }
+    //     )
+    //         .then(response => setProducts(response.data))
+    //         .catch(error => console.error('Error fetching data:', error));
+    // }, [token]);
+
     useEffect(() => {
-        axios.get('http://localhost:6660/learnings/',
-            // ${level}
-            //  { params: { level: level } }, 
-             { headers: { Authorization: `bearer ${token}` } }
-        )
-            .then(response => setProducts(response.data))
-            .catch(error => console.error('Error fetching data:', error));
-    }, [token]);
+        if (!token) return;
+        // const { level } = location.state || {}; // קבלת הרמה מתוך location.state
+        axios.get(`http://localhost:6660/learnings`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            params: { level },  // הוספת level כ־query
+        })
+        .then(response => setProducts(response.data))
+        .catch(e => {
+            if (e.response && e.response.status === 404) {
+                console.error('No data found for the given level:', level);
+            }
+            else {
+                console.error(e);  // שגיאות אחרות
+            }
+        });
+    }, [token, location.state]);
+
 
     const { control, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -47,6 +68,8 @@ const Learning = () => {
         }
     });
 
+    
+
     const onSubmit = async (data) => {
         if (products.length >= 1) {
             alert("You cannot add more than 10 words.");
@@ -54,7 +77,7 @@ const Learning = () => {
         }
         try {
             console.log(token)
-            // data.level=level
+            data.level=level
             console.log({data})
 
             const res = await axios.post(`http://localhost:6660/learnings/`, data,

@@ -62,3 +62,9 @@
   box-sizing: border-box;
 }
 
+.error {
+  border: 2px solid red;
+  background-color: #ffe5e5;
+}
+
+

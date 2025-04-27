@@ -17,12 +17,18 @@ import { Menubar } from 'primereact/menubar'; // Import Menubar from primereact
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setToken, logOut } from './redux/tokenSlice';
 
 import './index.css';
 import './flags.css';
 
 
 function App() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.token.user);
+  console.log("Current user in Redux:", user);
+
   const items = [
     {
       label: 'Home',
@@ -41,10 +47,21 @@ function App() {
       label: 'Courses',
       icon: 'pi pi-envelope',
       command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
-    }
+    },
+    ...(user ? [
+      {
+        label: 'Log Out',
+        icon: 'pi pi-sign-out',
+        command: () => {
+          console.log("User logged out");
+          dispatch(logOut());
+          window.location.href = '/'; // ניווט לעמוד הבית
+        }
+      }
+    ] : []),
   ];
-  const user = useSelector(state => state.token.user);
-  console.log("Current user in Redux:", user);
+
+  
 
   return (
     <Router>

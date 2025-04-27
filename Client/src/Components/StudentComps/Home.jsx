@@ -25,13 +25,11 @@ const Home = () => {
     }
 };
   useEffect(() => {
-  
       fetchCourses();
   }, [_id]);
 
 const AddStudentToCourse = async (course) => {  
     try {
-
       course.students.push(_id);  // Add the student ID to the course's students arra
       const res = await axios.put(`http://localhost:6660/courses/`, course);  // Update the course on the server
       console.log(res.status);
@@ -66,7 +64,7 @@ const DeleteStudentFromCourse = async (course) => {
 );
 const footer =(course)=> (
     <>
-      <Button label="הכנס" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{}}/>
+      <Button label="היכנס" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{}}/>
         <Button label="מחק" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{DeleteStudentFromCourse(course)}} />
     </>
 );

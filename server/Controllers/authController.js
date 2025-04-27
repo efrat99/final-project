@@ -16,7 +16,7 @@ const login = async (req, res) => {
     }
     const match = await bcrypt.compare(password, user.password)
     if (!match)
-        res.status(401).json({ message: 'Unauthorized' })
+        return res.status(401).json({ message: 'Unauthorized' })
     // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
     // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
     const userInfo = { email: user.email, role: user.userType ,_id:user._id}
