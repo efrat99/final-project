@@ -80,7 +80,7 @@ function App() {
         <Route path="/learning" element={<Learning />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
-        {/* <Route path="/studentLearning" element={<StudentLearning />} /> */}
+        <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/courses" element={<Courses />} />
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (
