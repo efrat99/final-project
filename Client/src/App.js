@@ -5,10 +5,12 @@ import Home from './Components/AccesPage';
 import Practice from './Components/TeacherComps/Practice';
 import StudentLearning from './Components/StudentComps/StudentLearning';
 import Courses from './Components/TeacherComps/Courses';
-import Course from './Components/TeacherComps/Course';
+import TeacherCourse from './Components/TeacherComps/Course';
+import StudentCourse from './Components/StudentComps/Course';
 import Level from './Components/TeacherComps/Level';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
+
 
 import './App.css';
 import './login.css';
@@ -61,7 +63,7 @@ function App() {
     ] : []),
   ];
 
-  
+
 
   return (
     <Router>
@@ -73,11 +75,13 @@ function App() {
         <Route path="/learning" element={<Learning />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
-        <Route path="/studentLearning" element={<StudentLearning />} />
+        {/* <Route path="/studentLearning" element={<StudentLearning />} /> */}
         <Route path="/courses" element={<Courses />} />
-        <Route path="/course" element={<Course />} />
-        <Route path="/student" element={<StudentLearning />} />
-        {/* <Route path="/dashboard" element={user?.role === 'teacher' ? <TeacherDashboard /> : <StudentDashboard />} /> */}
+        {/* <Route path="/student" element={<StudentLearning />} /> */}
+        {user && (
+          <Route
+            path="/course"
+            element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />} />)}
         {user && (
           <Route
             path="/home"

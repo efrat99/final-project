@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
 import axios from 'axios';  
+
 const Home = () => {
   const navigate = useNavigate();
   const [studentCourses, setStudentCourses] = useState([]);
@@ -56,6 +57,18 @@ const DeleteStudentFromCourse = async (course) => {
   } 
 }
 
+const EnterCourse = async (course) => {
+  try {
+    const res = await axios.get(`http://localhost:6660/courses/${course._id}`);  // Fetch the course details from the server
+    if (res.status === 200) {
+        console.log(res.data);  // Display the course details
+        navigate('/Course', { state: { course: res.data } });  // Navigate to the Course page with the course data
+    }
+  } catch (e) {
+    console.error(e);  // Handle errors
+  }     
+}
+
 
 
 
@@ -64,7 +77,7 @@ const DeleteStudentFromCourse = async (course) => {
 );
 const footer =(course)=> (
     <>
-      <Button label="היכנס" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{}}/>
+      <Button label="היכנס" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{EnterCourse(course)}}/>
         <Button label="מחק" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={()=>{DeleteStudentFromCourse(course)}} />
     </>
 );
@@ -89,8 +102,6 @@ const footer =(course)=> (
           ))}
         </div>
       </div>
-      {/* <Button onClick={() => navigate('/Courses')}> לצפייה בקורסים</Button> */}
-      {/* Add more components or features here */}
     </div>
   );
 }
