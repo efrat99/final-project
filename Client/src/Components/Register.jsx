@@ -13,7 +13,7 @@ import { InputOtp } from 'primereact/inputotp';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, logOut, setUser } from '../redux/tokenSlice'
 
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const Register = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
@@ -56,8 +56,8 @@ export const Register = ({ onClose }) => {
                     const res = await axios.post('http://localhost:6660/api/auth/', data)
                     if (res.status === 200) {
                         console.log(res.data);
-                          dispatch(setToken(res.data.accessToken))
-                         dispatch(setUser(res.data.userInfo))
+                        dispatch(setToken(res.data.accessToken))
+                        dispatch(setUser(res.data.userInfo))
                         console.log(res.data)
                         setFormData(data);
                         alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
@@ -67,7 +67,7 @@ export const Register = ({ onClose }) => {
                         reset();
                         onClose();
                         navigate('/home')
-                        
+
                         // dispatch(setToken(res.data.accessToken))
                         // dispatch(setUser(res.data.userInfo))
                         // // const user = useSelector(state => state.token.user)
@@ -85,7 +85,7 @@ export const Register = ({ onClose }) => {
                     console.error(e)
                 }
             }
-           
+
 
         }
 

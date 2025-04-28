@@ -5,26 +5,9 @@ import { useNavigate } from 'react-router-dom';
 import { Dropdown } from 'primereact/dropdown';
 import { useSelector } from 'react-redux';
 
-//לא גמור!!
-//צריך ליצור קורס כלשהו ע"מ לבדוק את הנכונות
 
-// const Courses = async () => {
-//     const [courses, setCourses] = useState([]);
-//     const _id = "67e990d9f705145ac4f35189" //example id, replace with the actual id
-//     const student = await axios.get(`http://localhost:6660/students/${_id}`);//מיותר אם מקבלים ID של STUDENT
-//     try {
-//         const res = await axios.get("http://localhost:6660/courses/");
-//         if (res.status === 200) {
-//             setCourses(res.data);
-//         }
-//     }
-//     catch (e) {
-//         console.error(e);
-//     }
-//     const studentCourses = courses.filter((course) => {
-//         return course.students.some((student) => student._id === _id);
-//     });
 const Courses = () => {
+
     const language = [
         { "value": "ar", "label": "ערבית 🇸🇦" },
         { "value": "en", "label": "אנגלית 🇬🇧🇺🇸" },
@@ -73,18 +56,23 @@ const Courses = () => {
         { "value": "cy", "label": "וולשית 🇬🇧" }
     ]
     const user = useSelector(state => state.token.user);
-
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [selectedlanguage, setSelectedlanguage] = useState(null);
 
-    const _id = useSelector(state => state.token.user._id); // example id, replace with the actual id
+    const _id = useSelector(state => state.token.user._id); 
     const data = {
         language: selectedlanguage,
         teacher: user._id,
         students: [],
         levels: []
     }
+
+    const getAvailableLanguages = () => {
+        const usedLanguages = courses.map(course => course.language);
+        return language.filter(lang => !usedLanguages.includes(lang.value));
+    };
+
     const saveCourse = async () => {
         if (!selectedlanguage) {
             alert("בחירת שפה היא חובה");
@@ -104,11 +92,9 @@ const Courses = () => {
             try {
                 const res = await axios.get("http://localhost:6660/courses");
                 if (res.status === 200) {
-
                     const filteredCourses = res.data.filter((course) => {
                         return course.teacher === _id;
                     });
-
                     setCourses(filteredCourses); // Update state
                 }
             }
@@ -116,7 +102,6 @@ const Courses = () => {
                 console.error(e);
             }
         };
-
         fetchCourses();
     }, [_id]);
 
@@ -125,25 +110,19 @@ const Courses = () => {
     };
     return (
         <div className="myCourses">
-
             <h1>הקורסים שלי</h1>
             <div className="card flex justify-content-center">
-                <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={language} optionLabel="label"
+                <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={getAvailableLanguages()} optionLabel="label"
                     placeholder="Select a language" className="w-full md:w-14rem" />
             </div>
             <div className="courseListPerUser">
                 {courses.map((course) => (
                     <div key={course._id} className="courseCard">
                         <h2>{course.name}</h2>
-                        {/* <p>{course.description}</p> */}
-                        {/* <button onClick={() => handleEnroll(course._id)}>Enroll</button> */}
                     </div>
                 ))}
             </div>
             <Button onClick={() => { saveCourse() }}>הוספת קורס</Button>
-            {/* ליצור ניתוב כלשהו לכל הקורסים שלא נמצאים ברשימת הקורסים של התלמיד, ככרטיס שנפתח
-            או בדף אחר */}
-            {/* add course */}
             <div className="courseList">
                 {courses.map((course) => (
                     <div key={course._id} className="courseCard">

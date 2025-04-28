@@ -7,7 +7,7 @@ import StudentLearning from './Components/StudentComps/StudentLearning';
 import Courses from './Components/TeacherComps/Courses';
 import TeacherCourse from './Components/TeacherComps/Course';
 import StudentCourse from './Components/StudentComps/Course';
-import Level from './Components/TeacherComps/Level';
+import Level from './Components/TeacherComps/Course';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
 
@@ -31,11 +31,13 @@ function App() {
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
 
+  // ...(user ? 
+  
   const items = [
     {
       label: 'Home',
       icon: 'pi pi-home',
-      command: () => window.location.href = '/'  // ניווט לעמוד הבית
+      command: () => window.location.href = '/Home'  // ניווט לעמוד הבית
     },
     {
       label: 'Students',
@@ -50,8 +52,8 @@ function App() {
       icon: 'pi pi-envelope',
       command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     },
-    ...(user ? [
-      {
+    // ...(user ? [
+    {
         label: 'Log Out',
         icon: 'pi pi-sign-out',
         command: () => {
@@ -60,16 +62,16 @@ function App() {
           window.location.href = '/'; // ניווט לעמוד הבית
         }
       }
-    ] : []),
   ];
+// ] : [])
 
 
 
   return (
     <Router>
-      <div className="card">
+      {user &&<div className="card">
         <Menubar model={items} />
-      </div>
+      </div>}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/learning" element={<Learning />} />

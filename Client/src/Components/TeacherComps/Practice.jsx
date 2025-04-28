@@ -22,9 +22,6 @@ const Practice = (props) => {
         }
     });
 
-
-
-
     const location = useLocation();
     const { learning,level,courseId } = location.state || {};  // קבלת נתוני הלמידה
 

@@ -10,11 +10,10 @@ const learningController = require("../Controllers/learningController")
 router.get("/:_id", learningController.getLearningById)
 
 //getByLevelObject
-// router.get("/", learningController.getLearningsByLevelObject)
+router.get("/", learningController.getLearningsByLevelObject)
 
 //getLearningByLevelNumber
-// router.get("/", learningController.getLearningByLevelNumber)
-router.get("/", learningController.getLearningByLevelNumber);
+// router.get("/", learningController.getLearningByLevelNumber);
 
 
 //post

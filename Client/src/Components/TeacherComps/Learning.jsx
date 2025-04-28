@@ -20,11 +20,11 @@ const Learning = () => {
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
-    const { language,level,courseId } = location.state || {}; // קבלת הרמה שנבחרה
+    const { language, level, courseId } = location.state || {}; // קבלת הרמה שנבחרה
     console.log(level)
 
     const navigate = useNavigate();
-    
+
     const columns = [
         { field: 'word', header: 'Word' },
         { field: 'translatedWord', header: 'Translated Word' }
@@ -42,21 +42,24 @@ const Learning = () => {
     useEffect(() => {
         if (!token) return;
         // const { level } = location.state || {}; // קבלת הרמה מתוך location.state
-        axios.get(`http://localhost:6660/learnings`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            params: { level },  // הוספת level כ־query
-        })
-        .then(response => setProducts(response.data))
-        .catch(e => {
-            if (e.response && e.response.status === 404) {
-                console.error('No data found for the given level:', level);
+        axios.get(`http://localhost:6660/learnings`,
+            // { headers: { Authorization: `bearer ${token}` } }
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+                params: { level },  // הוספת level כ־query
             }
-            else {
-                console.error(e);  // שגיאות אחרות
-            }
-        });
+        )
+            .then(response => setProducts(response.data))
+            .catch(e => {
+                if (e.response && e.response.status === 404) {
+                    console.error('No data found for the given level:', level);
+                }
+                else {
+                    console.error(e);  // שגיאות אחרות
+                }
+            });
     }, [token, location.state]);
 
 
@@ -68,17 +71,16 @@ const Learning = () => {
         }
     });
 
-    
 
-    const onSubmit = async (data) => {
+
+    const  onSubmit = async (data) => {
         if (products.length >= 1) {
             alert("You cannot add more than 10 words.");
             return;
         }
         try {
             console.log(token)
-            data.level=level
-            console.log({data})
+            console.log({ data })
 
             const res = await axios.post(`http://localhost:6660/learnings/`, data,
                 { headers: { Authorization: `bearer ${token}` } }
@@ -87,10 +89,23 @@ const Learning = () => {
                 setProducts([...products, res.data]);
                 reset();
             }
+            AddLearningToLevel(res_data_id)
         } catch (e) {
             console.error(e);
         }
     };
+
+    const AddLearningToLevel = async (learning) => {
+        const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
+                console.log(LevelRes);
+                const levelObj = LevelRes.data;
+                console.log(levelObj);
+                // עדכון מערך ה-learning המקומי
+                levelObj.learning.push(learning);
+    
+                // שליחת השלב המעודכן לשרת
+                await axios.put(`http://localhost:6660/levels/`, levelObj);
+    }
 
     const handleEdit = (product) => {
         setEditId(product._id);
@@ -128,6 +143,8 @@ const Learning = () => {
         }
     };
 
+
+
     return (
         <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '5vw', marginRight: '5vw' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', marginRight: '15vw' }}>
@@ -145,7 +162,7 @@ const Learning = () => {
                             <InputText {...field} placeholder="Translate" className={classNames({ 'p-invalid': field.invalid })} />)} />
                     </div>
                     <br />
-                    <Button type="submit" label="Add" className="mt-2" />
+                    <Button type="submit" label="Add" className="mt-2" onClick={() => AddLearningToLevel(products)} />
                 </form>
             </div>
 
@@ -177,7 +194,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products,level:level,courseId:courseId} })} />
+            <Button label="Add Learning" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products, level: level, courseId: courseId } })} />
         </div>
     );
 };

@@ -1,15 +1,7 @@
 const mongoose = require('mongoose')
 const Course = require('./courseModel')
 const learningSchema = new mongoose.Schema({
-    // courseId: {
-    //     type: ObjectId,
-    //     ref: Course,
-    //     required: true
-    // },
-    // level: {
-    //     type: Number,
-    //     required: true
-    // },
+
     word: {
         type: String,
         required: true
@@ -18,10 +10,10 @@ const learningSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    level: {
-        type: Number,
-        required: true
-    }
+    // level: {
+    //     type: Number,
+    //     required: true
+    // }
 }, {
     timestamps: true
 })
