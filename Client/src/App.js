@@ -10,6 +10,7 @@ import StudentCourse from './Components/StudentComps/Course';
 import Level from './Components/TeacherComps/Course';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
+import { Navigate } from 'react-router-dom';
 
 
 import './App.css';
@@ -31,13 +32,14 @@ function App() {
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
 
+  
   // ...(user ? 
   
   const items = [
     {
       label: 'Home',
       icon: 'pi pi-home',
-      command: () => window.location.href = '/Home'  // ניווט לעמוד הבית
+      command: () => window.location.href = '/home'  // ניווט לעמוד הבית
     },
     {
       label: 'Students',
@@ -73,7 +75,8 @@ function App() {
         <Menubar model={items} />
       </div>}
       <Routes>
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/" element={<Home />} /> */}
+        <Route path="/" element={!user ? <Home /> : <Navigate to="/home" replace />} />
         <Route path="/learning" element={<Learning />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />

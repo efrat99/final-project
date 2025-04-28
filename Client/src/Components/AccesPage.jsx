@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom';
+import img from '../Images/3.jpeg';
+
 
 import Register from './Register';
 import SignIn from './SignIn';
@@ -15,7 +17,8 @@ const AccesPage = () => {
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
-            <h2>Home page</h2>
+            <img src={img} alt="Logo" style={{ width: '200px', height: 'auto' }} />
+            <h1>ברוכים הבאים לאתר שלנו</h1>
             <Button onClick={() => setShowRegisterDialog(true)}>הרשמה</Button>
             <Button onClick={() => setShowSignInDialog(true)}>כניסה</Button>
             <br /><br />

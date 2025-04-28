@@ -42,8 +42,7 @@ const Learning = () => {
     useEffect(() => {
         if (!token) return;
         // const { level } = location.state || {}; // קבלת הרמה מתוך location.state
-        axios.get(`http://localhost:6660/learnings`,
-            // { headers: { Authorization: `bearer ${token}` } }
+        axios.get('http://localhost:6660/learnings',
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -89,7 +88,7 @@ const Learning = () => {
                 setProducts([...products, res.data]);
                 reset();
             }
-            AddLearningToLevel(res_data_id)
+            AddLearningToLevel(res.data._id)
         } catch (e) {
             console.error(e);
         }
