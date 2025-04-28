@@ -89,7 +89,7 @@ const Learning = () => {
                 setProducts([...products, res.data]);
                 reset();
             }
-            AddLearningToLevel(res_data_id)
+            AddLearningToLevel(res.data._id)
         } catch (e) {
             console.error(e);
         }
