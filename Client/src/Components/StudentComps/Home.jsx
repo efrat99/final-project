@@ -62,7 +62,8 @@ const EnterCourse = async (course) => {
     const res = await axios.get(`http://localhost:6660/courses/${course._id}`);  // Fetch the course details from the server
     if (res.status === 200) {
         console.log(res.data);  // Display the course details
-        navigate('/Course', { state: { course: res.data } });  // Navigate to the Course page with the course data
+        const resCourse=res.data
+        navigate('/Course', { state: { course:resCourse  } });  // Navigate to the Course page with the course data
     }
   } catch (e) {
     console.error(e);  // Handle errors
@@ -85,20 +86,21 @@ const footer =(course)=> (
   return (
     <div className="home">
       <h1>קורסים לבחירה</h1>
-      {Courses.map((course) => (
-            <Card title="Advanced Card" subTitle="Card subtitle" header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-25rem">
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+      {Courses.map((course) =>!course.students.includes(_id) ? (
+            <Card title="Advanced Card" subTitle="Card subtitle" header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' , flex: '0 1 auto' }} className="md:w-25rem">
             <p className="m-0">{course.language}</p>
-            <Button label="הרשם" icon="pi pi-check"  onClick={()=>{AddStudentToCourse(course)}} disabled={course.students.includes(_id)}/>
+            <Button label="הרשם" icon="pi pi-check"  onClick={()=>{AddStudentToCourse(course)}}/>
         </Card>
-          ))}
+          ): null)}</div>
       <div className="myCourses">
         <p>הקורסים שלי</p>
-        <div className="courseListPerUser">
+        <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {studentCourses.map((course) => (
-            <Card title="Advanced Card" subTitle="Card subtitle" footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-25rem">
+            <Card title="Advanced Card" subTitle="Card subtitle" footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
             <p className="m-0">{course.language}
             </p>
-        </Card>
+        </Card>  
           ))}
         </div>
       </div>
