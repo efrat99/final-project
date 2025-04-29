@@ -1,7 +1,6 @@
-
-
 .App {
   text-align: center;
+  font-family:'MyCustomFont', sans-serif;
 
 }
 
@@ -30,6 +29,7 @@
 .App-link {
   color: #61dafb;
 }
+
 /* Ensure the card class has proper styling */
 .card {
   padding: 20px;
@@ -44,14 +44,17 @@
   width: 100%;
   background-color: #f4f4f4;
 }
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .questions-container {
   display: flex;
   flex-wrap: wrap;
@@ -61,8 +64,10 @@
 
 .question {
   flex-grow: 1;
-  min-width: 150px; /* רוחב מינימלי של שאלה */
-  max-width: calc(33.33% - 10px); /* מקסימום של 3 שאלות בשורה */
+  min-width: 150px;
+  /* רוחב מינימלי של שאלה */
+  max-width: calc(33.33% - 10px);
+  /* מקסימום של 3 שאלות בשורה */
   box-sizing: border-box;
 }
 
@@ -72,19 +77,11 @@
 }
 
 
-.p-button-text {
-  color: rgb(255, 98, 0);
-  font-size: 14px !important;
-  font-weight: bold !important;
-  background: none; /* אין רקע */
-  border: none;     /* אין מסגרת */
-  padding: 0;
-  box-shadow: none;
-}
-
 .p-inputtext {
   color: black;
   background-color: white !important;
+  direction: rtl !important;
+  text-align: right !important;
 }
 
 .p-inputtext:focus {
@@ -99,5 +96,42 @@
 
 .p-inputtext.p-invalid {
   border-color: red;
+}
+
+
+.p-inputtext,
+.p-button,
+.p-dropdown,
+.p-textarea,
+.p-password {
+  direction: rtl;
+  font-family:'MyCustomFont', sans-serif;
+}
+
+
+.p-button {
+  background-color: rgb(255, 98, 0);
+  color: white;
+  border: none;
+}
+
+
+.p-button-text {
+  color: rgb(255, 98, 0);
+  font-size: 14px !important;
+  font-weight: bold !important;
+  background: none;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+}
+
+.p-checkbox .p-checkbox-box {
+  border-color: rgb(255, 98, 0); 
+}
+
+.p-checkbox input:checked ~ .p-checkbox-box {
+  background-color: rgb(255, 98, 0); 
+  border-color: rgb(255, 98, 0);    
 }
 

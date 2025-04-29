@@ -23,7 +23,9 @@ const AccesPage = () => {
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <img src={fox} alt="Logo" style={{ width: '250px', height: 'auto' }} />
-            <h1 style={{ color: 'white' }}>ברוכים הבאים לאתר שלנו🦊!!!</h1>
+            <h1 
+            // style={{ color: 'white' }}
+            >ברוכים הבאים לאתר שלנו🦊!!!</h1>
             {/* <Button className="button-orange" onClick={() => setShowRegisterDialog(true)}>הרשמה</Button> */}
             {/* <Button className="button-orange" onClick={() => setShowSignInDialog(true)}>כניסה</Button>
             <br /><br />
@@ -44,7 +46,7 @@ const AccesPage = () => {
                 </p>
             </Card>
 
-            <Dialog visible={showRegisterDialog} onHide={() => setShowRegisterDialog(false)} header="הרשמה" modal>
+            <Dialog visible={showRegisterDialog} onHide={() => setShowRegisterDialog(false)} header="הרשמה" modal style={{ textAlign: "center" }}>
                 <Register onClose={() => setShowRegisterDialog(false)} />
             </Dialog>
 

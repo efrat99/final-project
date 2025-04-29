@@ -11,6 +11,7 @@ import Level from './Components/TeacherComps/Course';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
 import { Navigate } from 'react-router-dom';
+import foxImage from './Images/fox.png';
 
 
 import './App.css';
@@ -32,9 +33,9 @@ function App() {
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
 
-  
+
   // ...(user ? 
-  
+
   const items = [
     {
       icon: 'pi pi-sign-out',
@@ -46,7 +47,7 @@ function App() {
     },
     {
       label: 'Home',
-      icon: 'pi pi-home',
+      icon: <img src={foxImage} alt="Home" style={{ width: '50px', height: 'auto' }} />,
       command: () => window.location.href = '/home'  // ניווט לעמוד הבית
     },
     {
@@ -62,14 +63,14 @@ function App() {
       icon: 'pi pi-envelope',
       command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     },
-   
+
   ];
 
 
 
   return (
     <Router>
-      {user &&<div className="card">
+      {user && <div className="card">
         <Menubar model={items} />
       </div>}
       <Routes>

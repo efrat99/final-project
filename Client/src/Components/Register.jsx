@@ -219,16 +219,19 @@ export const Register = ({ onClose }) => {
                                 transition: all 0.2s;
                                 background: transparent;
                                 border-bottom: 2px solid var(--surface-500);
+                                background-color: rgb(255, 98, 0);
                             }
 
                             .custom-otp-input:focus {
                                 outline: 0 none;
-                                border-bottom-color: var(--primary-color);
+                                border-bottom-color: rgb(255, 98, 0);
+                                background-color: rgb(255, 98, 0) !important;
+                                
                             }
                         `}
                                 </style>
 
-                                <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput} />
+                                <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput}  className="custom-otp-input" />
                             </div>
                         )}
                         <br></br>
@@ -236,7 +239,7 @@ export const Register = ({ onClose }) => {
                             <Controller name="accept" control={control} rules={{ required: true }} render={({ field, fieldState }) => (
                                 <Checkbox inputId={field.name} onChange={(e) => field.onChange(e.checked)} checked={field.value} className={classNames({ 'p-invalid': fieldState.invalid })} />
                             )} />
-                            <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>I agree to the terms and conditions*</label>
+                            <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>אני מסכים לתנאי השימוש*</label>
                         </div>
                         <br></br>
 
