@@ -54,32 +54,29 @@ const Signin = ({ onClose }) => {
     };
 
     return (
-        <div className="form-demo">
-            <div className="flex justify-content-center">
-                <div className="card">
-                    {/* <h5 className="text-center">Register</h5> */}
-                    <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-                        <br />
-                        <div className="field">
+        <div className="form-demo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px', }}>
+            <div className="flex justify-content-center" style={{ width: '300px', margin: 'auto' }}>
+                <div className="card" style={{ width: '200px', margin: 'auto', padding: '0', minWidth: '250px', maxWidth: '200px', minHeight: '100px',  border: 'none'}}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" style={{ width: '100%', margin: '0' }}>
+                        <div className="field" style={{ margin: '5%' }}>
                             <span className="p-float-label p-input-icon-right">
                                 <Controller name="email" control={control}
                                     rules={{ required: "Email is required.", pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: "Invalid email address." } }}
                                     render={({ field, fieldState }) => (
                                         <InputText id={field.name} {...field} className={classNames({ "p-invalid": fieldState.invalid })} />
                                     )} />
-                                <label htmlFor="email" className={classNames({ "p-error": errors.email })}>Email*</label>
+                                <label htmlFor="email" className={classNames({ "p-error": errors.email })}>כתובת אימייל*</label>
                             </span>
                             {/* {getFormErrorMessage("email")} */}
                         </div>
-                        <br />
-                        <div className="field">
+                        <div className="field" style={{ margin: '5%' }}>
                             <span className="p-float-label">
                                 <Controller name="password" control={control} rules={{ required: "Password is required." }} render={({ field, fieldState }) => (
                                     <Password id={field.name} {...field} toggleMask feedback={false} className={classNames({ "p-invalid": fieldState.invalid })}
                                     // header={passwordHeader} footer={passwordFooter}
                                     />
                                 )} />
-                                <label htmlFor="password" className={classNames({ "p-error": errors.password })}>Password*</label>
+                                <label htmlFor="password" className={classNames({ "p-error": errors.password })}>סיסמה*</label>
                             </span>
                             {/* {getFormErrorMessage("password")} */}
                         </div>
@@ -88,7 +85,7 @@ const Signin = ({ onClose }) => {
                         {errorMessage && (
                             <div className="error-message">{errorMessage}</div>
                         )}
-                        <Button type="submit" label="Submit" className="mt-2" />
+                        <Button type="submit" label="היכנס" className="mt-2" style={{ width: '100px'}} />
                     </form>
                 </div>
             </div>

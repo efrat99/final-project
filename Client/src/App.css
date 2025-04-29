@@ -1,5 +1,8 @@
+
+
 .App {
   text-align: center;
+
 }
 
 .App-logo {
@@ -35,6 +38,7 @@
   border-radius: 4px;
 }
 
+
 /* Ensure the Menubar is displayed correctly */
 .p-menubar {
   width: 100%;
@@ -63,8 +67,37 @@
 }
 
 .error {
-  border: 2px solid red;
+  border: 2px solid rgb(255, 98, 0);
   background-color: #ffe5e5;
 }
 
+
+.p-button-text {
+  color: rgb(255, 98, 0);
+  font-size: 14px !important;
+  font-weight: bold !important;
+  background: none; /* אין רקע */
+  border: none;     /* אין מסגרת */
+  padding: 0;
+  box-shadow: none;
+}
+
+.p-inputtext {
+  color: black;
+  background-color: white !important;
+}
+
+.p-inputtext:focus {
+  border-color: rgb(255, 98, 0);
+  box-shadow: 0 0 4px 1px rgb(255, 98, 0);
+  background-color: white !important;
+}
+
+.p-inputtext:hover {
+  border-color: rgb(255, 98, 0);
+}
+
+.p-inputtext.p-invalid {
+  border-color: red;
+}
 

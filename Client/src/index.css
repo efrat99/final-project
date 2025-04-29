@@ -3,14 +3,19 @@ html {
 }
 
 body {
-  font-family: var(--font-family);
+  direction: rtl;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: normal;
   background: var(--surface-ground);
   color: var(--text-color);
   padding: 1rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url('./Images/background5.png');
+  background-size: cover;
 }
+
+
 
 .card {
   background: var(--surface-card);
@@ -18,4 +23,5 @@ body {
   border-radius: 10px;
   margin-bottom: 1rem;
 }
+
 

@@ -37,6 +37,14 @@ function App() {
   
   const items = [
     {
+      icon: 'pi pi-sign-out',
+      command: () => {
+        console.log("User logged out");
+        dispatch(logOut());
+        window.location.href = '/'; // ניווט לעמוד הבית
+      }
+    },
+    {
       label: 'Home',
       icon: 'pi pi-home',
       command: () => window.location.href = '/home'  // ניווט לעמוד הבית
@@ -54,18 +62,8 @@ function App() {
       icon: 'pi pi-envelope',
       command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
     },
-    // ...(user ? [
-    {
-        label: 'Log Out',
-        icon: 'pi pi-sign-out',
-        command: () => {
-          console.log("User logged out");
-          dispatch(logOut());
-          window.location.href = '/'; // ניווט לעמוד הבית
-        }
-      }
+   
   ];
-// ] : [])
 
 
 
