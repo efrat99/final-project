@@ -57,16 +57,21 @@ catch (err) {
 const updateLevel = async (req, res) => {
     const { _id, number, learning, practice } = req.body
     if (!_id)
-        return res.status(400).json({ message: 'id is required' })
+        return res.status(403).json({ message: 'id is required' })
 
     const level = await Level.findById(_id).exec()
     if (!level) {
-        return res.status(400).json({ messege: 'level is not found' })
+        return res.status(401).json({ messege: 'level is not found' })
     }
     if (number)
         level.number = number
-    if (learning)
-        level.learning = learning
+    if (learning){
+        level.learning = learning;
+
+    // הסר כפילויות במערך
+    // level.learning = [...new Set(level.learning.map(id => id.toString()))].map(id => mongoose.Types.ObjectId(id));
+        // level.learning = learning
+    }
     if (practice)
         level.practice = practice
     const updatedLevel = await level.save()

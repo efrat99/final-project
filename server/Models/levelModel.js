@@ -7,17 +7,17 @@ const levelSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
-    learning:[ {
+    learning: [{
         type: ObjectId,
         ref: Learning,
         required: true,
-      unique: true 
+        // unique: true
     }],
     practice: [{
         type: ObjectId,
         ref: Practice,
         required: true,
-       unique: true
+        // unique: true
     }]
 }, {
     timestamps: true

@@ -4,13 +4,12 @@ import Learning from './Components/TeacherComps/Learning';
 import Home from './Components/AccesPage';
 import Practice from './Components/TeacherComps/Practice';
 import StudentLearning from './Components/StudentComps/StudentLearning';
-import Courses from './Components/TeacherComps/Courses';
-import TeacherCourse from './Components/TeacherComps/Course';
+import Course from './Components/TeacherComps/Course';
+import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
-import Level from './Components/TeacherComps/Course';
+import Level from './Components/TeacherComps/Level';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
-import { Navigate } from 'react-router-dom';
 import foxImage from './Images/fox.png';
 
 
@@ -20,6 +19,7 @@ import './login.css';
 import { Menubar } from 'primereact/menubar'; // Import Menubar from primereact
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
+import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setToken, logOut } from './redux/tokenSlice';
@@ -80,12 +80,12 @@ function App() {
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
-        <Route path="/courses" element={<Courses />} />
+        <Route path="/course" element={<Course />} />
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (
           <Route
-            path="/course"
-            element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />} />)}
+            path="/level"
+            element={user.role === 'Teacher' ? <TeacherLevel /> : <StudentCourse />} />)}
         {user && (
           <Route
             path="/home"

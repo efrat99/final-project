@@ -17,6 +17,7 @@ const Learning = () => {
     const [products, setProducts] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
+    const [levelObj, setLevelObj] = useState(null)
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
@@ -72,7 +73,7 @@ const Learning = () => {
 
 
 
-    const  onSubmit = async (data) => {
+    const onSubmit = async (data) => {
         if (products.length >= 1) {
             alert("You cannot add more than 10 words.");
             return;
@@ -88,6 +89,7 @@ const Learning = () => {
                 setProducts([...products, res.data]);
                 reset();
             }
+            console.log("res.data._id"+res.data._id);
             AddLearningToLevel(res.data._id)
         } catch (e) {
             console.error(e);
@@ -96,14 +98,21 @@ const Learning = () => {
 
     const AddLearningToLevel = async (learning) => {
         const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
-                console.log(LevelRes);
-                const levelObj = LevelRes.data;
-                console.log(levelObj);
+                // console.log(LevelRes);
+                // setLevelObj(LevelRes.data);
+                // const lo = LevelRes.data;
+                // console.log(levelObj);
                 // עדכון מערך ה-learning המקומי
-                levelObj.learning.push(learning);
+                console.log("learning" +learning);
+                // levelObj.learning.push(learning._id);
+                const oo = {
+                    ...LevelRes.data,
+                    learning: [...LevelRes.data.learning, learning] // הוספת ערך חדש למערך
+                };
+                console.log("oo"+ oo.learning);
     
                 // שליחת השלב המעודכן לשרת
-                await axios.put(`http://localhost:6660/levels/`, levelObj);
+                await axios.put(`http://localhost:6660/levels/`, oo);
     }
 
     const handleEdit = (product) => {
@@ -161,7 +170,7 @@ const Learning = () => {
                             <InputText {...field} placeholder="Translate" className={classNames({ 'p-invalid': field.invalid })} />)} />
                     </div>
                     <br />
-                    <Button type="submit" label="Add" className="mt-2" onClick={() => AddLearningToLevel(products)} />
+                    <Button type="submit" label="Add" className="mt-2" onClick={() => onSubmit(products)} />
                 </form>
             </div>
 

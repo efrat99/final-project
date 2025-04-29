@@ -82,7 +82,14 @@
   background-color: white !important;
   direction: rtl !important;
   text-align: right !important;
+  /* width: 200px; */
+  width: 100%;
 }
+
+label {
+  width: 145%;
+}
+
 
 .p-inputtext:focus {
   border-color: rgb(255, 98, 0);
@@ -134,4 +141,6 @@
   background-color: rgb(255, 98, 0); 
   border-color: rgb(255, 98, 0);    
 }
+
+
 

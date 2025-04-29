@@ -9,7 +9,7 @@ const Home = () => {
       <h1>Teacher Home Page</h1>
       <p>Welcome to the Teacher Home Page</p>
       {/* Add more components or features here */}
-      <Button onClick={() =>  navigate('/Courses')}> לצפייה בקורסים</Button>
+      <Button onClick={() =>  navigate('/course')}> לצפייה בקורסים</Button>
     </div>
   );
 }

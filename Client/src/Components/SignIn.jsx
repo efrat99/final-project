@@ -19,6 +19,11 @@ const Signin = ({ onClose }) => {
     const dispatch = useDispatch();
 
 
+    // const element = document.querySelector('[p-icon-field p-icon-field-right"]');
+    // if (element) {
+    //     element.className = 'p-icon-field p-icon-field-left'; // החלף את כל המחלקות בשם החדש
+    // }
+
     // const passwordHeader = <h6>Pick a password</h6>;
     // const passwordFooter = <small>Make it strong!</small>;
     // const getFormErrorMessage = (name) => errors[name] ? <small className="p-error">{errors[name].message}</small> : null;
@@ -56,7 +61,7 @@ const Signin = ({ onClose }) => {
     return (
         <div className="form-demo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '0px', }}>
             <div className="flex justify-content-center" style={{ width: '300px', margin: 'auto' }}>
-                <div className="card" style={{ width: '200px', margin: 'auto', padding: '0', minWidth: '250px', maxWidth: '200px', minHeight: '100px',  border: 'none'}}>
+                <div className="card" style={{ width: '200px', margin: 'auto', padding: '0', minWidth: '250px', maxWidth: '200px', minHeight: '100px', border: 'none' }}>
                     <form onSubmit={handleSubmit(onSubmit)} className="p-fluid" style={{ width: '100%', margin: '0' }}>
                         <div className="field" style={{ margin: '5%' }}>
                             <span className="p-float-label p-input-icon-right">
@@ -85,7 +90,7 @@ const Signin = ({ onClose }) => {
                         {errorMessage && (
                             <div className="error-message">{errorMessage}</div>
                         )}
-                        <Button type="submit" label="היכנס" className="mt-2" style={{ width: '100px'}} />
+                        <Button type="submit" label="היכנס" className="mt-2" style={{ width: '100px' }} />
                     </form>
                 </div>
             </div>
