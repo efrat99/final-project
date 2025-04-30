@@ -15,8 +15,9 @@ const Course = () => {
             if (course.levels.length > 0) {
                 const res = await axios.get(`http://localhost:6660/levels/${course.levels[0]}`);  // Fetch the course details from the server
                 if (res.status === 200) {
-                    setVocabulary(res.data.learning)
-
+                    const arr = res.data.learning
+                    setVocabulary((prevVocabulary) => [...prevVocabulary,...arr])
+                    console.log(vocabulary)
                     // console.log(res.data);  // Display the course details
                     // const resCourse=res.data
                     // navigate('/Course', { state: { course:resCourse  } });  // Navigate to the Course page with the course data
@@ -31,13 +32,16 @@ const Course = () => {
     useEffect(() => {
         showCourse();
     }, []);
+    useEffect(() => {
+        console.log("Vocabulary updated:", vocabulary);
+    }, [vocabulary]);
     return (
 
         <>
             <h1>hi</h1>
             <h2>כאן אמורים להופיע פרטי המידע על הקורס</h2>
             <div className="course-card">
-                <Button onClick={() => { showCourse();navigate('/StudentLearning', { state: { vocabulary: vocabulary } }) }}>אוצר מילים</Button>
+                <Button onClick={() => { navigate('/StudentLearning', { state: { vocabulary: vocabulary } }) }}>אוצר מילים</Button>
                 <Button >תרגול</Button>
                 {/* <span>{showCourse()}</span> */}
                 {/* <h3>{course.language}</h3> */}
