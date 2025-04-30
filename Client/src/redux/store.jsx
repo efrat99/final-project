@@ -16,6 +16,12 @@ const store = configureStore({
   reducer: {
     token: persistedTokenReducer, // Persisted token reducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST', 'persist/REHYDRATE'], // התעלמות מפעולות redux-persist
+      },
+    }),
 });
 
 const persistor = persistStore(store);

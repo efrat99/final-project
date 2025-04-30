@@ -9,6 +9,8 @@ import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
 import TeacherCourse from './Components/TeacherComps/Course';
 import Level from './Components/TeacherComps/Level';
+import Levels from './Components/StudentComps/Levels';
+import Learnings from './Components/StudentComps/Learnings';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
 import foxImage from './Images/fox.png';
@@ -78,8 +80,10 @@ function App() {
         {/* <Route path="/" element={<Home />} /> */}
         <Route path="/" element={!user ? <Home /> : <Navigate to="/home" replace />} />
         <Route path="/learning" element={<Learning />} />
+        <Route path="/learnings" element={<Learnings />} />
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
+        <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         {/* <Route path="/course" element={<Course />} /> */}
         {/* <Route path="/student" element={<StudentLearning />} /> */}
