@@ -4,7 +4,10 @@ const levelController = require("../Controllers/levelController")
 
 
 // //get
-router.get("/", levelController.getAllLevels)
+// router.get("/", levelController.getAllLevels)
+
+//getLevelsByCourse
+router.get("/", levelController.getLevelsByCourse)
 
 //getById
 router.get("/:_id", levelController.getLevelById)

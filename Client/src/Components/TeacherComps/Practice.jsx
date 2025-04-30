@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
@@ -23,7 +22,7 @@ const Practice = (props) => {
     });
 
     const location = useLocation();
-    const { learning,level,courseId } = location.state || {};  // קבלת נתוני הלמידה
+    const { learning, level, courseId } = location.state || {};  // קבלת נתוני הלמידה
 
     const navigate = useNavigate();
 
@@ -34,7 +33,7 @@ const Practice = (props) => {
     }, []);
 
     const onSubmit = async (data) => {
-        if (products.length >= 1) {
+        if (products.length > 10) {
             alert("You cannot add more than 10 questions.");
             return;
         }
@@ -42,13 +41,26 @@ const Practice = (props) => {
             const res = await axios.post('http://localhost:6660/practices/', data);
             if (res.status === 200) {
                 setProducts([...products, res.data]);
-
                 reset();
             }
+            AddPracticeToLevel(res.data._id)
         } catch (e) {
             console.error(e);
         }
     };
+
+    const AddPracticeToLevel = async (practice) => {
+        const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
+        console.log("practice " + practice);
+        const levelObj = {
+            ...LevelRes.data,
+            practice: [...LevelRes.data.practice, practice] // הוספת ערך חדש למערך
+        };
+        console.log("levelObj " + levelObj.practice);
+
+        // שליחת השלב המעודכן לשרת
+        await axios.put(`http://localhost:6660/levels/`, levelObj);
+    }
 
     const handleEdit = (product) => {
         setEditId(product._id);
@@ -105,7 +117,7 @@ const Practice = (props) => {
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-question"></i></span>
                         <Controller name="question" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="Question" className={classNames({ 'p-invalid': errors.question })} />
+                            <InputText {...field} placeholder="שאלה" className={classNames({ 'p-invalid': errors.question })} />
                         )} />
                     </div>
 
@@ -113,7 +125,7 @@ const Practice = (props) => {
                         <div className="p-inputgroup mt-2" key={index}>
                             <span className="p-inputgroup-addon">{index + 1}</span>
                             <Controller name={`answers.${index}`} control={control} rules={{ required: true }} render={({ field }) => (
-                                <InputText {...field} placeholder={`Answer ${index + 1}`} className={classNames({ 'p-invalid': errors.answers?.[index] })} />
+                                <InputText {...field} placeholder={`תשובה ${index + 1}`} className={classNames({ 'p-invalid': errors.answers?.[index] })} />
                             )} />
                         </div>
                     ))}
@@ -121,11 +133,11 @@ const Practice = (props) => {
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-check"></i></span>
                         <Controller name="correctAnswer" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="Correct Answer (1-4)" className={classNames({ 'p-invalid': errors.correctAnswer })} />
+                            <InputText {...field} placeholder="תשובה נכונה (1-4)" className={classNames({ 'p-invalid': errors.correctAnswer })} />
                         )} />
                     </div>
 
-                    <Button type="submit" label="Add Question" className="mt-3" />
+                    <Button type="submit" label="הוסף" className="mt-3" />
                 </form>
 
                 {/* Display existing questions */}
@@ -141,7 +153,7 @@ const Practice = (props) => {
                                 {/* Display question */}
                                 {editId === rowData._id ? (
                                     <div>
-                                        <strong>Question:</strong> <br />
+                                        <strong>שאלה:</strong> <br />
                                         <InputText value={editedData.question} onChange={(e) => handleInputChange(e, "question")} />
                                     </div>
                                 ) : (
@@ -155,7 +167,7 @@ const Practice = (props) => {
                                     <div key={index}>
                                         {editId === rowData._id ? (
                                             <div>
-                                                <strong>Answer {index + 1}:</strong> <br />
+                                                <strong>תשובה {index + 1}:</strong> <br />
                                                 <InputText value={editedData.answers[index]} onChange={(e) => handleInputChange(e, "answers", index)} />
                                             </div>
                                         ) : (
@@ -169,7 +181,7 @@ const Practice = (props) => {
                                 {/* Display correct answer edit */}
                                 {editId === rowData._id && (
                                     <div>
-                                        <strong>Correct answer:</strong> <br />
+                                        <strong>תשובה נכונה:</strong> <br />
                                         <InputText value={editedData.correctAnswer} onChange={(e) => handleInputChange(e, "correctAnswer")} />
                                     </div>
                                 )}
@@ -177,9 +189,9 @@ const Practice = (props) => {
                                 {/* Edit and Delete buttons */}
                                 <div style={{ textAlign: 'center' }}>
                                     {editId === rowData._id ? (
-                                        <Button label="Save" className="p-button-success p-button-sm" onClick={handleSave} />
+                                        <Button label="שמור" className="p-button-success p-button-sm" onClick={handleSave} />
                                     ) : (
-                                        <Button label="Edit" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                        <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
                                     )}
                                     <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                 </div>
@@ -189,7 +201,7 @@ const Practice = (props) => {
                 </div>
 
                 {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
-              {/* {products.length >= 10 && (
+                {/* {products.length >= 10 && (
                     <div className="card flex justify-content-center mt-2">
                         <CascadeSelect 
                             value={selectedNum} 
@@ -204,23 +216,22 @@ const Practice = (props) => {
                             style={{ minWidth: '14rem' }} 
                         />
                     </div>
-                )}*/}  
+                )}*/}
 
-                {/* Display Add Level button, it will be enabled only if there are 10 questions */}
-                <Button 
-                    label="Add Level" 
-                    className="mt-2" 
-                    disabled={products.length < 1} 
+                <Button
+                    label="סיום"
+                    className="mt-2"
+                    disabled={products.length < 1}
                     onClick={() => {
-                        navigate('/Level', { 
-                            state: { 
-                                practice: products, 
+                        navigate('/Level', {
+                            state: {
+                                practice: products,
                                 learning: learning,
                                 level: level,
-                                courseId:courseId
-                            } 
+                                courseId: courseId
+                            }
                         });
-                    }} 
+                    }}
                 />
             </div>
         </div>

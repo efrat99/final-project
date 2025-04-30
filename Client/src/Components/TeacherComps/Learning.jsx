@@ -27,8 +27,8 @@ const Learning = () => {
     const navigate = useNavigate();
 
     const columns = [
-        { field: 'word', header: 'Word' },
-        { field: 'translatedWord', header: 'Translated Word' }
+        { field: 'word', header: 'מילה' },
+        { field: 'translatedWord', header: 'תרגום' }
     ];
 
     // useEffect(() => {
@@ -74,7 +74,7 @@ const Learning = () => {
 
 
     const onSubmit = async (data) => {
-        if (products.length >= 1) {
+        if (products.length > 10) {
             alert("You cannot add more than 10 words.");
             return;
         }
@@ -98,21 +98,13 @@ const Learning = () => {
 
     const AddLearningToLevel = async (learning) => {
         const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
-                // console.log(LevelRes);
-                // setLevelObj(LevelRes.data);
-                // const lo = LevelRes.data;
-                // console.log(levelObj);
-                // עדכון מערך ה-learning המקומי
                 console.log("learning" +learning);
-                // levelObj.learning.push(learning._id);
-                const oo = {
+                const levelObj = {
                     ...LevelRes.data,
                     learning: [...LevelRes.data.learning, learning] // הוספת ערך חדש למערך
                 };
-                console.log("oo"+ oo.learning);
-    
-                // שליחת השלב המעודכן לשרת
-                await axios.put(`http://localhost:6660/levels/`, oo);
+                console.log("levelObj "+ levelObj.learning);
+                await axios.put(`http://localhost:6660/levels/`, levelObj);
     }
 
     const handleEdit = (product) => {
@@ -152,7 +144,6 @@ const Learning = () => {
     };
 
 
-
     return (
         <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '5vw', marginRight: '5vw' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', marginRight: '15vw' }}>
@@ -162,15 +153,16 @@ const Learning = () => {
                             <i className="pi pi-arrow-right-arrow-left"></i>
                         </span>
                         <Controller name="word" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="Word" className={classNames({ 'p-invalid': field.invalid })} />)} />
+                            <InputText {...field} placeholder="מילה" className={classNames({ 'p-invalid': field.invalid })} />)} />
                         <span className="p-inputgroup-addon">
                             <i className="pi pi-arrow-right-arrow-left"></i>
                         </span>
+                        <br/>
                         <Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="Translate" className={classNames({ 'p-invalid': field.invalid })} />)} />
+                            <InputText {...field} placeholder="תרגום" className={classNames({ 'p-invalid': field.invalid })} />)} />
                     </div>
                     <br />
-                    <Button type="submit" label="Add" className="mt-2" onClick={() => onSubmit(products)} />
+                    <Button type="submit" label="הוסף" className="mt-2" onClick={() => onSubmit(products)} />
                 </form>
             </div>
 
@@ -186,12 +178,12 @@ const Learning = () => {
                                     <>
                                         <InputText value={editData.word} onChange={(e) => handleInputChange(e, "word")} />
                                         <InputText value={editData.translatedWord} onChange={(e) => handleInputChange(e, "translatedWord")} />
-                                        <Button label="Save" className="p-button-success p-button-sm" onClick={handleUpdate} />
+                                        <Button label="שמור" className="p-button-success p-button-sm" onClick={handleUpdate} />
                                         <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                     </>
                                 ) : (
                                     <>
-                                        <Button label="Update" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                        <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
                                         <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                     </>
                                 )}
@@ -202,7 +194,7 @@ const Learning = () => {
                 </div>
             </div>
 
-            <Button label="Add Learning" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products, level: level, courseId: courseId } })} />
+            <Button label="סיום" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products, level: level, courseId: courseId } })} />
         </div>
     );
 };
