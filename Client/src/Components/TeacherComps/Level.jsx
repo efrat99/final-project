@@ -14,10 +14,12 @@ const Level = () => {
     const location = useLocation();
     const { language, courseId } = location.state || {};
 
+
     // const isLevelExists = Levels.some((l) => l.number === level);
 
 
     const handleLearningClick = async (level) => {
+        console.log("courseId " + courseId);
         const data = {
             number: level,
             learning: [],
@@ -26,14 +28,19 @@ const Level = () => {
         console.log(data);
         try {
             console.log(data);  // הצגת המידע שנשלח
+
+            const courseRes = await axios.get(`http://localhost:6660/levels/`, {
+                params: {
+                    courseId: courseId,
+                    number: level,
+                },
+            });
+            const course = courseRes.data;
+
             const res = await axios.post('http://localhost:6660/levels/', data);
             console.log('Response status:', res.status);
             if (res.status === 200) {
                 console.log(res.data);  // הצגת התגובה מהשרת    
-                // setProducts([...products, res.data]);  // עדכון רשימת המוצרים
-
-                const courseRes = await axios.get(`http://localhost:6660/courses/${courseId}`);
-                const course = courseRes.data;
 
                 // עדכון מערך ה-levels המקומי
                 course.levels.push(res.data._id);

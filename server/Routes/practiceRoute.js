@@ -10,7 +10,8 @@ const practiceController = require("../Controllers/practiceController")
 router.get("/:_id", practiceController.getPracticeById)
 
 //getByLevel
-router.get("/", practiceController.getPracticesByLevel)
+router.get("/", practiceController.getPracticessByLevelObject)
+
 //post
 router.post("/", practiceController.createPractice)
 

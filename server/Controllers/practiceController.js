@@ -18,6 +18,7 @@ const getPracticeById = async (req, res) => {
     }
     res.json(practice)
 }
+
 //get practice by level
 const getPracticesByLevel = async (req, res) => {
     const { level } = req.query; // קבלת ה-Level מה-Query String
@@ -37,6 +38,25 @@ const getPracticesByLevel = async (req, res) => {
 
         // החזרת ה-Practices המשויכים ל-Level
         res.json(levelData.practice);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching practices', error });
+    }
+};
+
+//getByLevelObject
+const getPracticessByLevelObject = async (req, res) => {
+    const { level } = req.query; // קבלת ה-Level מה-Query String
+    try {
+        // שליפת ה-Level המתאים לפי המספר
+        console.log(level)
+        const levelData = await Level.findById(level).populate('practice').exec();
+        console.log(levelData)
+        if (!levelData) {
+            return res.status(404).json({ message: 'Level was not found' });
+        }
+        res.json(levelData.practice);
+        // החזרת ה-Learnings המשויכים ל-Level
+
     } catch (error) {
         res.status(500).json({ message: 'Error fetching practices', error });
     }
@@ -100,6 +120,7 @@ const deletePractice = async (req, res) => {
 module.exports = {
     getAllPractices,
     getPracticeById,
+    getPracticessByLevelObject,
     getPracticesByLevel,
     createPractice,
     updatePractice,

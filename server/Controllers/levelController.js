@@ -19,6 +19,38 @@ const getLevelById = async (req, res) => {
     res.json(level)
 }
 
+//getByCourse
+const getLevelsByCourse = async (req, res) => {
+    
+    const { courseId, number  } = req.query; // קבלת ה-Level מה-Query String
+        try {
+            console.log(courseId)
+            console.log(number);
+            const level = await Course.findById(courseId)
+                .populate({
+                    path: 'levels', // טוען את המסמכים של ה-levels
+                    match: { number: number }, // מסנן את ה-level לפי המספר
+                })
+                .exec();
+
+            console.log("Level Query Result:", level);
+        
+            if (!level) {
+                return res.status(404).json({ message: 'Course not found' });
+            }
+        
+            if (!level.levels || level.levels.length === 0) {
+                return res.status(404).json({ message: 'Level not found in the course' });
+            }
+        
+            // החזרת ה-learning של ה-level
+            res.json(level); // מניחים שיש רק אחד מתאים
+
+    } catch (error) {
+        res.status(500).json({ message: 'Error', error });
+    }
+};
+
 //post
 const createLevel = async (req, res) => {
     const { number, learning, practice } = req.body
@@ -94,6 +126,7 @@ const deleteLevel = async (req, res) => {
 module.exports = {
     getAllLevels,
     getLevelById,
+    getLevelsByCourse,
     createLevel,
     updateLevel,
     deleteLevel
