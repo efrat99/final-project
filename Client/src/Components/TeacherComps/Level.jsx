@@ -25,10 +25,25 @@ const Level = () => {
         }
         console.log(data);
         try {
-            const res = await axios.post("http://localhost:6660/levels", data);
-            console.log(res.data._id);
-            navigate('/learning', { state: { language: language, courseId: courseId, level:res.data._id } });
-        } catch (e) {
+            console.log(data);  // הצגת המידע שנשלח
+            const res = await axios.post('http://localhost:6660/levels/', data);
+            console.log('Response status:', res.status);
+            if (res.status === 200) {
+                console.log(res.data);  // הצגת התגובה מהשרת    
+                // setProducts([...products, res.data]);  // עדכון רשימת המוצרים
+
+                const courseRes = await axios.get(`http://localhost:6660/courses/${courseId}`);
+                const course = courseRes.data;
+
+                // עדכון מערך ה-levels המקומי
+                course.levels.push(res.data._id);
+
+                // שליחת הקורס המעודכן לשרת
+                await axios.put(`http://localhost:6660/courses/`, course);
+                navigate('/learning', { state: { language: language, courseId: courseId, level: res.data._id } });
+            }
+        }
+        catch (e) {
             console.error(e);
         }
     };
@@ -47,10 +62,10 @@ const Level = () => {
         <h1>הוספת שלבים</h1>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <Card title="שלב 1" footer={footer(4)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 2" footer={footer(3)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 3" footer={footer(2)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 4" footer={footer(1)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card title="שלב 1" footer={footer(1)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card title="שלב 2" footer={footer(2)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card title="שלב 3" footer={footer(3)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card title="שלב 4" footer={footer(4)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
         </div>
     </>
     );

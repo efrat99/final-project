@@ -29,7 +29,7 @@ const StudentLearning = () => {
             {console.log(vocabulary)}
             <div className={`flip-card ${flipped ? 'flipped' : ''}`}>
                 <Card className="flip-card-front">
-                    <h3>Front Side</h3>
+                    <h3>Front Side {vocabulary.Word}</h3>
                     <p>This is the front of the card. Click to flip!</p>
                 </Card>
                 <Card className="flip-card-back">
@@ -41,7 +41,7 @@ const StudentLearning = () => {
                             ))}
                         </ul>
                     ) : (
-                    <p>This is the back of the card.</p> 
+                    <p>This is the back of the card.{vocabulary.TranslatedWord}</p> 
                     )}
                 </Card>
             </div>

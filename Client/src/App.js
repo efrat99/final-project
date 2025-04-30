@@ -7,6 +7,7 @@ import StudentLearning from './Components/StudentComps/StudentLearning';
 import Course from './Components/TeacherComps/Course';
 import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
+import TeacherCourse from './Components/TeacherComps/Course';
 import Level from './Components/TeacherComps/Level';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
@@ -80,7 +81,7 @@ function App() {
         <Route path="/practice" element={<Practice />} />
         <Route path="/level" element={<Level />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
-        <Route path="/course" element={<Course />} />
+        {/* <Route path="/course" element={<Course />} /> */}
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (
           <Route
@@ -90,6 +91,12 @@ function App() {
           <Route
             path="/home"
             element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
+          />
+        )}
+          {user && (
+          <Route
+            path="/course"
+            element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />}
           />
         )}
       </Routes>
