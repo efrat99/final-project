@@ -23,6 +23,32 @@ const Course = () => {
                     // navigate('/Course', { state: { course:resCourse  } });  // Navigate to the Course page with the course data
                 }
             }
+
+            // if (course.levels.length > 0) {
+            //     try {
+            //         // Fetch all levels
+            //         const responses = await Promise.all(
+            //             course.levels.map(levelId =>
+            //                 axios.get(`http://localhost:6660/levels/${levelId}`)
+            //             )
+            //         );
+            
+            //         // Create an object where each key is levelId and each value is the learnings array
+            //         const levelsLearnings = responses.reduce((acc, res, index) => {
+            //             if (res.status === 200) {
+            //                 acc[course.levels[index]] = res.data.learning; // group learnings by levelId
+            //             }
+            //             return acc;
+            //         }, {});
+            
+            //         // Update the state with the structured data
+            //         setVocabulary(levelsLearnings);
+            
+            //         console.log("Updated vocabulary:", levelsLearnings);
+            //     } catch (error) {
+            //         console.error("Error fetching levels:", error);
+            //     }
+            // }
         }
         catch (error) {
             console.error(error);
