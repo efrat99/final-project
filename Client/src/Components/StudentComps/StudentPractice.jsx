@@ -5,15 +5,16 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import './StudentPractice.css';
 import { useSelector } from 'react-redux';
-
+import { Button } from 'primereact/button';
 const StudentPractice = () => {
     const location = useLocation();
-    const { practice ,course} = location.state || {};
+    const { practice, course, level } = location.state || {};
     const [questions, setQuestions] = useState([]); // שמירת fetchedObjects
     const [selectedAnswers, setSelectedAnswers] = useState({}); // תשובות שנבחרו לכל שאלה
     const [submittedAnswers, setSubmittedAnswers] = useState({}); // תשובות שהוגשו
-    const user=useSelector(state => state.token.user._id)
-    const [score, setScore] = useState(null); // שמירת הציוןF
+    const user = useSelector(state => state.token.user._id)
+    const [score, setScore] = useState(null); // שמירת הציון
+    const [isSubmitted, setIsSubmitted] = useState(false); // מעקב אחרי מצב הכפתור
     const showQuestion = async () => {
         try {
             if (practice && practice.length > 0) {
@@ -66,21 +67,23 @@ const StudentPractice = () => {
 
         try {
             // שליחת הציון לשרת
-            const response = await axios.post('http://localhost:6660/api/grades', {
+            const response = await axios.post('http://localhost:6660/grades', {
                 mark: totalScore,
                 student: user, // החלף ב-ID של התלמיד המחובר
                 course: course._id, // החלף ב-ID של הקורס
-                level: 'levelId', // החלף ב-ID של הרמה
+                level: level, // החלף ב-ID של הרמה
             });
-
-            if (response.status === 201) {
+            console.log(response.status);
+            if (response.status === 200) {
                 console.log('Grade saved successfully:', response.data);
                 alert('הציון נשמר בהצלחה!');
+
             }
         } catch (error) {
             console.error('Error saving grade:', error);
             alert('שגיאה בשמירת הציון.');
         }
+        setIsSubmitted(true);
     };
     return (
         <div className="practice-container">
@@ -106,15 +109,13 @@ const StudentPractice = () => {
                         ))}
                     </div>
                     {!submittedAnswers[question._id] && (
-                        <button onClick={() => handleSubmit(question._id)}>Submit</button>
+                        <Button onClick={() => handleSubmit(question._id)}>Submit</Button>
                     )}
-                    
+
                 </div>
             ))}
-            <button onClick={handleFinalSubmit} className="final-submit-button">
-                        הגש
-                    </button>
-                    {score !== null && <h2>הציון שלך: {score}%</h2>}
+            <Button onClick={handleFinalSubmit} className="final-submit-button"  disabled={isSubmitted}>הגש</Button>
+            {score !== null && <h2>הציון שלך: {score}%</h2>}
         </div>
     );
 };

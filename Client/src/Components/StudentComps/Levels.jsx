@@ -44,7 +44,7 @@ const Levels = () => {
                     setPractice(matchingLevel.practice);
                     console.log("Updated vocabulary:", matchingLevel.learning);
                     console.log("Updated practice:", matchingLevel.practice);
-                    navigate('/learnings', { state: { course: course,vocabulary:matchingLevel.learning,practice: matchingLevel.practice,level:level} })
+                    navigate('/learnings', { state: { course: course,vocabulary:matchingLevel.learning,practice: matchingLevel.practice,level:matchingLevel.id} })
                 } else {
                     console.log(`No level found with number ${numLevel}`);
                 }
