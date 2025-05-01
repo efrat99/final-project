@@ -11,7 +11,7 @@ const Learning = () => {
     const { course ,vocabulary,practice} = location.state || {};
     return (<>
         <Button onClick={() => { navigate('/studentLearning', { state: { vocabulary: vocabulary } }) }}>אוצר מילים</Button>
-        <Button  onClick={() => { navigate('/studentPractice', { state: { practice: practice } }) }}>תרגול</Button>
+        <Button  onClick={() => { navigate('/studentPractice', { state: { practice: practice,course:course } }) }}>תרגול</Button>
          </>
     )
 }
