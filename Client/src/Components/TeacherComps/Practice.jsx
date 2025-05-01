@@ -43,13 +43,13 @@ const Practice = () => {
                 setPractices([...practices, res.data]);
                 reset();
             }
-            AddPracticeToLevel(res.data._id)
+            addPracticeToLevel(res.data._id)
         } catch (e) {
             console.error(e);
         }
     };
 
-    const AddPracticeToLevel = async (practice) => {
+    const addPracticeToLevel = async (practice) => {
         const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
         console.log("practice " + practice);
         const levelObj = {
@@ -58,6 +58,18 @@ const Practice = () => {
         };
         console.log("levelObj " + levelObj.practice);
 
+        // שליחת השלב המעודכן לשרת
+        await axios.put(`http://localhost:6660/levels/`, levelObj);
+    }
+
+    const deletePracriceFromLevel = async (practice) => {
+        const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
+        console.log("practice " + practice);
+        const levelObj = {
+            ...LevelRes.data,
+            practice: LevelRes.data.practice.filter((p) => p !== practice)
+        };
+        console.log("levelObj " + levelObj.practice);
         // שליחת השלב המעודכן לשרת
         await axios.put(`http://localhost:6660/levels/`, levelObj);
     }
@@ -101,6 +113,7 @@ const Practice = () => {
     };
 
     const handleDelete = async (_id) => {
+        deletePracriceFromLevel(_id);    
         try {
             await axios.delete(`http://localhost:6660/practices/${_id}`);
             setPractices(practices.filter(product => product._id !== _id));

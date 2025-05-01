@@ -31,15 +31,6 @@ const Learning = () => {
         { field: 'translatedWord', header: 'תרגום' }
     ];
 
-    // useEffect(() => {
-    //     if (!token) return;
-    //     axios.get(`http://localhost:6660/learnings`,
-    //          { headers: { Authorization: `bearer ${token}` } }
-    //     )
-    //         .then(response => setProducts(response.data))
-    //         .catch(error => console.error('Error fetching data:', error));
-    // }, [token]);
-
     useEffect(() => {
         if (!token) return;
         // const { level } = location.state || {}; // קבלת הרמה מתוך location.state
@@ -107,6 +98,18 @@ const Learning = () => {
         await axios.put(`http://localhost:6660/levels/`, levelObj);
     }
 
+    const deleteLearningFromLevel = async (learning) => {
+        const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
+        console.log("learning " + learning);
+        const levelObj = {
+            ...LevelRes.data,
+            learning: LevelRes.data.learning.filter((l) => l !== learning)
+        };
+        console.log("levelObj " + levelObj.learning);
+        // שליחת השלב המעודכן לשרת
+        await axios.put(`http://localhost:6660/levels/`, levelObj);
+    }
+
     const handleEdit = (product) => {
         setEditId(product._id);
         setEditData({ word: product.word, translatedWord: product.translatedWord });
@@ -135,6 +138,7 @@ const Learning = () => {
     };
 
     const handleDelete = async (_id) => {
+        deleteLearningFromLevel(_id);
         try {
             await axios.delete(`http://localhost:6660/learnings/${_id}`);
             setLearnings(learnings.filter(product => product._id !== _id));
