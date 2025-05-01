@@ -10,15 +10,40 @@ import axios from 'axios';
 const Level = () => {
     const navigate = useNavigate();
     const [Levels, setLevels] = useState([]);
+    const [course, setCourse] = useState(null);
+    const [levelArr, setLevelArr] = useState([]);
 
     const location = useLocation();
     const { language, courseId } = location.state || {};
 
 
-    // const isLevelExists = Levels.some((l) => l.number === level);
+    useEffect(() => {
+        const fetching = async () => {
+            try {
+                const courseRes = await axios.get(`http://localhost:6660/courses/${courseId}`);
+                setCourse(courseRes.data);
+                const levels = courseRes.data.levels || [];
+                console.log("levels", levels);
+
+                const responses = await Promise.all(
+                    levels.map((levelId) =>
+                        axios.get(`http://localhost:6660/levels/${levelId}`)
+                    )
+                );
+                const levelsData = responses.map(res => res.data);
+                console.log("levelsData", levelsData);
+                setLevelArr([...levelsData]);
+                console.log(levelArr);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+        fetching();
+    }, []);
 
 
-    const handleLearningClick = async (level) => {
+    const handleLearningClick = async (level, exists) => {
         console.log("courseId " + courseId);
         const data = {
             number: level,
@@ -29,25 +54,31 @@ const Level = () => {
         try {
             console.log(data);  // הצגת המידע שנשלח
 
-            const courseRes = await axios.get(`http://localhost:6660/levels/`, {
-                params: {
-                    courseId: courseId,
-                    number: level,
-                },
-            });
-            const course = courseRes.data;
+            // const courseRes = await axios.get(`http://localhost:6660/levels/`, {
+            //     params: {
+            //         courseId: courseId,
+            //         number: level,
+            //     },
+            // });
+            // const course = courseRes.data;
 
-            const res = await axios.post('http://localhost:6660/levels/', data);
-            console.log('Response status:', res.status);
-            if (res.status === 200) {
-                console.log(res.data);  // הצגת התגובה מהשרת    
+            if (!exists) {
+                const res = await axios.post('http://localhost:6660/levels/', data);
+                console.log('Response status:', res.status);
+                if (res.status === 200) {
+                    console.log(res.data);  // הצגת התגובה מהשרת   
 
-                // עדכון מערך ה-levels המקומי
-                course.levels.push(res.data._id);
 
-                // שליחת הקורס המעודכן לשרת
-                await axios.put(`http://localhost:6660/courses/`, course);
-                navigate('/learning', { state: { language: language, courseId: courseId, level: res.data._id } });
+                    // עדכון מערך ה-levels המקומי
+                    course.levels.push(res.data._id);
+
+                    // שליחת הקורס המעודכן לשרת
+                    await axios.put(`http://localhost:6660/courses/`, course);
+                    navigate('/learning', { state: { language: language, courseId: courseId, level: res.data._id } });
+                }
+            }
+            else {
+                navigate('/learning', { state: { language: language, courseId: courseId, level: levelArr.find(l => l.number === level)._id } });
             }
         }
         catch (e) {
@@ -58,13 +89,18 @@ const Level = () => {
     const header = (
         <img alt="Card" src={first} style={{ width: '300px', height: '200px' }} />
     );
-    const footer = (level) => (
-        <Button label="הוסף" onClick={() => handleLearningClick(level)} />
-        //     <Button
-        //     label={isLevelExists ? "עדכן" : "הוסף"}
-        //     onClick={() => handleLearningClick(level)}
-        // />
-    );
+
+    const footer = (level) => {
+        const exists = levelArr.some(l => l.number === level);
+        return (
+            <Button
+                label={exists ? "עדכן" : "הוסף"}
+                onClick={() => handleLearningClick(level, exists)}
+            />
+        );
+    };
+
+
     return (<>
         <h1>הוספת שלבים</h1>
 

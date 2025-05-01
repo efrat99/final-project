@@ -11,13 +11,13 @@ import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, logOut } from '../../redux/tokenSlice'
+import '../../App.css'
 
 const Learning = () => {
 
-    const [products, setProducts] = useState([]);
+    const [learnings, setLearnings] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
-    const [levelObj, setLevelObj] = useState(null)
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
@@ -51,7 +51,7 @@ const Learning = () => {
                 params: { level },  // הוספת level כ־query
             }
         )
-            .then(response => setProducts(response.data))
+            .then(response => setLearnings(response.data))
             .catch(e => {
                 if (e.response && e.response.status === 404) {
                     console.error('No data found for the given level:', level);
@@ -74,7 +74,7 @@ const Learning = () => {
 
 
     const onSubmit = async (data) => {
-        if (products.length > 10) {
+        if (learnings.length > 10) {
             alert("You cannot add more than 10 words.");
             return;
         }
@@ -86,10 +86,10 @@ const Learning = () => {
                 { headers: { Authorization: `bearer ${token}` } }
             );
             if (res.status === 200) {
-                setProducts([...products, res.data]);
+                setLearnings([...learnings, res.data]);
                 reset();
             }
-            console.log("res.data._id"+res.data._id);
+            console.log("res.data._id" + res.data._id);
             AddLearningToLevel(res.data._id)
         } catch (e) {
             console.error(e);
@@ -98,13 +98,13 @@ const Learning = () => {
 
     const AddLearningToLevel = async (learning) => {
         const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
-                console.log("learning" +learning);
-                const levelObj = {
-                    ...LevelRes.data,
-                    learning: [...LevelRes.data.learning, learning] // הוספת ערך חדש למערך
-                };
-                console.log("levelObj "+ levelObj.learning);
-                await axios.put(`http://localhost:6660/levels/`, levelObj);
+        console.log("learning" + learning);
+        const levelObj = {
+            ...LevelRes.data,
+            learning: [...LevelRes.data.learning, learning] // הוספת ערך חדש למערך
+        };
+        console.log("levelObj " + levelObj.learning);
+        await axios.put(`http://localhost:6660/levels/`, levelObj);
     }
 
     const handleEdit = (product) => {
@@ -126,7 +126,7 @@ const Learning = () => {
 
             const res = await axios.put('http://localhost:6660/learnings/', updatedLearning);
             if (res.status === 200) {
-                setProducts(products.map((p) => (p._id === editId ? { ...p, ...updatedLearning } : p)));
+                setLearnings(learnings.map((p) => (p._id === editId ? { ...p, ...updatedLearning } : p)));
                 setEditId(null);
             }
         } catch (error) {
@@ -137,7 +137,7 @@ const Learning = () => {
     const handleDelete = async (_id) => {
         try {
             await axios.delete(`http://localhost:6660/learnings/${_id}`);
-            setProducts(products.filter(product => product._id !== _id));
+            setLearnings(learnings.filter(product => product._id !== _id));
         } catch (error) {
             console.error('Error deleting word:', error);
         }
@@ -157,44 +157,56 @@ const Learning = () => {
                         <span className="p-inputgroup-addon">
                             <i className="pi pi-arrow-right-arrow-left"></i>
                         </span>
-                        <br/>
+                        <br />
                         <Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field }) => (
                             <InputText {...field} placeholder="תרגום" className={classNames({ 'p-invalid': field.invalid })} />)} />
                     </div>
                     <br />
-                    <Button type="submit" label="הוסף" className="mt-2" onClick={() => onSubmit(products)} />
+                    <Button type="submit" label="הוסף" className="mt-2" onClick={() => onSubmit(learnings)} />
                 </form>
             </div>
 
+
             <div style={{ flex: 2 }}>
                 <div className="card">
-                    <DataTable value={products} responsiveLayout="scroll">
-                        {columns.map((col) => (
-                            <Column key={col.field} field={col.field} header={col.header} />
-                        ))}
+                    <DataTable key={editId} value={learnings} responsiveLayout="scroll" rowClassName={(rowData) => (
+                        rowData._id === editId ? 'editable-row' : ''
+                    )}>
+                        <Column header="מילה" body={(rowData) =>
+                            editId === rowData._id ? (
+                                <InputText value={editData.word}
+                                    onChange={(e) => handleInputChange(e, "word")}
+                                    onKeyDown={(e) => { if (e.key === "Enter") handleUpdate(); }}
+                                />) :
+                                rowData.word} />
+
+                        <Column header="תרגום" body={(rowData) =>
+                            editId === rowData._id ? (
+                                <InputText value={editData.translatedWord}
+                                    onChange={(e) => handleInputChange(e, "translatedWord")}
+                                    onKeyDown={(e) => { if (e.key === "Enter") handleUpdate(); }}
+                                />) :
+                                rowData.translatedWord} />
+
                         <Column body={(rowData) => (
                             <div style={{ display: 'flex', gap: '5px' }}>
-                                {editId === rowData._id ? (
-                                    <>
-                                        <InputText value={editData.word} onChange={(e) => handleInputChange(e, "word")} />
-                                        <InputText value={editData.translatedWord} onChange={(e) => handleInputChange(e, "translatedWord")} />
+                                {editId === rowData._id
+                                    ? (<>
                                         <Button label="שמור" className="p-button-success p-button-sm" onClick={handleUpdate} />
                                         <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
-                                    </>
-                                ) : (
-                                    <>
+                                    </>)
+                                    : (<>
                                         <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
                                         <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
-                                    </>
-                                )}
+                                    </>)}
                             </div>
                         )} />
-
                     </DataTable>
+
                 </div>
             </div>
 
-            <Button label="סיום" className="mt-2" disabled={products.length !== 1} onClick={() => navigate('/practice', { state: { learning: products, level: level, courseId: courseId } })} />
+            <Button label="סיום" className="mt-2" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level, courseId: courseId } })} />
         </div>
     );
 };

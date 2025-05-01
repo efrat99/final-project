@@ -1,4 +1,5 @@
 const Level = require("../Models/levelModel")
+const Course = require("../Models/courseModel")
 
 // getAllLevels
 const getAllLevels = async (req, res) => {
@@ -19,8 +20,8 @@ const getLevelById = async (req, res) => {
     res.json(level)
 }
 
-//getByCourse
-const getLevelsByCourse = async (req, res) => {
+//getInCourse
+const getLevelsInCourse = async (req, res) => {
     
     const { courseId, number  } = req.query; // קבלת ה-Level מה-Query String
         try {
@@ -36,7 +37,7 @@ const getLevelsByCourse = async (req, res) => {
             console.log("Level Query Result:", level);
         
             if (!level) {
-                return res.status(404).json({ message: 'Course not found' });
+                return res.status(403).json({ message: 'Course not found' });
             }
         
             if (!level.levels || level.levels.length === 0) {
@@ -46,9 +47,10 @@ const getLevelsByCourse = async (req, res) => {
             // החזרת ה-learning של ה-level
             res.json(level); // מניחים שיש רק אחד מתאים
 
-    } catch (error) {
-        res.status(500).json({ message: 'Error', error });
-    }
+        } catch (error) {
+            console.error('Caught error:', error); // חשוב מאוד להדפיס את השגיאה המלאה
+            res.status(500).json({ message: 'Internal server error', error: error.message });
+        }
 };
 
 //post
@@ -126,7 +128,7 @@ const deleteLevel = async (req, res) => {
 module.exports = {
     getAllLevels,
     getLevelById,
-    getLevelsByCourse,
+    getLevelsInCourse,
     createLevel,
     updateLevel,
     deleteLevel

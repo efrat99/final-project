@@ -7,11 +7,11 @@ import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 
-const Practice = (props) => {
-    const [products, setProducts] = useState([]);
+const Practice = () => {
+    const [practices, setPractices] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
-    const [practices, setPractices] = useState(null);
+
 
     const { control, formState: { errors }, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -28,19 +28,19 @@ const Practice = (props) => {
 
     useEffect(() => {
         axios.get('http://localhost:6660/practices/', { params: { level } })
-            .then(response => setProducts(response.data))
+            .then(response => setPractices(response.data))
             .catch(error => console.error('Error fetching data:', error));
     }, []);
 
     const onSubmit = async (data) => {
-        if (products.length > 10) {
+        if (practices.length > 10) {
             alert("You cannot add more than 10 questions.");
             return;
         }
         try {
             const res = await axios.post('http://localhost:6660/practices/', data);
             if (res.status === 200) {
-                setProducts([...products, res.data]);
+                setPractices([...practices, res.data]);
                 reset();
             }
             AddPracticeToLevel(res.data._id)
@@ -92,7 +92,7 @@ const Practice = (props) => {
 
             const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
             if (res.status === 200) {
-                setProducts(products.map((p) => (p._id === editId ? updatedPractice : p)));
+                setPractices(practices.map((p) => (p._id === editId ? updatedPractice : p)));
                 setEditId(null);
             }
         } catch (error) {
@@ -103,7 +103,7 @@ const Practice = (props) => {
     const handleDelete = async (_id) => {
         try {
             await axios.delete(`http://localhost:6660/practices/${_id}`);
-            setProducts(products.filter(product => product._id !== _id));
+            setPractices(practices.filter(product => product._id !== _id));
         } catch (error) {
             console.error('Error deleting question:', error);
         }
@@ -145,7 +145,7 @@ const Practice = (props) => {
                     <div style={{
                         display: 'flex', flexWrap: 'wrap', gap: '20px', justifyContent: 'flex-start', width: '100%',
                     }}>
-                        {products.map((rowData) => (
+                        {practices.map((rowData) => (
                             <div key={rowData._id} style={{
                                 display: 'flex', flexDirection: 'column', gap: '10px', padding: '10px', border: '1px solid #ddd', borderRadius: '8px',
                                 minWidth: '200px', flexGrow: 1, maxWidth: 'calc(33% - 20px)', flexBasis: 'auto', width: 'auto',
@@ -154,7 +154,11 @@ const Practice = (props) => {
                                 {editId === rowData._id ? (
                                     <div>
                                         <strong>שאלה:</strong> <br />
-                                        <InputText value={editedData.question} onChange={(e) => handleInputChange(e, "question")} />
+                                        <InputText
+                                            value={editedData.question}
+                                            onChange={(e) => handleInputChange(e, "question")}
+                                            // onKeyDown={(e) => { if (e.key === "Enter") handleSave(); }}
+                                        />
                                     </div>
                                 ) : (
                                     <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
@@ -168,7 +172,11 @@ const Practice = (props) => {
                                         {editId === rowData._id ? (
                                             <div>
                                                 <strong>תשובה {index + 1}:</strong> <br />
-                                                <InputText value={editedData.answers[index]} onChange={(e) => handleInputChange(e, "answers", index)} />
+                                                <InputText
+                                                    value={editedData.answers[index]}
+                                                    onChange={(e) => handleInputChange(e, "answers", index)}
+                                                    // onKeyDown={(e) => { if (e.key === "Enter") handleInputChange(e, "answers", index); }}
+                                                />
                                             </div>
                                         ) : (
                                             <div>
@@ -182,7 +190,11 @@ const Practice = (props) => {
                                 {editId === rowData._id && (
                                     <div>
                                         <strong>תשובה נכונה:</strong> <br />
-                                        <InputText value={editedData.correctAnswer} onChange={(e) => handleInputChange(e, "correctAnswer")} />
+                                        <InputText
+                                            value={editedData.correctAnswer}
+                                            onChange={(e) => handleInputChange(e, "correctAnswer")}
+                                            // onKeyDown={(e) => { if (e.key === "Enter") handleInputChange(e, "correctAnswer"); }}
+                                        />
                                     </div>
                                 )}
 
@@ -200,32 +212,14 @@ const Practice = (props) => {
                     </div>
                 </div>
 
-                {/* Display CascadeSelect to choose Level, only if there are at least 10 questions */}
-                {/* {products.length >= 10 && (
-                    <div className="card flex justify-content-center mt-2">
-                        <CascadeSelect 
-                            value={selectedNum} 
-                            onChange={(e) => setSelectedNum(e.value)} 
-                            options={numbers}
-                            optionLabel="cname" 
-                            optionGroupLabel="number" 
-                            optionGroupChildren="number"
-                            className="w-full md:w-14rem" 
-                            breakpoint="767px" 
-                            placeholder="Select a level" 
-                            style={{ minWidth: '14rem' }} 
-                        />
-                    </div>
-                )}*/}
-
                 <Button
                     label="סיום"
                     className="mt-2"
-                    disabled={products.length < 1}
+                    // disabled={practices.length < 1}
                     onClick={() => {
                         navigate('/Level', {
                             state: {
-                                practice: products,
+                                practice: practices,
                                 learning: learning,
                                 level: level,
                                 courseId: courseId
