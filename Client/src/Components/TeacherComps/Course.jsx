@@ -86,6 +86,7 @@ const Course = () => {
         }
 
     }
+    
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -112,7 +113,7 @@ const Course = () => {
         <div className="myCourses">
             <h1>הקורסים שלי</h1>
             <div className="card flex justify-content-center">
-                <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.השךוק)} options={getAvailableLanguages()} optionLabel="label"
+                <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={getAvailableLanguages()} optionLabel="label"
                     placeholder="Select a language" className="w-full md:w-14rem" />
             </div>
             <div className="courseListPerUser">

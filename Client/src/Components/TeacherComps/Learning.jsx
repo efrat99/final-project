@@ -12,12 +12,14 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, logOut } from '../../redux/tokenSlice'
 import '../../App.css'
+import * as XLSX from 'xlsx'
 
 const Learning = () => {
 
     const [learnings, setLearnings] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editData, setEditData] = useState({ word: '', translatedWord: '' });
+    const [selectedFile, setSelectedFile] = useState(null);
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token)
@@ -147,7 +149,47 @@ const Learning = () => {
         }
     };
 
+    // const handleUpload = async () => {
+    //     if (!selectedFile) {
+    //         alert("אנא בחר קובץ להעלאה.");
+    //         return;
+    //     }
 
+    //     const formData = new FormData();
+    //     formData.append("file", selectedFile);
+
+    //     try {
+    //         const response = await axios.post("http://localhost:6660/upload", formData, {
+    //             headers: { "Content-Type": "multipart/form-data" }
+    //         });
+    //         console.log("File uploaded successfully:", response.data);
+    //     } catch (error) {
+    //         console.error("Error uploading file:", error);
+    //     }
+    // };
+
+    // const handleFileChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (!file) return;
+
+    //     setSelectedFile(file);
+
+    //     const reader = new FileReader();
+    //     reader.onload = (event) => {
+    //         const data = new Uint8Array(event.target.result);
+    //         const workbook = XLSX.read(data, { type: 'array' });
+
+    //         const sheetName = workbook.SheetNames[0];
+    //         const sheet = workbook.Sheets[sheetName];
+
+    //         const jsonData = XLSX.utils.sheet_to_json(sheet);
+
+    //         console.log(jsonData);
+    //         setLearnings((prevLearnings) => [...prevLearnings, ...jsonData]);
+    //     };
+
+    //     reader.readAsArrayBuffer(file);
+    // };
     return (
         <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '5vw', marginRight: '5vw' }}>
             <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', marginRight: '15vw' }}>
@@ -209,7 +251,8 @@ const Learning = () => {
 
                 </div>
             </div>
-
+            {/* <input type="file" onChange={handleFileChange} />
+            <button onClick={handleUpload}>העלה</button> */}
             <Button label="סיום" className="mt-2" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level, courseId: courseId } })} />
         </div>
     );

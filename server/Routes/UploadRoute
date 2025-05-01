@@ -1,0 +1,14 @@
+const multer = require('multer');
+const xlsx = require('xlsx');
+
+const upload = multer({ dest: 'uploads/' }); // תיקייה זמנית
+
+app.post('/upload', upload.single('file'), (req, res) => {
+    const filePath = req.file.path;
+    const workbook = xlsx.readFile(filePath);
+    const sheetName = workbook.SheetNames[0];
+    const data = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName]);
+    
+    // כאן אפשר לשלוח את הנתונים למסד או לעבד אותם
+    res.json(data);
+});

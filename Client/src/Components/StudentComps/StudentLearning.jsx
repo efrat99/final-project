@@ -9,6 +9,7 @@ const StudentLearning = () => {
     const { vocabulary, course } = location.state || {};
     const [objects, setObjects] = useState([]);
     const [flippedStates, setFlippedStates] = useState([]);
+    const [voices, setVoices] = useState([]);
 
 
     const languageMap = {
@@ -80,9 +81,22 @@ const StudentLearning = () => {
                 }
             }
         };
+        const loadVoices = () => {
+            const availableVoices = speechSynthesis.getVoices();
+            if (availableVoices.length > 0) {
+                setVoices(availableVoices);
+            }
+        };
 
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
         fetchData();
     }, [vocabulary]);
+
+    useEffect(() => {
+
+    }, []);
+
 
     const toggleFlip = (index) => {
         setFlippedStates((prev) =>
@@ -93,7 +107,13 @@ const StudentLearning = () => {
     const speak = (text, langCode) => {
         const voiceLang = languageMap[langCode] || "en-US";
         const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = voiceLang;
+        // utter.lang = voiceLang;
+        const matchedVoice = voices.find(voice => voice.lang === voiceLang);
+        if (matchedVoice) {
+            utter.voice = matchedVoice;
+        } else {
+            utter.lang = voiceLang;
+        }
         speechSynthesis.cancel();// Cancel any ongoing speech
         speechSynthesis.speak(utter);
     };
@@ -108,18 +128,24 @@ const StudentLearning = () => {
                 >
                     {/* Front Side */}
                     <Card className="flip-card-front">
-                            <button className="audio-button" onClick={(e) => {
-                                e.stopPropagation(); // מונע מהכפתור להפוך את הכרטיס
-                                speak(item.word, course.language); // שיחה עם המילה
-                            }}>🔊</button>
-                            <p>מילה</p>
-                            <h3>{item.word}</h3>
+                        <button className="audio-button" onClick={(e) => {
+                            e.stopPropagation(); // מונע מהכפתור להפוך את הכרטיס
+                            speak(item.word, course.language); // שיחה עם המילה
+
+                        }}
+                        ><i className="pi pi-volume-up"
+                            style={{ fontSize: '30px', transition: 'color 0.3s' }}
+                            onMouseEnter={(e) => e.target.style.color = 'red'}
+                            onMouseLeave={(e) => e.target.style.color = ''}
+                            onClick={(e) => e.target.style.color = 'rgb(255, 98, 0)'}>
+                            </i>
+                        </button>
+                        <h3 style={{ fontSize: "30px" }}>{item.word}</h3>
                     </Card>
 
                     {/* Back Side */}
                     <Card className="flip-card-back">
-                        <p>תרגום</p>
-                        <h3>{item.translatedWord}</h3>
+                        <h3 style={{ fontSize: "30px" }}>{item.translatedWord}</h3>
                     </Card>
                 </div>
             ))}

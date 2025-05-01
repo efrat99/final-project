@@ -58,31 +58,13 @@
     transform: rotateY(0deg);
 }
 
-/* .audio-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
-    border: none;
-    border-radius: 50%;
-    padding: 8px;
-    cursor: pointer;
-    font-size: 18px;
-    transition: background-color 0.3s, transform 0.2s;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.audio-button:hover {
-    background-color: rgba(255, 255, 255, 0.9);
-    transform: scale(1.1);
-} */
  
 .audio-button {
     /* color: rgb(255, 98, 0) !important;
     background-color: rgba(255, 255, 255, 0.7) !important; */
     position: absolute;
-    top: 10px;
-    left: 10px;
+    top: 15px;
+    left: 15px;
     font-size: 20px;
     background: transparent;
     border: none;
