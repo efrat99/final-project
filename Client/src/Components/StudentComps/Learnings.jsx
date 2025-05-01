@@ -8,11 +8,12 @@ import { useNavigate } from 'react-router-dom';
 const Learning = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { course ,vocabulary,practice} = location.state || {};
+    const { course, vocabulary, practice } = location.state || {};
     return (<>
-        <Button onClick={() => { navigate('/studentLearning', { state: { vocabulary: vocabulary } }) }}>אוצר מילים</Button>
-        <Button  onClick={() => { navigate('/studentPractice', { state: { practice: practice,course:course } }) }}>תרגול</Button>
-         </>
+
+        <Button onClick={() => { navigate('/studentLearning', { state: { vocabulary: vocabulary, course: course } }) }}>אוצר מילים</Button>
+        <Button onClick={() => { navigate('/studentPractice', { state: { practice: practice } }) }}>תרגול</Button>
+    </>
     )
 }
 export default Learning;
