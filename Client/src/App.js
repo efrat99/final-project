@@ -4,7 +4,7 @@ import Learning from './Components/TeacherComps/Learning';
 import Home from './Components/AccesPage';
 import Practice from './Components/TeacherComps/Practice';
 import StudentLearning from './Components/StudentComps/StudentLearning';
-import Course from './Components/TeacherComps/Course';
+// import Course from './Components/TeacherComps/Course';
 import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
 import TeacherCourse from './Components/TeacherComps/Course';
@@ -13,6 +13,7 @@ import Levels from './Components/StudentComps/Levels';
 import Learnings from './Components/StudentComps/Learnings';
 import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
+import StudentPractice from './Components/StudentComps/StudentPractice';
 import foxImage from './Images/fox.png';
 
 
@@ -85,6 +86,7 @@ function App() {
         <Route path="/level" element={<Level />} />
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
+        <Route path="/studentPractice" element={<StudentPractice />} />
         {/* <Route path="/course" element={<Course />} /> */}
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (

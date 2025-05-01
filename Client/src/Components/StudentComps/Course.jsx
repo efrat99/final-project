@@ -8,31 +8,32 @@ const Course = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const { course } = location.state || {};
-    const [vocabulary, setVocabulary] = useState([]);
-    const showCourse = async () => {
-        console.log(course)
-        try {
-            if (course.levels.length > 0) {
-                const res = await axios.get(`http://localhost:6660/levels/${course.levels[0]}`);  // Fetch the course details from the server
-                if (res.status === 200) {
-                    const arr = res.data.learning
-                    setVocabulary((prevVocabulary) => [...prevVocabulary,...arr])
-                    console.log(vocabulary)
-                }
-            }
+    // const [vocabulary, setVocabulary] = useState([]);
+    // const [practice, setPractice] = useState([]);
+    // const showCourse = async () => {
+    //     console.log(course)
+    //     try {
+    //         if (course.levels.length > 0) {
+    //             const res = await axios.get(`http://localhost:6660/levels/${course.levels[0]}`);  // Fetch the course details from the server
+    //             if (res.status === 200) {
+    //                 const arr = res.data.learning
+    //                 setVocabulary((prevVocabulary) => [...prevVocabulary,...arr])
+    //                 console.log(vocabulary)
+    //             }
+    //         }
 
-        }
-        catch (error) {
-            console.error(error);
-        }
-    }
+    //     }
+    //     catch (error) {
+    //         console.error(error);
+    //     }
+    // }
 
-    useEffect(() => {
-        showCourse();
-    }, []);
-    useEffect(() => {
-        console.log("Vocabulary updated:", vocabulary);
-    }, [vocabulary]);
+    // useEffect(() => {
+    //     showCourse();
+    // }, []);
+    // useEffect(() => {
+    //     console.log("Vocabulary updated:", vocabulary);
+    // }, [vocabulary]);
     return (
         <>
             <h1>hi</h1>

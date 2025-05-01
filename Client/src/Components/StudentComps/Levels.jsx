@@ -9,6 +9,7 @@ const Levels = () => {
     const navigate = useNavigate()
     const { course } = location.state || {};
     const [vocabulary, setVocabulary] = useState([]);
+    const [practice, setPractice] = useState([]);
     const EnterCourse = async (numLevel) => {
         try {
             if (course.levels.length > 0) {
@@ -26,6 +27,7 @@ const Levels = () => {
                             id: res.data._id,
                             number: res.data.number,
                             learning: res.data.learning,
+                            practice: res.data.practice,
                         };
                     }
                     return null;
@@ -39,8 +41,10 @@ const Levels = () => {
     
                     // עדכון ה-state עם ה-learning של ה-level המתאים
                     setVocabulary(matchingLevel.learning);
+                    setPractice(matchingLevel.practice);
                     console.log("Updated vocabulary:", matchingLevel.learning);
-                    navigate('/learnings', { state: { course: course,vocabulary:matchingLevel.learning } })
+                    console.log("Updated practice:", matchingLevel.practice);
+                    navigate('/learnings', { state: { course: course,vocabulary:matchingLevel.learning,practice: matchingLevel.practice} })
                 } else {
                     console.log(`No level found with number ${numLevel}`);
                 }

@@ -88,8 +88,8 @@ const footer =(course)=> (
       <h1>קורסים לבחירה</h1>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
       {Courses.map((course) =>!course.students.includes(_id) ? (
-            <Card title="Advanced Card" subTitle="Card subtitle" header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' , flex: '0 1 auto' }} className="md:w-25rem">
-            <p className="m-0">{course.language}</p>
+            <Card  header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' , flex: '0 1 auto' }} className="md:w-25rem">
+            <h1 className="m-0">{course.language}</h1>
             <Button label="הרשם" icon="pi pi-check"  onClick={()=>{AddStudentToCourse(course)}}/>
         </Card>
           ): null)}</div>
@@ -97,9 +97,9 @@ const footer =(course)=> (
         <p>הקורסים שלי</p>
         <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {studentCourses.map((course) => (
-            <Card title="Advanced Card" subTitle="Card subtitle" footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
-            <p className="m-0">{course.language}
-            </p>
+            <Card  footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
+            <h1 className="m-0">{course.language}
+            </h1>
         </Card>  
           ))}
         </div>
