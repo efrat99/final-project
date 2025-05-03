@@ -11,6 +11,7 @@ const Practice = () => {
     const [practices, setPractices] = useState([]);
     const [editId, setEditId] = useState(null);
     const [editedData, setEditedData] = useState({});
+    const [errorMessage, setErrorMessage] = useState('');
 
 
     const { control, formState: { errors }, handleSubmit, reset } = useForm({
@@ -94,12 +95,18 @@ const Practice = () => {
     };
 
     const handleSave = async () => {
+        const correctAnswer = parseInt(editedData.correctAnswer, 10);
+        if (isNaN(correctAnswer) || correctAnswer < 1 || correctAnswer > 4) {
+            setErrorMessage("התשובה הנכונה חייבת להיות מספר בין 1 ל-4.");
+            return;
+        }
+        setErrorMessage(''); 
         try {
             const updatedPractice = {
                 _id: editId,
                 question: editedData.question,
                 answers: editedData.answers,
-                correctAnswer: parseInt(editedData.correctAnswer, 3)
+                correctAnswer: correctAnswer
             };
 
             const res = await axios.put('http://localhost:6660/practices/', updatedPractice);
@@ -170,7 +177,7 @@ const Practice = () => {
                                         <InputText
                                             value={editedData.question}
                                             onChange={(e) => handleInputChange(e, "question")}
-                                            // onKeyDown={(e) => { if (e.key === "Enter") handleSave(); }}
+                                            onKeyDown={(e) => { if (e.key === "Enter") handleSave(); }}
                                         />
                                     </div>
                                 ) : (
@@ -188,7 +195,7 @@ const Practice = () => {
                                                 <InputText
                                                     value={editedData.answers[index]}
                                                     onChange={(e) => handleInputChange(e, "answers", index)}
-                                                    // onKeyDown={(e) => { if (e.key === "Enter") handleInputChange(e, "answers", index); }}
+                                                    onKeyDown={(e) => { if (e.key === "Enter") handleSave() }}
                                                 />
                                             </div>
                                         ) : (
@@ -206,8 +213,10 @@ const Practice = () => {
                                         <InputText
                                             value={editedData.correctAnswer}
                                             onChange={(e) => handleInputChange(e, "correctAnswer")}
-                                            // onKeyDown={(e) => { if (e.key === "Enter") handleInputChange(e, "correctAnswer"); }}
+                                            onKeyDown={(e) => { if (e.key === "Enter") handleSave() }}
+                                            className={classNames({ 'p-invalid': errorMessage })} // הוספת מחלקת שגיאה
                                         />
+                                        {errorMessage && <small className="p-error">{errorMessage}</small>} {/* הצגת הודעת השגיאה */}
                                     </div>
                                 )}
 
