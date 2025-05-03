@@ -8,7 +8,7 @@ import 'primeicons/primeicons.css';                             // אייקונ�
 //import 'primeflex/primeflex.css';                               // מערכת גריד ועיצוב
 import { store } from './redux/store'
 import { PersistGate } from 'redux-persist/integration/react';
-import { persistor } from './redux/store'; // Make sure your store is configured correctly
+import { persistor } from './redux/store';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router } from 'react-router-dom';
 // import reportWebVitals from './reportWebVitals';

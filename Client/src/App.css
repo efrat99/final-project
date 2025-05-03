@@ -121,21 +121,43 @@ label {
 
 
 .p-button {
-  background-color: rgb(255, 98, 0);
-  color: white;
-  border: none;
+  outline: none !important; /* הסרת outline */
+  box-shadow: none !important; /* הסרת הצללה */
+  background-color: rgb(255, 98, 0) !important; /* צבע רקע מותאם אישית */
+  color: white !important; /* צבע טקסט מותאם אישית */
+  border: none !important; /* הסרת גבול */
+  font-weight: bold !important;
 }
 
+.p-button:hover {
+  background-color: rgb(200, 50, 0) !important; /* צבע רקע בעת מעבר עכבר */
+  color: white !important; /* צבע טקסט בעת מעבר עכבר */
+}
+
+.p-button:focus {
+  outline: none !important; /* הסרת אפקט focus */
+  box-shadow: none !important; /* הסרת הצללה */
+}
 
 .p-button-text {
-  color: rgb(255, 98, 0);
+  color: rgb(255, 98, 0) !important;
   font-size: 14px !important;
   font-weight: bold !important;
-  background: none;
+  background: none !important;
   border: none;
   padding: 0;
   box-shadow: none;
 }
+
+.p-button-text.p-button:hover{
+  background: none !important;
+  color: rgb(200, 50, 0) !important;
+
+}
+ /* .p-button-text.focus{
+  box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.25) !important;
+  border-color: rgb(255, 98, 0) ;
+ } */
 
 .p-checkbox .p-checkbox-box {
   border-color: rgb(255, 98, 0); 

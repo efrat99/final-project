@@ -60,8 +60,6 @@
 
  
 .audio-button {
-    /* color: rgb(255, 98, 0) !important;
-    background-color: rgba(255, 255, 255, 0.7) !important; */
     position: absolute;
     top: 15px;
     left: 15px;
@@ -71,11 +69,24 @@
     cursor: pointer;
     z-index: 1;
     transition: transform 0.3s ease;
+    outline: none; /* הסרת אפקט outline */
+    color: rgb(255, 98, 0); /* צבע מותאם אישית */
 }
 
 .audio-button:hover {
     transform: scale(1.1);
+    color: rgb(200, 50, 0);
+    background-color: transparent !important;
 }
+
+.audio-button:focus {
+    outline: none;
+    color: rgb(200, 50, 0);
+}
+
+/* .audio-button:not(:focus) {
+    color: rgb(255, 98, 0); 
+} */
 
 .flip-card-front {
     position: relative;
