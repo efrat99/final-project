@@ -36,9 +36,7 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
-
-
-  // ...(user ? 
+  
 
   const items = [
     {

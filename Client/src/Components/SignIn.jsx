@@ -17,16 +17,6 @@ const Signin = ({ onClose }) => {
     const [showMessage, setShowMessage] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const dispatch = useDispatch();
-
-
-    // const element = document.querySelector('[p-icon-field p-icon-field-right"]');
-    // if (element) {
-    //     element.className = 'p-icon-field p-icon-field-left'; // החלף את כל המחלקות בשם החדש
-    // }
-
-    // const passwordHeader = <h6>Pick a password</h6>;
-    // const passwordFooter = <small>Make it strong!</small>;
-    // const getFormErrorMessage = (name) => errors[name] ? <small className="p-error">{errors[name].message}</small> : null;
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {

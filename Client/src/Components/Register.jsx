@@ -58,7 +58,6 @@ export const Register = ({ onClose }) => {
                         console.log(res.data)
                         setFormData(data);
                         alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
-                        //יוצרת hush-func
                         setShowMessage(true);
                         setSelectedRole(false)
                         reset();

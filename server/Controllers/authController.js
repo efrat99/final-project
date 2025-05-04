@@ -19,7 +19,7 @@ const login = async (req, res) => {
         return res.status(401).json({ message: 'Unauthorized' })
     // const token = jwt.sign({ id: teacher._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
     // const teacherInfo = { _id: teacher._id, firstName: teacher.firstName, lastName: teacher.lastName, email: teacher.email, phone: teacher.phone }
-    const userInfo = { email: user.email, role: user.userType ,_id:user._id}
+    const userInfo = { firstName: user.firstName, lastName:user.lastName, email: user.email, phone:user.phone, role: user.userType, _id: user._id }
     const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
     console.log(userInfo)
     res.json({ accessToken: accessToken, userInfo: userInfo })
@@ -54,7 +54,7 @@ const register = async (req, res) => {
     try {
         const user = await User.create({ firstName, lastName, email, phone, password: hashedPwd, userType })
         if (user) {
-            const userInfo = { firstName: firstName, email: user.email, role: user.userType }
+            const userInfo = { firstName: firstName, lastName:lastName, email: user.email, phone:phone, role: user.userType, _id: user._id }
             const accessToken = jwt.sign(userInfo, process.env.ACCESS_TOKEN_SECRET)
             res.json({ accessToken: accessToken, userInfo: userInfo })
         }
