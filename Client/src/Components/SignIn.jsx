@@ -35,16 +35,13 @@ const Signin = ({ onClose }) => {
             if (res.status === 200) {
                 dispatch(setToken(res.data.accessToken))
                 dispatch(setUser(res.data.userInfo))
-                console.log(res.data);
+                console.log(res.data.userInfo);
                 setFormData(data);
                 alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
                 setShowMessage(true);
                 reset();
                 onClose();
                 navigate('/home')
-
-                //  else {
-                //     alert("שם המשתמש או הסיסמה שגויים.");
 
             }
         } catch (e) {

@@ -22,14 +22,10 @@ export const Register = ({ onClose }) => {
     const [value, setValue] = useState(options[0]);
     const [token, setTokens] = useState(0);
     const [selectedRole, setSelectedRole] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    // const handleRoleChange = (e) => {
-    //     console.log("Selected role:", e.value);
-    //     setSelectedRole(e.value);
-    //     setValue('userType', e.value);
-    // };
     const customInput = ({ events, props }) => <input {...events} {...props} type="text" className="custom-otp-input" />;
 
     const defaultValues = {
@@ -53,6 +49,7 @@ export const Register = ({ onClose }) => {
             else {
 
                 try {
+                    setErrorMessage('');
                     const res = await axios.post('http://localhost:6660/api/auth/', data)
                     if (res.status === 200) {
                         console.log(res.data);
@@ -67,22 +64,20 @@ export const Register = ({ onClose }) => {
                         reset();
                         onClose();
                         navigate('/home')
-
-                        // dispatch(setToken(res.data.accessToken))
-                        // dispatch(setUser(res.data.userInfo))
-                        // // const user = useSelector(state => state.token.user)
-                        // console.log(user);
-                        // console.log(res.data);
-                        // setFormData(data);
-                        // alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
-                        // setShowMessage(true);
-                        // reset();
-                        // onClose();
-                        // navigate('/home')
                     }
                 }
                 catch (e) {
-                    console.error(e)
+                    if (e.response && e.response.data && e.response.data.message) {
+                        if (e.response.data.message === "This email is already in use. Please choose another one") {
+                            setErrorMessage("המייל שהוזן כבר קיים במערכת. נסה מייל אחר.");
+                        } else {
+                            setErrorMessage("אירעה שגיאה בעת יצירת החשבון. נסה שוב מאוחר יותר.");
+                        }
+                        console.error("Error from server:", e.response.data.message);
+                    } else {
+                        console.error(e);
+                        alert("An unknown error occurred: " + e.message);
+                    }
                 }
             }
 
@@ -95,7 +90,6 @@ export const Register = ({ onClose }) => {
         return errors[name] && <small className="p-error">{errors[name].message}</small>
     };
 
-    // const dialogFooter = <div className="flex justify-content-center"><Button label="OK" className="p-button-text" autoFocus onClick={() => setShowMessage(false)} /></div>;
     const passwordHeader = <h6>Pick a password</h6>;
     const passwordFooter = (
         <React.Fragment>
@@ -112,16 +106,6 @@ export const Register = ({ onClose }) => {
 
     return (
         <div className="form-demo">
-            {/* <Dialog visible={showMessage} onHide={() => setShowMessage(false)} position="top" footer={dialogFooter} showHeader={false} breakpoints={{ '960px': '80vw' }} style={{ width: '30vw' }}>
-                <div className="flex justify-content-center flex-column pt-6 px-3">
-                    <i className="pi pi-check-circle" style={{ fontSize: '5rem', color: 'var(--green-500)' }}></i>
-                    <h5>Registration Successful!</h5>
-                    <p style={{ lineHeight: 1.5, textIndent: '1rem' }}>
-                        <b>{formData.firstName}</b> - You have successfully registered.
-                    </p>
-                </div>
-            </Dialog> */}
-            {/* <Dialog> */}
             <div className="flex justify-content-center">
                 <div className="card">
 
@@ -152,7 +136,6 @@ export const Register = ({ onClose }) => {
                         <br></br>
                         <div className="field">
                             <span className="p-float-label p-input-icon-right">
-                                {/* <i className="pi pi-envelope" /> */}
                                 <Controller name="email" control={control}
                                     rules={{ required: 'Email is required.', pattern: { value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i, message: 'Invalid email address. E.g. example@email.com' } }}
                                     render={({ field, fieldState }) => (
@@ -161,6 +144,7 @@ export const Register = ({ onClose }) => {
                                 <label htmlFor="email" className={classNames({ 'p-error': errors.email })}>Email*</label>
                             </span>
                             {getFormErrorMessage('email')}
+                            
                         </div>
                         <br></br>
                         <div className="field">
@@ -187,19 +171,9 @@ export const Register = ({ onClose }) => {
                             "card flex justify-content-center">
                             <span className="p-float-label">
                                 <Controller name="userType" onChange={(e) => { setSelectedRole(e.value) }} control={control} render={({ field, fieldState }) => (
-                                    // <SelectButton value={value} onChange={(e) => {setValue(e.value); handleRoleChange(e)}} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })}/>
                                     <SelectButton value={value} onChange={(e) => {
                                         console.log("SelectButton onChange triggered");
                                     }} options={options} id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
-                                    /* <SelectButton 
-                                    value={value} 
-                                    onChange={(e) => {
-                                        console.log("SelectButton onChange triggered", e); // הדפסת האירוע
-                                        setValue(e.value);  // עדכון ערך הסטייט
-                                        handleRoleChange(e); // הפעלת פונקציית שינוי תפקיד
-                                    }} 
-                                    options={options} 
-                                    /> */
                                 )} />
                             </span>
                         </div>
@@ -231,7 +205,7 @@ export const Register = ({ onClose }) => {
                         `}
                                 </style>
 
-                                <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput}  className="custom-otp-input" />
+                                <InputOtp value={token} onChange={(e) => setTokens(e.value)} inputTemplate={customInput} className="custom-otp-input" />
                             </div>
                         )}
                         <br></br>
@@ -242,12 +216,11 @@ export const Register = ({ onClose }) => {
                             <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>אני מסכים לתנאי השימוש*</label>
                         </div>
                         <br></br>
-
+                        {errorMessage && <small className="p-error">{errorMessage}</small>}
                         <Button type="submit" label="Submit" className="mt-2" />
                     </form>
                 </div>
             </div>
-            {/* </Dialog> */}
         </div>
 
     );
