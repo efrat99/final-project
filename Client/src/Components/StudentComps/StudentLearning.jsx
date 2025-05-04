@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StudentLearning = () => {
     const location = useLocation();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { vocabulary, course } = location.state || {};
     const [objects, setObjects] = useState([]);
     const [flippedStates, setFlippedStates] = useState([]);

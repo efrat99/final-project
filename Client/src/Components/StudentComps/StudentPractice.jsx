@@ -86,9 +86,10 @@ const StudentPractice = () => {
                 correctCount++;
             }
         });
-
+        console.log(questions.length)
         const totalScore = Math.round((correctCount / questions.length) * 100); // חישוב הציון באחוזים
         setScore(totalScore);
+        console.log('totalScore', totalScore);  
 
         try {
             const response = await axios.post('http://localhost:6660/grades', {
@@ -97,6 +98,7 @@ const StudentPractice = () => {
                 course: course._id,
                 level: level,
             });
+            
             if (response.status === 200) {
                 alert(`הציון שלך הוא: ${totalScore}%`);
             }

@@ -81,6 +81,8 @@ const Practice = () => {
     };
 
     const handleInputChange = (e, field, index = null) => {
+        // const correctAnswer = parseInt(editedData.correctAnswer, 10);
+        // if (isNaN(correctAnswer) || correctAnswer < 1 || correctAnswer > 4) {
         setEditedData((prevData) => {
             const updatedData = { ...prevData };
 
@@ -100,7 +102,7 @@ const Practice = () => {
             setErrorMessage("התשובה הנכונה חייבת להיות מספר בין 1 ל-4.");
             return;
         }
-        setErrorMessage(''); 
+        setErrorMessage('');
         try {
             const updatedPractice = {
                 _id: editId,
@@ -120,7 +122,7 @@ const Practice = () => {
     };
 
     const handleDelete = async (_id) => {
-        deletePracriceFromLevel(_id);    
+        deletePracriceFromLevel(_id);
         try {
             await axios.delete(`http://localhost:6660/practices/${_id}`);
             setPractices(practices.filter(product => product._id !== _id));
@@ -150,13 +152,34 @@ const Practice = () => {
                         </div>
                     ))}
 
+        
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-check"></i></span>
-                        <Controller name="correctAnswer" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="תשובה נכונה (1-4)" className={classNames({ 'p-invalid': errors.correctAnswer })} />
-                        )} />
+                        <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+                            <Controller
+                                name="correctAnswer"
+                                control={control}
+                                rules={{
+                                    required: true,
+                                    validate: value => {
+                                        const number = parseInt(value, 10);
+                                        return !isNaN(number) && number >= 1 && number <= 4
+                                            || 'התשובה הנכונה חייבת להיות מספר בין 1 ל-4.';
+                                    }
+                                }}
+                                render={({ field }) => (
+                                    <InputText
+                                        {...field}
+                                        placeholder="תשובה נכונה (1-4)"
+                                        className={classNames({ 'p-invalid': errors.correctAnswer })}
+                                    />
+                                )}
+                            />
+                            {errors.correctAnswer && (
+                                <small className="p-error" style={{ marginTop: '5px' }}>{errors.correctAnswer.message}</small>
+                            )}
+                        </div>
                     </div>
-
                     <Button type="submit" label="הוסף" className="mt-3" />
                 </form>
 

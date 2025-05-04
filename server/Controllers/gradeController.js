@@ -33,7 +33,7 @@ const getAllStudentGrades = async (req, res) => {
 //post
 const createGrade = async (req, res) => {
     const { mark, student, course, level } = req.body
-    if (!mark)
+    if (mark === undefined || mark === null)
         return res.status(400).json({ message: 'Mark is required' })
     if (mark < 0 || mark > 100)
         return res.status(400).json({ message: 'Mark must be at 0-100 range' })
