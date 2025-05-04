@@ -1,9 +1,7 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
-import './StudentPractice.css';
+import '../../StudentPractice.css';
 import { useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
@@ -89,8 +87,9 @@ const StudentPractice = () => {
         console.log(questions.length)
         const totalScore = Math.round((correctCount / questions.length) * 100); // חישוב הציון באחוזים
         setScore(totalScore);
-        console.log('totalScore', totalScore);  
+        console.log('totalScore', totalScore);
 
+        console.log(totalScore, user, course._id, level);
         try {
             const response = await axios.post('http://localhost:6660/grades', {
                 mark: totalScore,
@@ -98,11 +97,11 @@ const StudentPractice = () => {
                 course: course._id,
                 level: level,
             });
-            
-            if (response.status === 200) {
-                alert(`הציון שלך הוא: ${totalScore}%`);
-            }
-            navigate('/levels', { state: { course: course } }); // נווט לדף הבית של התלמיד
+
+            // if (response.status === 200) {
+            //     alert(`הציון שלך הוא: ${totalScore}%`);
+            // }
+            // navigate('/levels', { state: { course: course } }); // נווט לדף הבית של התלמיד
         } catch (error) {
             console.error('Error saving grade:', error);
             alert('שגיאה בשמירת הציון.');
@@ -111,50 +110,55 @@ const StudentPractice = () => {
 
     return (
         <div className="practice-container">
-            {questions.length > 0 && currentQuestionIndex < questions.length && (
-                <div className="question-card">
-                    <h3>{questions[currentQuestionIndex].question}</h3> {/* הצגת השאלה */}
-                    <div className="answers-container">
-                        {questions[currentQuestionIndex].answers.map((answer, index) => (
-                            <div
-                                key={index}
-                                className={`answer-box ${showError
-                                    ? 'error'
-                                    : showFeedback
-                                        ? index === questions[currentQuestionIndex].correctAnswer - 1
-                                            ? 'correct' // תשובה נכונה - ירוק
-                                            : selectedAnswers[questions[currentQuestionIndex]._id] === index
-                                                ? 'incorrect' // תשובה שגויה - אדום
-                                                : ''
-                                        : selectedAnswers[questions[currentQuestionIndex]._id] === index
-                                            ? 'selected'
-                                            : ''
-                                    }`}
-                                onClick={() =>
-                                    !showFeedback &&
-                                    handleAnswerClick(questions[currentQuestionIndex]._id, index)
-                                }
-                            >
-                                {answer}
-                            </div>
-                        ))}
-                    </div>
-                    <div className="button-container">
-                        {!showFeedback ? (
-                            <Button onClick={handleSubmit}>הגש</Button>
-                        ) : currentQuestionIndex < questions.length - 1 ? (
-                            <Button onClick={handleNextQuestion}>הבא</Button>
-                        ) : (
-                            <Button onClick={handleFinalSubmit} className="final-submit-button">סיום</Button>
-                        )}
-                    </div>
-                </div>
-            )}
-
-            {score !== null && (
+            {/* אם הציון קיים, להציג רק את הציון ואת הכפתור */}
+            {score !== null ? (
                 <div className="score-container">
                     <h2>הציון שלך: {score}%</h2>
+                    <Button
+                        onClick={() => navigate('/levels', { state: { course: course } })}
+                        className="back-button">התקדם לשלב הבא</Button>
                 </div>
+            ) : (
+                // אחרת, להציג את השאלות
+                questions.length > 0 && currentQuestionIndex < questions.length && (
+                    <div className="question-card">
+                        <h3>{questions[currentQuestionIndex].question}</h3> {/* הצגת השאלה */}
+                        <div className="answers-container">
+                            {questions[currentQuestionIndex].answers.map((answer, index) => (
+                                <div
+                                    key={index}
+                                    className={`answer-box ${showError
+                                        ? 'error'
+                                        : showFeedback
+                                            ? index === questions[currentQuestionIndex].correctAnswer - 1
+                                                ? 'correct' // תשובה נכונה - ירוק
+                                                : selectedAnswers[questions[currentQuestionIndex]._id] === index
+                                                    ? 'incorrect' // תשובה שגויה - אדום
+                                                    : ''
+                                            : selectedAnswers[questions[currentQuestionIndex]._id] === index
+                                                ? 'selected'
+                                                : ''
+                                        }`}
+                                    onClick={() =>
+                                        !showFeedback &&
+                                        handleAnswerClick(questions[currentQuestionIndex]._id, index)
+                                    }
+                                >
+                                    {answer}
+                                </div>
+                            ))}
+                        </div>
+                        <div className="button-container">
+                            {!showFeedback ? (
+                                <Button onClick={handleSubmit}>הגש</Button>
+                            ) : currentQuestionIndex < questions.length - 1 ? (
+                                <Button onClick={handleNextQuestion}>הבא</Button>
+                            ) : (
+                                <Button onClick={handleFinalSubmit} className="final-submit-button">סיום</Button>
+                            )}
+                        </div>
+                    </div>
+                )
             )}
         </div>
     );

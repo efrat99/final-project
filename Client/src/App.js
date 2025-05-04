@@ -27,6 +27,7 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setToken, logOut } from './redux/tokenSlice';
+import { Tooltip } from 'primereact/tooltip';
 
 import './index.css';
 import './flags.css';
@@ -36,7 +37,7 @@ function App() {
   const dispatch = useDispatch();
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
-  
+
 
   const items = [
     {
@@ -74,6 +75,7 @@ function App() {
     <Router>
       {user && <div className="card">
         <Menubar model={items} />
+        <Tooltip target=".pi-sign-out" content="Log out" />
       </div>}
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
@@ -85,19 +87,19 @@ function App() {
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/studentPractice" element={<StudentPractice />} />
-        {/* <Route path="/course" element={<Course />} /> */}
-        {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (
           <Route
             path="/level"
-            element={user.role === 'Teacher' ? <TeacherLevel /> : <StudentCourse />} />)}
+            element={user.role === 'Teacher' ? <TeacherLevel /> : <StudentCourse />}
+          />
+        )}
         {user && (
           <Route
             path="/home"
             element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
           />
         )}
-          {user && (
+        {user && (
           <Route
             path="/course"
             element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />}
