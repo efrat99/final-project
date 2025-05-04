@@ -168,7 +168,52 @@ label {
   border-color: rgb(255, 98, 0);    
 }
 
+/* .courseList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  height: auto; /* גובה מותאם לתוכן 
+}
 
+.courseList > *:empty {
+  display: none; /* הסתרת אלמנטים ריקים 
+}
 
-
-
+.courseCard {
+  flex: 1 1 calc(25% - 16px);
+  box-sizing: border-box; 
+  padding: 16px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff;
+  min-height: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+} */
+.courseList {
+  display: flex;
+  flex-wrap: wrap; /* מאפשר מעבר לשורה חדשה אם אין מקום */
+  gap: 16px; /* מרווח בין הכרטיסים */
+  justify-content: center; /* ליישור הכרטיסים במרכז */
+  margin: 0; /* מסיר רווחים מסביב */
+  padding: 0; /* מסיר רווחים פנימיים */
+  background: none; 
+}
+.courseCard {
+  flex: 1 1 calc(25% - 16px); /* כל כרטיס יתפוס 25% מהרוחב, עם מרווח */
+  box-sizing: border-box;
+  /* padding: 16px; */
+  /* border: 1px solid #ccc;  */
+  /* border-radius: 8px; */
+   /* background-color: #fff; */
+  /* min-height: 300px; */
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+}

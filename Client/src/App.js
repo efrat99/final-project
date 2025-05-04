@@ -7,7 +7,7 @@ import StudentLearning from './Components/StudentComps/StudentLearning';
 // import Course from './Components/TeacherComps/Course';
 import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
-import TeacherCourse from './Components/TeacherComps/Course';
+import TeacherCourse from './Components/TeacherComps/Home';
 import Level from './Components/TeacherComps/Level';
 import Levels from './Components/StudentComps/Levels';
 import Learnings from './Components/StudentComps/Learnings';
@@ -111,11 +111,3 @@ function App() {
 
 export default App;
 
-
-
-// //////////לסדר את הבעיה של מייל כפול בדחיפות!!!!!!!!!!!!!!!!
-// // עוד דברים לעשות:
-// // 1. להוסיף עמוד להוספת תלמידים ומורים וציונים
-// // 2. להוסיף עמוד להוספת תלמידים ומורים וציונים ולהציג אותם בטבלה
-// // 3. להוסיף עמוד להצגת תלמידים ומורים וציונים בטבלה
-// //............................................ 
