@@ -6,30 +6,32 @@ import axios from 'axios';
 import './StudentPractice.css';
 import { useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
+
 const StudentPractice = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { practice, course, level } = location.state || {};
     const [questions, setQuestions] = useState([]); // שמירת fetchedObjects
     const [selectedAnswers, setSelectedAnswers] = useState({}); // תשובות שנבחרו לכל שאלה
     const [submittedAnswers, setSubmittedAnswers] = useState({}); // תשובות שהוגשו
-    const user = useSelector(state => state.token.user._id)
+    const [showError, setShowError] = useState(false); // האם להציג שגיאה
+    const [showFeedback, setShowFeedback] = useState(false); // האם להציג משוב
     const [score, setScore] = useState(null); // שמירת הציון
-    const [isSubmitted, setIsSubmitted] = useState(false); // מעקב אחרי מצב הכפתור
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0); // אינדקס השאלה הנוכחית
+    const user = useSelector(state => state.token.user); // קבלת פרטי התלמיד מה-state של Redux
+
+    // שליפת השאלות מהשרת
     const showQuestion = async () => {
         try {
             if (practice && practice.length > 0) {
-                // Fetch all data for the practice IDs
                 const responses = await Promise.all(
                     practice.map((id) => axios.get(`http://localhost:6660/practices/${id}`))
                 );
-
-                // Extract the data from successful responses
                 const fetchedObjects = responses
                     .filter((response) => response.status === 200)
                     .map((response) => response.data);
-
-                console.log(fetchedObjects);
-                setQuestions(fetchedObjects); // שמירת השאלות ב-state
+                setQuestions(fetchedObjects);
             }
         } catch (error) {
             console.error("Error fetching objects:", error);
@@ -40,24 +42,47 @@ const StudentPractice = () => {
         showQuestion();
     }, [practice]);
 
+    // בחירת תשובה
     const handleAnswerClick = (questionId, answerIndex) => {
         setSelectedAnswers((prev) => ({
             ...prev,
             [questionId]: answerIndex,
         }));
+        setShowError(false);
     };
 
-    const handleSubmit = (questionId) => {
+    // הגשת תשובה לשאלה הנוכחית
+    const handleSubmit = () => {
+        const currentQuestion = questions[currentQuestionIndex];
+        const selectedAnswer = selectedAnswers[currentQuestion._id];
+
+        if (selectedAnswer === undefined) {
+            setShowError(true);
+            return;
+        }
+
+        setShowError(false);
         setSubmittedAnswers((prev) => ({
             ...prev,
-            [questionId]: true,
+            [currentQuestion._id]: true,
         }));
+        setShowFeedback(true); // הצגת משוב
     };
+
+    // מעבר לשאלה הבאה
+    const handleNextQuestion = () => {
+        setShowFeedback(false); // הסתרת משוב
+        if (currentQuestionIndex < questions.length - 1) {
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+        }
+    };
+
+    // הגשה סופית
     const handleFinalSubmit = async () => {
         let correctCount = 0;
         questions.forEach((question) => {
             const selectedAnswer = selectedAnswers[question._id];
-            if (selectedAnswer === question.correctAnswer) {
+            if (selectedAnswer === question.correctAnswer - 1) {
                 correctCount++;
             }
         });
@@ -66,56 +91,69 @@ const StudentPractice = () => {
         setScore(totalScore);
 
         try {
-            // שליחת הציון לשרת
             const response = await axios.post('http://localhost:6660/grades', {
                 mark: totalScore,
-                student: user, // החלף ב-ID של התלמיד המחובר
-                course: course._id, // החלף ב-ID של הקורס
-                level: level, // החלף ב-ID של הרמה
+                student: user,
+                course: course._id,
+                level: level,
             });
-            console.log(response.status);
             if (response.status === 200) {
-                console.log('Grade saved successfully:', response.data);
-                alert('הציון נשמר בהצלחה!');
-
+                alert(`הציון שלך הוא: ${totalScore}%`);
             }
+            navigate('/levels', { state: { course: course } }); // נווט לדף הבית של התלמיד
         } catch (error) {
             console.error('Error saving grade:', error);
             alert('שגיאה בשמירת הציון.');
         }
-        setIsSubmitted(true);
     };
+
     return (
         <div className="practice-container">
-            {questions.map((question) => (
-                <div key={question._id} className="question-card">
-                    <h3>{question.question}</h3> {/* הצגת השאלה */}
+            {questions.length > 0 && currentQuestionIndex < questions.length && (
+                <div className="question-card">
+                    <h3>{questions[currentQuestionIndex].question}</h3> {/* הצגת השאלה */}
                     <div className="answers-container">
-                        {question.answers.map((answer, index) => (
+                        {questions[currentQuestionIndex].answers.map((answer, index) => (
                             <div
                                 key={index}
-                                className={`answer-box ${selectedAnswers[question._id] === index
-                                    ? submittedAnswers[question._id]
-                                        ? index === question.correctAnswer
-                                            ? 'correct'
-                                            : 'incorrect'
-                                        : 'selected'
-                                    : ''
+                                className={`answer-box ${showError
+                                    ? 'error'
+                                    : showFeedback
+                                        ? index === questions[currentQuestionIndex].correctAnswer - 1
+                                            ? 'correct' // תשובה נכונה - ירוק
+                                            : selectedAnswers[questions[currentQuestionIndex]._id] === index
+                                                ? 'incorrect' // תשובה שגויה - אדום
+                                                : ''
+                                        : selectedAnswers[questions[currentQuestionIndex]._id] === index
+                                            ? 'selected'
+                                            : ''
                                     }`}
-                                onClick={() => handleAnswerClick(question._id, index)}
+                                onClick={() =>
+                                    !showFeedback &&
+                                    handleAnswerClick(questions[currentQuestionIndex]._id, index)
+                                }
                             >
                                 {answer}
                             </div>
                         ))}
                     </div>
-                    {!submittedAnswers[question._id] && (
-                        <Button onClick={() => handleSubmit(question._id)}>Submit</Button>
-                    )}
-
+                    <div className="button-container">
+                        {!showFeedback ? (
+                            <Button onClick={handleSubmit}>הגש</Button>
+                        ) : currentQuestionIndex < questions.length - 1 ? (
+                            <Button onClick={handleNextQuestion}>הבא</Button>
+                        ) : (
+                            <Button onClick={handleFinalSubmit} className="final-submit-button">סיום</Button>
+                        )}
+                    </div>
                 </div>
-            ))}
-            <Button onClick={handleFinalSubmit} className="final-submit-button"  disabled={isSubmitted}>הגש</Button>
-            {score !== null && <h2>הציון שלך: {score}%</h2>}
+            )}
+
+            {score !== null && (
+                <div className="score-container">
+                    <h2>הציון שלך: {score}%</h2>
+                </div>
+            )}
         </div>
     );
 };

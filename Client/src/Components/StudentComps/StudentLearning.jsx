@@ -3,9 +3,12 @@ import { Card } from 'primereact/card';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import '../../FlipCard.css'; // Import the CSS file for the flip card effect'
+import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
 
 const StudentLearning = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { vocabulary, course } = location.state || {};
     const [objects, setObjects] = useState([]);
     const [flippedStates, setFlippedStates] = useState([]);
@@ -149,6 +152,9 @@ const StudentLearning = () => {
                     </Card>
                 </div>
             ))}
+            {/* <div>
+                <Button label='מעבר לתרגול' onClick={() => navigate('/studentPractice', { state: { vocabulary, course } })} />
+            </div> */}
         </div>
     );
 };

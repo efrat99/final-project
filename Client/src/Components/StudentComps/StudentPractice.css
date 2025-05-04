@@ -26,28 +26,6 @@
     text-align: center;
 }
 
-.answer-box:hover {
-    background-color: #f0f0f0;
-}
-
-.answer-box.selected {
-    background-color: #d4edda;
-    border-color: #28a745;
-    color: #155724;
-}
-
-.answer-box.correct {
-    background-color: #d4edda;
-    border-color: #28a745;
-    color: #155724;
-}
-
-.answer-box.incorrect {
-    background-color: #f8d7da;
-    border-color: #dc3545;
-    color: #721c24;
-}
-
 button {
     margin-top: 10px;
     padding: 10px 20px;
@@ -61,4 +39,39 @@ button {
 
 button:hover {
     background-color: #0056b3;
+}
+
+.answer-box.correct {
+    background-color: #d4edda; /* ירוק */
+    border-color: #c3e6cb;
+    color: #155724;
+    font-weight: bold;
+
+}
+
+.answer-box.incorrect {
+    background-color: #f8d7da; /* אדום */
+    border-color: #f5c6cb;
+    color: #721c24;
+    font-weight: bold;
+
+}
+
+.answer-box.selected {
+    background-color:rgba(255, 98, 0, 0.2); 
+    /* border-color: rgba(255, 98, 0, 0.5); */
+    color: black;
+    font-weight: bold;
+}
+
+.answer-box.error {
+    border: 2px solid rgba(255, 98, 0, 0.8); /* אדום */
+    background-color: white; /* אדום בהיר */
+    font-weight: bold;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; /* מרכז את הכפתורים אופקית */
+    margin-top: 20px; /* רווח מעל הכפתורים */
 }
