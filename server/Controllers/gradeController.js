@@ -29,6 +29,18 @@ const getAllStudentGrades = async (req, res) => {
     res.json(grades)
 }
 
+//get Grade By Student And Level
+const getGradeByStudentAndLevel = async(req, res) => {
+    const { student, level } = req.query
+    if (!student || !level)
+        return res.status(400).json({ message: 'Student and Level are required' })
+
+    const grade = await Grade.findOne({ student: student, level: level }).exec()
+    if (!grade)
+        return res.status(400).json({ message: 'There is no grade for this student and level' })
+    res.json(grade)
+}
+
 
 //post
 const createGrade = async (req, res) => {
@@ -92,6 +104,7 @@ const updateGrade = async (req, res) => {
 module.exports = {
     getAllGrades,
     getAllStudentGrades,
+    getGradeByStudentAndLevel,
     getGradeById,
     createGrade,
     updateGrade,

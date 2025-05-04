@@ -93,8 +93,37 @@
 }
 
 
-
-
+    .practice-button-container {
+        position: fixed;
+        bottom: 7%; 
+        left: 5%;
+        z-index: 1000; /* הכפתור יוצג מעל האלמנטים האחרים */
+        display: flex;
+        flex-direction: column; /* מוודא שהכפתור והטקסט יהיו אחד מעל השני */
+        align-items: center; /* ממרכז את הכפתור והטקסט */
+    }
+    
+    .practice-button {
+        width: 80px; /* רוחב הכפתור */
+        height: 80px; /* גובה הכפתור */
+        border-radius: 50%; /* הופך את הכפתור לעגול */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 25px; /* גודל האייקון */
+        transition: background-color 0.3s ease;
+        border: none; /* ללא מסגרת */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* הוספת צל */
+    }
+    
+    
+    .practice-text {
+        margin-top: 1px; /* רווח בין הכפתור לטקסט */
+        font-size: 14px; /* גודל הטקסט */
+        color: #333; /* צבע הטקסט */
+        text-align: center;
+        font-weight: bold;
+    }
 
 
 
