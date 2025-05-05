@@ -275,9 +275,9 @@ const Practice = () => {
                     onClick={() => {
                         navigate('/Level', {
                             state: {
-                                practice: practices,
-                                learning: learning,
-                                level: level,
+                                // practice: practices,
+                                // learning: learning,
+                                // level: level,
                                 courseId: courseId
                             }
                         });

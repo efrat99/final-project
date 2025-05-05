@@ -302,7 +302,7 @@ const Learning = () => {
 
     const location = useLocation();
     const { token } = useSelector((state) => state.token);
-    const { level } = location.state || {}; // קבלת הרמה שנבחרה
+    const { level,courseId } = location.state || {}; // קבלת הרמה שנבחרה
     const fileUploadRef = useRef(null); // יצירת הפניה לרכיב FileUpload
     const navigate = useNavigate();
 
@@ -560,7 +560,7 @@ const Learning = () => {
                     </DataTable>
                 </div>
             </div>
-            <Button label="סיום" className="mt-2" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level } })} />
+            <Button label="סיום" className="mt-2" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level,courseId:courseId } })} />
         </div>
     );
 };
