@@ -12,6 +12,11 @@ const getAllCourses = async (req, res) => {
 //getById
 const getCourseById = async (req, res) => {
     const { _id } = req.params
+    if (!_id) {
+        console.error("No ID provided");
+        return res.status(400).send("No ID provided");
+    }
+
     const course = await Course.findById(_id).exec()
     if (!course) {
         return res.status(400).json({ message: 'Course is not found' })
