@@ -1,15 +1,18 @@
 import { Button } from "primereact/button"
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import { useLocation } from "react-router-dom"
 import axios from "axios"
 import { useNavigate } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 const Levels = () => {
     const location = useLocation()
     const navigate = useNavigate()
+    const user = useSelector(state => state.token.user);
     const { course } = location.state || {};
     const [vocabulary, setVocabulary] = useState([]);
     const [practice, setPractice] = useState([]);
+
+
 
     const EnterCourse = async (numLevel) => {
         try {
@@ -56,11 +59,14 @@ const Levels = () => {
     }
     return (
         <div className="levels">
+            {console.log(course._id)}
+            {console.log(user._id)}
             <Button label="Level 1" icon="pi pi-check" className="p-button-success" onClick={() => { EnterCourse(1) }} />
             <Button label="Level 2" icon="pi pi-check" className="p-button-success" onClick={() => { EnterCourse(2) }} />
             <Button label="Level 3" icon="pi pi-check" className="p-button-success" onClick={() => { EnterCourse(3) }} />
             <Button label="Level 4" icon="pi pi-check" className="p-button-success" onClick={() => { EnterCourse(4) }} />
-        </div>
+
+        </div >
     )
 
 }

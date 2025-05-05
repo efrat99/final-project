@@ -23,7 +23,7 @@ router.put("/", gradeController.updateGrade)
 
 // delete
 // router.delete("/:_id", gradeController.deleteGrade)
-
+router.delete('/deleteByStudentAndCourse', gradeController.deleteGradesByStudentAndCourse);
 
 module.exports = router
 

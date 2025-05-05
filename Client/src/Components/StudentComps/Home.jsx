@@ -10,16 +10,30 @@ const Home = () => {
   const navigate = useNavigate();
   const [studentCourses, setStudentCourses] = useState([]);
   const [Courses, setCourses] = useState([]);
+  const [teacherNames, setTeacherNames] = useState({});
   const _id = useSelector(state => state.token.user._id)
   const fetchCourses = async () => {
     try {
       const res = await axios.get("http://localhost:6660/courses/");
       if (res.status === 200) {
-        setCourses(res.data); // Update state with all courses
-        const filteredCourses = res.data.filter((course) => {
+        const courses = res.data;
+  
+        // שליפת שמות המורים
+        const teacherNamesMap = {};
+        await Promise.all(
+          courses.map(async (course) => {
+            if (course.teacher && !teacherNamesMap[course.teacher]) {
+              teacherNamesMap[course.teacher] = await TeacherName(course.teacher);
+            }
+          })
+        );
+  
+        setTeacherNames(teacherNamesMap); // עדכון שמות המורים ב-state
+        setCourses(courses); // עדכון הקורסים
+        const filteredCourses = courses.filter((course) => {
           return course.students.some((student) => student === _id);
         });
-        setStudentCourses(filteredCourses); // Update state
+        setStudentCourses(filteredCourses); // עדכון הקורסים של התלמיד
       }
     } catch (e) {
       console.error(e);
@@ -47,12 +61,15 @@ const Home = () => {
   const DeleteStudentFromCourse = async (course) => {
     try {
       course.students = course.students.filter(student => student !== _id);  // Remove the student ID from the course's students array
+    const res1=  await axios.delete('http://localhost:6660/grades/deleteByStudentAndCourse', {data:{studentId: _id,courseId: course._id}});
+    console.log(res1.status);
       const res = await axios.put(`http://localhost:6660/courses/`, course);  // Update the course on the server
       console.log(res.status);
       if (res.status === 200) {
         console.log(res.data);  // Display the response from the server
       }
       fetchCourses();
+
     } catch (e) {
       console.error(e);  // Handle errors
     }
@@ -64,14 +81,24 @@ const Home = () => {
       if (res.status === 200) {
         console.log(res.data);  // Display the course details
         const resCourse = res.data
-        navigate('/Course', { state: { course: resCourse } });  // Navigate to the Course page with the course data
+        navigate('/levels', { state: { course: resCourse } });  // Navigate to the Course page with the course data
       }
     } catch (e) {
       console.error(e);  // Handle errors
     }
   }
 
-
+  const TeacherName = async (teacherId) => {
+    try {
+      const res = await axios.get(`http://localhost:6660/users/${teacherId}`);
+      if (res.status === 200) {
+        return res.data.firstName+" "+res.data.lastName; // נניח ששם המורה נמצא בשדה `name`
+      }
+    } catch (e) {
+      console.error(`Error fetching teacher name for ID ${teacherId}:`, e);
+      return "Unknown Teacher"; // ערך ברירת מחדל במקרה של שגיאה
+    }
+  };
 
 
   const header = (
@@ -91,6 +118,7 @@ const Home = () => {
         {Courses.map((course) => !course.students.includes(_id) ? (
           <Card header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
             <h1 className="m-0">{course.language}</h1>
+            <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3> 
             <Button label="הירשם" icon="pi pi-check" onClick={() => { AddStudentToCourse(course) }} />
           </Card>
         ) : null)}</div>
@@ -98,9 +126,10 @@ const Home = () => {
         <p>הקורסים שלי</p>
         <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {studentCourses.map((course) => (
-            <Card footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
-              <h1 className="m-0">{course.language}
-              </h1>
+            <Card  footer={footer(course)} header={header} style={{ width: '300px', height: '400px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
+              <h1 className="m-0">{course.language } </h1>
+               <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3> 
+              
             </Card>
           ))}
         </div>

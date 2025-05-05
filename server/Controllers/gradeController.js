@@ -23,6 +23,9 @@ const getGradeById = async (req, res) => {
 //get all student's grades
 const getAllStudentGrades = async (req, res) => {
     const { _id } = req.params
+    if (!mongoose.Types.ObjectId.isValid(_id)) {
+        return res.status(400).json({ message: "Invalid student ID" });
+    }
     const grades = await Grade.find({ student: { _id: _id } }).exec()
     if (!grades?.length)
         return res.status(400).json({ message: 'There are no grades for this student' })
@@ -30,7 +33,7 @@ const getAllStudentGrades = async (req, res) => {
 }
 
 //get Grade By Student And Level
-const getGradeByStudentAndLevel = async(req, res) => {
+const getGradeByStudentAndLevel = async (req, res) => {
     const { student, level } = req.query
     if (!student || !level)
         return res.status(400).json({ message: 'Student and Level are required' })
@@ -95,11 +98,32 @@ const updateGrade = async (req, res) => {
 //     const { _id } = req.paramas
 //     const grade = await Grade.findById(_id).exec()
 //     if (!grade) {
-//         return res.status(400).json({ message: 'Student is not found' })
+//         return res.status(400).json({ message: 'grade is not found' })
 //     }
-//     const result = await student.deleteOne()
-//     res.json(`'Student named '${-id}' is deleted`)
+//     const result = await grade.deleteOne()
+//     if (!result)
+//         return res.status(400).json({ message: 'grade deletion has failed' })
+//     res.json(`'grade  '${_id}' is deleted`)
 // }
+// Delete all grades for a student in a specific course
+const deleteGradesByStudentAndCourse = async (req, res) => {
+    const { studentId, courseId } = req.body;
+
+    if (!studentId || !courseId) {
+        return res.status(400).json({ message: 'Student ID and Course ID are required' });
+    }
+
+    try {
+        const result = await Grade.deleteMany({ student: studentId, course: courseId });
+        if (result.deletedCount === 0) {
+            return res.status(404).json({ message: 'No grades found for this student in the course' });
+        }
+        res.json({ message: `Deleted ${result.deletedCount} grades for student ${studentId} in course ${courseId}` });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Failed to delete grades' });
+    }
+};
 
 module.exports = {
     getAllGrades,
@@ -109,5 +133,6 @@ module.exports = {
     createGrade,
     updateGrade,
     // deleteGrade
+    deleteGradesByStudentAndCourse
 }
 
