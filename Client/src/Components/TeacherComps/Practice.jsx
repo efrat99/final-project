@@ -152,7 +152,7 @@ const Practice = () => {
                         </div>
                     ))}
 
-        
+
                     <div className="p-inputgroup">
                         <span className="p-inputgroup-addon"><i className="pi pi-check"></i></span>
                         <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
@@ -205,7 +205,7 @@ const Practice = () => {
                                     </div>
                                 ) : (
                                     <div style={{ textAlign: 'center', fontWeight: 'bold', fontSize: '18px' }}>
-                                        {rowData.question}
+                                        {practices.find((p) => p._id === rowData._id)?.question}
                                     </div>
                                 )}
 
@@ -223,6 +223,7 @@ const Practice = () => {
                                             </div>
                                         ) : (
                                             <div>
+                                                {/* {practices.find((p) => p._id === rowData._id)?.answers[index]}  */}
                                                 {answer} {rowData.correctAnswer === index + 1 ? "✔️" : "❌"}
                                             </div>
                                         )}
@@ -246,11 +247,21 @@ const Practice = () => {
                                 {/* Edit and Delete buttons */}
                                 <div style={{ textAlign: 'center' }}>
                                     {editId === rowData._id ? (
-                                        <Button label="שמור" className="p-button-success p-button-sm" onClick={handleSave} />
+                                        <>
+                                            <Button label="שמור" className="p-button-success p-button-sm" onClick={handleSave} />
+                                            <Button label="בטל" className="p-button-secondary p-button-sm" onClick={() => {
+                                                // const originalData = practices.find((p) => p._id === editId); // מציאת הנתונים המקוריים
+                                                // setEditedData({...originalData}); 
+                                                setEditId(null)
+                                            }} />
+
+                                        </>
                                     ) : (
-                                        <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                        <>
+                                            <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                            <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
+                                        </>
                                     )}
-                                    <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                 </div>
                             </div>
                         ))}

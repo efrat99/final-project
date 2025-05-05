@@ -18,54 +18,6 @@ const StudentLearning = () => {
     const user = useSelector(state => state.token.user); // Get the current user from Redux
 
 
-    // const languageMap = {
-    //     ar: "ar-SA",
-    //     en: "en-US",
-    //     es: "es-ES",
-    //     fr: "fr-FR",
-    //     de: "de-DE",
-    //     ru: "ru-RU",
-    //     zh: "zh-CN",
-    //     hi: "hi-IN",
-    //     pt: "pt-PT",
-    //     ja: "ja-JP",
-    //     it: "it-IT",
-    //     nl: "nl-NL",
-    //     ko: "ko-KR",
-    //     tr: "tr-TR",
-    //     he: "he-IL",
-    //     fa: "fa-IR",
-    //     pl: "pl-PL",
-    //     uk: "uk-UA",
-    //     sv: "sv-SE",
-    //     fi: "fi-FI",
-    //     no: "no-NO",
-    //     da: "da-DK",
-    //     cs: "cs-CZ",
-    //     el: "el-GR",
-    //     th: "th-TH",
-    //     id: "id-ID",
-    //     vi: "vi-VN",
-    //     hu: "hu-HU",
-    //     ro: "ro-RO",
-    //     bg: "bg-BG",
-    //     sr: "sr-RS",
-    //     sk: "sk-SK",
-    //     sl: "sl-SI",
-    //     hr: "hr-HR",
-    //     lt: "lt-LT",
-    //     lv: "lv-LV",
-    //     et: "et-EE",
-    //     ms: "ms-MY",
-    //     bn: "bn-BD",
-    //     tl: "tl-PH",
-    //     sw: "sw-KE",
-    //     mt: "mt-MT",
-    //     is: "is-IS",
-    //     ga: "ga-IE",
-    //     cy: "cy-GB"
-    // };
-
     const languageMap = {
         "ערבית": "ar-SA",
         "אנגלית": "en-US",
@@ -146,7 +98,6 @@ const StudentLearning = () => {
                         level: level, // Filter by the current course
                     },
                 });
-                // אם יש ציונים קיימים - נעדכן שצריך לעשות Disable לכפתור
                 if (response.data) {
                     setIsPracticeDisabled(true);
                     console.log(response.data._id + " - יש ציונים קיימים");
