@@ -217,3 +217,9 @@ label {
   justify-content: space-between;
   text-align: center;
 }
+
+
+.p-card-footer {
+  padding: 0.5rem !important;
+  min-height: auto !important;
+}

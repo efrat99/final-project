@@ -125,6 +125,10 @@
         font-weight: bold;
     }
 
+    .practice-button .pi {
+        font-size: 30px; /* גודל האייקון */
+    }
+
 
 
 

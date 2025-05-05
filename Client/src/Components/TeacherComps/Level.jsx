@@ -3,9 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { Button } from 'primereact/button';
 import { MultiSelect } from 'primereact/multiselect';
 import { useNavigate } from 'react-router-dom';
-import first from '../../Images/3.png';
+import level1 from '../../Images/level1.jpg';
+import level2 from '../../Images/level2.jpg';
+import level3 from '../../Images/level3.jpg'; 
+import level4 from '../../Images/level4.jpg';
 import { useLocation } from 'react-router-dom';
-import axios from 'axios';
+import '../../App.css';
+import axios from 'axios';  
 
 const Level = () => {
     const navigate = useNavigate();
@@ -53,15 +57,6 @@ const Level = () => {
         console.log(data);
         try {
             console.log(data);  // הצגת המידע שנשלח
-
-            // const courseRes = await axios.get(`http://localhost:6660/levels/`, {
-            //     params: {
-            //         courseId: courseId,
-            //         number: level,
-            //     },
-            // });
-            // const course = courseRes.data;
-
             if (!exists) {
                 const res = await axios.post('http://localhost:6660/levels/', data);
                 console.log('Response status:', res.status);
@@ -85,18 +80,25 @@ const Level = () => {
             console.error(e);
         }
     };
-
-    const header = (
-        <img alt="Card" src={first} style={{ width: '300px', height: '200px' }} />
-    );
-
+    const header = (level) => {
+        const images = [level1, level2, level3, level4]; // מערך התמונות לפי רמות
+        return (
+            <img alt={`Level ${level}`} src={images[level - 1]} style={{ width: '100%', height: 'auto' }} />
+        );
+    };
+    
     const footer = (level) => {
         const exists = levelArr.some(l => l.number === level);
         return (
+            <div className="card-footer">
             <Button
+            
                 label={exists ? "עדכן" : "הוסף"}
                 onClick={() => handleLearningClick(level, exists)}
+                 
+                style={{ textAlign: 'center', width: '100%', height: '100%' }}
             />
+            </div>
         );
     };
 
@@ -105,10 +107,10 @@ const Level = () => {
         <h1>הוספת שלבים</h1>
 
         <div style={{ display: 'flex', justifyContent: 'center', gap: '20px', flexWrap: 'wrap' }}>
-            <Card title="שלב 1" footer={footer(1)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 2" footer={footer(2)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 3" footer={footer(3)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
-            <Card title="שלב 4" footer={footer(4)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card footer={footer(1)} header={header(1)} style={{ width: '100%', height: 'auto', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card  footer={footer(2)} header={header(2)} style={{ width: '100%', height: 'auto', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card  footer={footer(3)} header={header(3)} style={{ width: '100%', height: 'auto', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
+            <Card footer={footer(4)} header={header(4)} style={{ width: '100%', height: 'auto', fontSize: '0.9rem' }} className="md:w-15rem"></Card>
         </div>
     </>
     );
