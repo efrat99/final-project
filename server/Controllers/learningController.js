@@ -24,12 +24,6 @@ const getLearningById = async (req, res) => {
 const getLearningsByLevelObject = async (req, res) => {
     const { level } = req.query; // קבלת ה-Level מה-Query String
     try {
-        // המרת ה-Level למספר
-        // const numericLevel = parseInt(level, 10);
-        // console.log(numericLevel)
-        // if (isNaN(numericLevel)) {
-        //     return res.status(400).json({ message: 'Invalid level parameter' });
-
         // שליפת ה-Level המתאים לפי המספר
         console.log(level)
         const levelData = await Level.findById(level).populate('learning').exec();
