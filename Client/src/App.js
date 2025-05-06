@@ -50,22 +50,22 @@ function App() {
       }
     },
     {
-      label: 'Home',
+      label: 'בית',
       icon: <img src={foxImage} alt="Home" style={{ width: '50px', height: 'auto' }} />,
       command: () => window.location.href = '/home'  // ניווט לעמוד הבית
     },
+    // {
+    //   label: 'Students',
+    //   icon: 'pi pi-star',
+    // },
+    // {
+    //   label: 'Teachers',
+    //   icon: 'pi pi-search',
+    // },
     {
-      label: 'Students',
-      icon: 'pi pi-star',
-    },
-    {
-      label: 'Teachers',
-      icon: 'pi pi-search',
-    },
-    {
-      label: 'Courses',
-      icon: 'pi pi-envelope',
-      command: () => window.location.href = '/courses' // ניווט לעמוד הקורסים
+      label: ' ציונים     ' ,
+      icon: 'pi pi-graduation-cap',
+      command: () => window.location.href = '/grades' // ניווט לעמוד הקורסים
     },
 
   ];
@@ -87,7 +87,9 @@ function App() {
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/studentPractice" element={<StudentPractice />} />
-        {/* <Route path="/Grades" element={<Grades />} /> */}
+
+        <Route path="/grades" element={<Grades />} />
+
         {/* <Route path="/course" element={<Course />} /> */}
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (

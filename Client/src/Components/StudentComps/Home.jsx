@@ -145,7 +145,7 @@ const fetchCourses = async () => {
       console.error(e);  // Handle errors
     }
   }
-const Grades= async (course) => {
+const Grades= async () => {
   navigate('/Grades');
 }
 
@@ -168,8 +168,8 @@ const Grades= async (course) => {
   );
   const footer = (course) => (
     <>
-      <Button label="היכנס" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={() => { EnterCourse(course) }} />
-      <Button label="מחק" severity="secondary" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={() => { DeleteStudentFromCourse(course) }} />
+      <Button label="היכנס" icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={() => { EnterCourse(course) }} />
+      <Button label="מחק"  icon="pi pi-times" style={{ marginLeft: '0.5em' }} onClick={() => { DeleteStudentFromCourse(course) }} />
     </>
   );
 
@@ -190,13 +190,12 @@ const Grades= async (course) => {
           {studentCourses.map((course) => (
             <Card  footer={footer(course)} header={header} style={{ width: '300px', height: '400px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
               <h1 className="m-0">{course.language } </h1>
-               <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3> 
+               <h3>מורה:  {teacherNames[course.teacher] || "Loading..."}</h3> 
               
             </Card>
           ))}
         </div>
       </div>
-      <Button onClick={Grades}></Button>
     </div>
   );
 }
