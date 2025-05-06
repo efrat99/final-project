@@ -15,7 +15,7 @@ import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
 import StudentPractice from './Components/StudentComps/StudentPractice';
 import foxImage from './Images/fox.png';
-import Grades from './Components/StudentComps/Grades';  
+// import Grades from './Components/StudentComps/Grades';  
 
 import './App.css';
 import './login.css';
@@ -87,7 +87,7 @@ function App() {
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/studentPractice" element={<StudentPractice />} />
-        <Route path="/Grades" element={<Grades />} />
+        {/* <Route path="/Grades" element={<Grades />} /> */}
         {/* <Route path="/course" element={<Course />} /> */}
         {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (

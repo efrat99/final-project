@@ -507,23 +507,54 @@ const Learning = () => {
                     <br />
                     <Button type="submit" label="הוסף" className="mt-2" />
                 </form>
-            </div>
+          
 
-            <div style={{ flex: 2 }}>
-                <div>
-                    <FileUpload
-                        ref={fileUploadRef} // חיבור הפניה לרכיב
-                        mode="basic"
-                        name="demo[]"
-                        accept=".xlsx, .xls"
-                        maxFileSize={1000000}
-                        customUpload
-                        uploadHandler={handleFileChange}
-                        auto
-                        chooseLabel="בחר קובץ"
-                        className="p-button-primary"
-                    />
-                </div>
+           <div style={{ flex: 2 }}>
+           <div>
+    {/* הסבר על סוג הקובץ */}
+    <div style={{ marginBottom: '10px', color: '#555', fontSize: '14px' }}>
+        <p>יש להעלות קובץ בפורמט Excel (.xlsx או .xls) עם המבנה הבא:</p>
+        <ul>
+            <li><strong>מילה:</strong> המילה שברצונך להוסיף.</li>
+            <li><strong>תרגום:</strong> התרגום של המילה.</li>
+        </ul>
+        <p>לדוגמה:</p>
+        <table style={{ border: '1px solid #ddd', borderCollapse: 'collapse', width: '100%', marginTop: '10px' }}>
+            <thead>
+                <tr>
+                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>מילה</th>
+                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תרגום</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>שלום</td>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>Hello</td>
+                </tr>
+                <tr>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>תודה</td>
+                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>Thank you</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {/* רכיב העלאת קבצים */}
+    <FileUpload
+        ref={fileUploadRef}
+        mode="basic"
+        name="demo[]"
+        accept=".xlsx, .xls"
+        maxFileSize={1000000}
+        customUpload
+        uploadHandler={handleFileChange}
+        auto
+        chooseLabel="בחר קובץ"
+        className="p-button-primary"
+    />
+</div>  </div>
+               
+               
                 <div className="card">
                     <DataTable key={editId} value={learnings} responsiveLayout="scroll" rowClassName={(rowData) => (
                         rowData._id === editId ? 'editable-row' : ''
