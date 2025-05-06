@@ -14,8 +14,8 @@ const StudentLearning = () => {
     const [objects, setObjects] = useState([]);
     const [flippedStates, setFlippedStates] = useState([]);
     const [voices, setVoices] = useState([]);
-    const [isPracticeDisabled, setIsPracticeDisabled] = useState(false); // State to control the button
-    const user = useSelector(state => state.token.user); // Get the current user from Redux
+    const [isPracticeDisabled, setIsPracticeDisabled] = useState(false); 
+    const user = useSelector(state => state.token.user); 
 
 
     const languageMap = {
@@ -122,9 +122,6 @@ const StudentLearning = () => {
         checkPracticeStatus();
     }, [vocabulary, course, user]);
 
-    useEffect(() => {
-
-    }, []);
 
 
     const toggleFlip = (index) => {
