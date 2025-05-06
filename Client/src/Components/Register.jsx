@@ -12,10 +12,12 @@ import { SelectButton } from 'primereact/selectbutton';
 import { InputOtp } from 'primereact/inputotp';
 import { useDispatch, useSelector } from 'react-redux';
 import { setToken, logOut, setUser } from '../redux/tokenSlice'
+import TermsOfService from './TermsOfService';
 
 import { useNavigate } from 'react-router-dom'
 
 export const Register = ({ onClose }) => {
+    const [showTermsDialog, setShowTermsDialog] = useState(false);
     const [showMessage, setShowMessage] = useState(false);
     const [formData, setFormData] = useState({});
     const options = ['Teacher', 'Student'];
@@ -37,6 +39,10 @@ export const Register = ({ onClose }) => {
         userType: ''
     }
     const { control, formState: { errors }, handleSubmit, reset, setError } = useForm({ defaultValues });
+
+    const toggleTermsDialog = () => {
+        setShowTermsDialog(!showTermsDialog);
+    };
 
     const onSubmit = async (data) => {
         if (data.userType == "Teacher" && !selectedRole) {
@@ -213,6 +219,9 @@ export const Register = ({ onClose }) => {
                                 <Checkbox inputId={field.name} onChange={(e) => field.onChange(e.checked)} checked={field.value} className={classNames({ 'p-invalid': fieldState.invalid })} />
                             )} />
                             <label htmlFor="accept" className={classNames({ 'p-error': errors.accept })}>אני מסכים לתנאי השימוש*</label>
+                            {/* <span onClick={toggleTermsDialog} style={{ cursor: 'pointer', color: 'blue' }}>
+                                (לחץ כאן לקרוא את התנאים)
+                            </span> */}
                         </div>
                         <br></br>
                         {errorMessage && <small className="p-error">{errorMessage}</small>}
@@ -220,6 +229,9 @@ export const Register = ({ onClose }) => {
                     </form>
                 </div>
             </div>
+            {/* <Dialog visible={showTermsDialog} onHide={toggleTermsDialog}>
+            <TermsOfService />
+        </Dialog> */}
         </div>
 
     );
