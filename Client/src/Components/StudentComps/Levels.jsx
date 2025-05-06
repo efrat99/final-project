@@ -22,7 +22,11 @@ const Levels = () => {
     const [completedLevelIds, setCompletedLevelIds] = useState([]);
 
     useEffect(() => {
+        console.log(course);
         const fetchLevelsAndGrades = async () => {
+            if (!course) {
+                console.log("no courses");
+            }
             if (!course?._id || !course?.levels?.length) return;
 
             try {
@@ -34,7 +38,7 @@ const Levels = () => {
                 );
                 const fetchedLevels = levelResponses.map((res) => res.data);
                 setLevels(fetchedLevels);
-
+                console.log("Fetched levels:", fetchedLevels);
 
                 const gradeResponses = await Promise.all(
                     fetchedLevels.map((level) =>
@@ -51,11 +55,13 @@ const Levels = () => {
                     .map((_, i) => fetchedLevels[i]._id);
 
                 setCompletedLevelIds(completedIds);
-                fetchLevelsAndGrades();
+
             } catch (error) {
                 console.error("Error fetching levels:", error);
             }
         }
+        
+        fetchLevelsAndGrades();
     }, [course, user]);
 
     const handleEnterLevel = (level) => {

@@ -7,7 +7,7 @@ import StudentLearning from './Components/StudentComps/StudentLearning';
 // import Course from './Components/TeacherComps/Course';
 import TeacherLevel from './Components/TeacherComps/Level';
 import StudentCourse from './Components/StudentComps/Course';
-import TeacherCourse from './Components/TeacherComps/Home';
+// import TeacherCourse from './Components/TeacherComps/Course';
 import Level from './Components/TeacherComps/Level';
 import Levels from './Components/StudentComps/Levels';
 import Learnings from './Components/StudentComps/Learnings';
@@ -27,7 +27,6 @@ import { Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setToken, logOut } from './redux/tokenSlice';
-import { Tooltip } from 'primereact/tooltip';
 
 import './index.css';
 import './flags.css';
@@ -38,6 +37,8 @@ function App() {
   const user = useSelector(state => state.token.user);
   console.log("Current user in Redux:", user);
 
+
+  // ...(user ? 
 
   const items = [
     {
@@ -75,7 +76,6 @@ function App() {
     <Router>
       {user && <div className="card">
         <Menubar model={items} />
-        <Tooltip target=".pi-sign-out" content="Log out" />
       </div>}
       <Routes>
         {/* <Route path="/" element={<Home />} /> */}
@@ -87,20 +87,19 @@ function App() {
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/studentPractice" element={<StudentPractice />} />
-        <Route path="/course" element={<TeacherCourse />} />
+        {/* <Route path="/course" element={<Course />} /> */}
+        {/* <Route path="/student" element={<StudentLearning />} /> */}
         {user && (
           <Route
             path="/level"
-            element={user.role === 'Teacher' ? <TeacherLevel /> : <StudentCourse />}
-          />
-        )}
+            element={user.role === 'Teacher' ? <TeacherLevel /> : <StudentCourse />} />)}
         {user && (
           <Route
             path="/home"
             element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
           />
         )}
-        {/* {user && (
+          {/* {user && (
           <Route
             path="/course"
             element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />}
@@ -114,3 +113,11 @@ function App() {
 
 export default App;
 
+
+
+// //////////לסדר את הבעיה של מייל כפול בדחיפות!!!!!!!!!!!!!!!!
+// // עוד דברים לעשות:
+// // 1. להוסיף עמוד להוספת תלמידים ומורים וציונים
+// // 2. להוסיף עמוד להוספת תלמידים ומורים וציונים ולהציג אותם בטבלה
+// // 3. להוסיף עמוד להצגת תלמידים ומורים וציונים בטבלה
+// //............................................ 

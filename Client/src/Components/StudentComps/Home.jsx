@@ -19,9 +19,68 @@ const fetchCourses = async () => {
       const courses = res.data;
 
       if (res.status === 200) {
-        const courses = res.data;
-  
-        // שליפת שמות המורים
+          console.log("קורסים שהתקבלו מהשרת:", courses);
+
+          // סינון קורסים עם פחות מ-4 רמות או רמות לא תקינות
+          const filteredCourses = await Promise.all(
+              courses.map(async (course) => {
+                  const levels = course.levels || [];
+                  if (levels.length < 4) {
+                      console.log(`קורס "${course.language}" נפסל - פחות מ-4 רמות (${levels.length})`);
+                      return null; // הסר קורסים עם פחות מ-4 רמות
+                  }
+
+                  // בדוק אם כל הרמות מכילות Learnings ו-Practices תקינים
+                  const allLevelsHaveContent = await Promise.all(
+                      levels.map(async (levelId, i) => {
+                          try {
+                              const learningsRes = await axios.get(`http://localhost:6660/learnings/`, {params:{level:levelId}});
+                              const learnings = learningsRes.data;
+
+                              if (!learnings || learnings.length === 0) {
+                                  console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין Learnings`);
+                                  return false;
+                              }
+                              const practicesRes = await axios.get(`http://localhost:6660/practices/`, {params:{level:levelId}});
+                              const practices = practicesRes.data;
+
+                              if (!practices || practices.length === 0) {
+                                  console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין practices`);
+                                  return false;
+                              }
+
+                              return true;
+                          } catch (error) {
+                              console.error(`שגיאה בשליפת Learnings עבור רמה ${i + 1} בקורס "${course.language}":`, error);
+                              return false;
+                          }
+                      })
+                  );
+
+                  // אם אחת הרמות לא תקינה, הסר את הקורס
+                  if (allLevelsHaveContent.includes(false)) {
+                      console.log(`קורס "${course.language}" נפסל - לא כל הרמות תקינות`);
+                      return null;
+                  }
+
+                  return course; // הקורס תקין
+              })
+          );
+
+          // הסר ערכים null מהתוצאה
+          const validCourses = filteredCourses.filter((course) => course !== null);
+
+          console.log("קורסים מסוננים:", validCourses);
+
+          // עדכן את ה-state עם הקורסים המסוננים
+          setCourses(validCourses);
+
+          // סינון הקורסים של הסטודנט
+          const studentFilteredCourses = validCourses.filter((course) =>
+              course.students.some((student) => student === _id)
+          );
+          setStudentCourses(studentFilteredCourses);
+
         const teacherNamesMap = {};
         await Promise.all(
           courses.map(async (course) => {
@@ -31,12 +90,7 @@ const fetchCourses = async () => {
           })
         );
   
-        setTeacherNames(teacherNamesMap); // עדכון שמות המורים ב-state
-        setCourses(courses); // עדכון הקורסים
-        const filteredCourses = courses.filter((course) => {
-          return course.students.some((student) => student === _id);
-        });
-        setStudentCourses(filteredCourses); // עדכון הקורסים של התלמיד
+        setTeacherNames(teacherNamesMap); // עדכון שמות המורים ב-state      
       }
   } catch (e) {
       console.error("שגיאה בשליפת קורסים:", e);
@@ -84,9 +138,13 @@ const fetchCourses = async () => {
       const res = await axios.get(`http://localhost:6660/courses/${course._id}`);  // Fetch the course details from the server
       if (res.status === 200) {
         console.log(res.data);  // Display the course details
-        const resCourse = res.data;
-        navigate('/Course', { state: { course: resCourse } });  // Navigate to the Course page with the course data
-      }    
+// <<<<<<< HEAD
+//         const resCourse = res.data;
+//         navigate('/Course', { state: { course: resCourse } });  // Navigate to the Course page with the course data
+// =======
+        const resCourse = res.data
+        navigate('/levels', { state: { course: resCourse } });  // Navigate to the Course page with the course data
+      }
     } catch (e) {
       console.error(e);  // Handle errors
     }
@@ -104,6 +162,7 @@ const fetchCourses = async () => {
       return "Unknown Teacher"; // ערך ברירת מחדל במקרה של שגיאה
     }
   };
+
 
 
   const header = (
