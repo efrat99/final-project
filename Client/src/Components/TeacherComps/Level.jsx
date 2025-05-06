@@ -94,6 +94,7 @@ const Level = () => {
             <Button
             
                 label={exists ? "עדכן" : "הוסף"}
+                className={`p-button ${exists ? "p-button-secondary" : "p-button-success"}`}
                 onClick={() => handleLearningClick(level, exists)}
                  
                 style={{ textAlign: 'center', width: '100%', height: '100%' }}
