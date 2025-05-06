@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 const StudentLearning = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const { level, practice, vocabulary, course } = location.state || {};
+    const { level, practice, vocabulary, course, validGrades } = location.state || {};
     const [objects, setObjects] = useState([]);
     const [flippedStates, setFlippedStates] = useState([]);
     const [voices, setVoices] = useState([]);
@@ -89,23 +89,29 @@ const StudentLearning = () => {
         };
 
         const checkPracticeStatus = async () => {
-            console.log("Student:", user._id);
-            console.log("Level:", level);
-            try {
-                const response = await axios.get(`http://localhost:6660/grades`, {
-                    params: {
-                        student: user._id, // Filter by the current student
-                        level: level, // Filter by the current course
-                    },
-                });
-                if (response.data) {
-                    setIsPracticeDisabled(true);
-                    console.log(response.data._id + " - יש ציונים קיימים");
-                }
 
-            } catch (error) {
-                console.error("Error fetching grades:", error);
+            const isCompleted = validGrades.some((grade) => grade.level._id === level);
+            if(isCompleted) {
+                setIsPracticeDisabled(true);
             }
+
+            // console.log("Student:", user._id);
+            // console.log("Level:", level);
+            // try {
+            //     const response = await axios.get(`http://localhost:6660/grades`, {
+            //         params: {
+            //             student: user._id, // Filter by the current student
+            //             level: level, // Filter by the current course
+            //         },
+            //     });
+            //     if (response.data) {
+            //         setIsPracticeDisabled(true);
+            //         console.log(response.data._id + " - יש ציונים קיימים");
+            //     }
+
+            // } catch (error) {
+            //     console.error("Error fetching grades:", error);
+            // }
         };
 
 

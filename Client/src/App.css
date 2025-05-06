@@ -38,11 +38,7 @@
   border-radius: 4px;
 }
 
-/* .editable-row {
-  background-color: #fff9c4 !important;
-} */
 
-/* Ensure the Menubar is displayed correctly */
 .p-menubar {
   width: 100%;
   background-color: #f4f4f4;
@@ -154,10 +150,6 @@ label {
   color: rgb(200, 50, 0) !important;
 
 }
- /* .p-button-text.focus{
-  box-shadow: 0 0 0 0.2rem rgba(255, 98, 0, 0.25) !important;
-  border-color: rgb(255, 98, 0) ;
- } */
 
 .p-checkbox .p-checkbox-box {
   border-color: rgb(255, 98, 0); 
@@ -197,4 +189,12 @@ label {
 .p-card-footer {
   padding: 0.5rem !important;
   min-height: auto !important;
+}
+
+.p-button-secondary{
+  background-color: rgb(200, 50, 0)!important;
+}
+
+.p-button-secondary:hover{
+  background-color: rgb(109, 29, 3)!important;
 }
