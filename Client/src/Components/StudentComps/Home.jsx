@@ -138,10 +138,6 @@ const fetchCourses = async () => {
       const res = await axios.get(`http://localhost:6660/courses/${course._id}`);  // Fetch the course details from the server
       if (res.status === 200) {
         console.log(res.data);  // Display the course details
-// <<<<<<< HEAD
-//         const resCourse = res.data;
-//         navigate('/Course', { state: { course: resCourse } });  // Navigate to the Course page with the course data
-// =======
         const resCourse = res.data
         navigate('/levels', { state: { course: resCourse } });  // Navigate to the Course page with the course data
       }

@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -19,7 +17,8 @@ const Levels = () => {
     const user = useSelector((state) => state.token.user);
 
     const [levels, setLevels] = useState([]);
-    const [completedLevelIds, setCompletedLevelIds] = useState([]);
+    // const [completedLevelIds, setCompletedLevelIds] = useState([]);
+    const [validGrades, setValidGrades] = useState([]);
 
     useEffect(() => {
         console.log(course);
@@ -40,27 +39,57 @@ const Levels = () => {
                 setLevels(fetchedLevels);
                 console.log("Fetched levels:", fetchedLevels);
 
+                console.log(user._id);
+
+
                 const gradeResponses = await Promise.all(
-                    fetchedLevels.map((level) =>
-                        axios.get(`http://localhost:6660/grades`, {
-                            params: {
-                                student: user._id, // Filter by the current student
-                                level: level._id, // Filter by the current level
-                            },
-                        })
+                    fetchedLevels.map(async (level) => {
+                        console.log(level._id);
+                        try {
+                            const response = await axios.get(`http://localhost:6660/grades`, {
+                                params: {
+                                    student: user._id, // סינון לפי הסטודנט הנוכחי
+                                    level: level._id, // סינון לפי הרמה הנוכחית
+                                },
+                            });
+                            if (response.data && response.status === 200) {
+                                console.log(`Grade found for level ${level._id}:`, response.data);
+                                return {
+                                    level: level,
+                                    grade: response.data,
+                                };
+                            } else {
+                                console.log(`No grade for level ${level._id}`);
+                                return null;
+                            }
+                        } catch (error) {
+                            // טיפול בשגיאה במקרה ואין גרייד
+                            if (error.response && error.response.status === 400) {
+                                console.log(`No grade for level ${level._id}`);
+                            } else {
+                                console.error(`Error fetching grade for level ${level._id}:`, error.message);
+                            }
+                            return null;
+                        }
+
+                    }
                     )
                 );
-                const completedIds = gradeResponses
-                    .filter((res) => res.data)
-                    .map((_, i) => fetchedLevels[i]._id);
 
-                setCompletedLevelIds(completedIds);
+                // const completedIds = gradeResponses
+                //     // console.log(completedIds);
+                //     .filter((res) => res.data)
+                //     .map((_, i) => fetchedLevels[i]._id);
+                const resValidGrades = gradeResponses.filter((response) => response !== null);
+                console.log("Valid grades and levels:", resValidGrades);
+                // setCompletedLevelIds(completedIds);
+                setValidGrades(resValidGrades);
 
             } catch (error) {
                 console.error("Error fetching levels:", error);
             }
         }
-        
+
         fetchLevelsAndGrades();
     }, [course, user]);
 
@@ -82,7 +111,6 @@ const Levels = () => {
 
     return (
         <div>
-            {/* <h2 style={{ textAlign: "center", margin: "1rem 0" }}>בחר שלב</h2> */}
             <div
                 style={{
                     display: "flex",
@@ -94,20 +122,23 @@ const Levels = () => {
                 {levels
                     .sort((a, b) => a.number - b.number)
                     .map((level) => {
-                        const isCompleted = completedLevelIds.includes(level._id);
-
+                        // בדיקה אם הרמה הושלמה
+                        const isCompleted = validGrades.some((grade) => grade.level._id === level._id);
+    
                         const footer = (
                             <Button
-                                label={isCompleted ? "הושלם" : "למד"}
-                                icon={isCompleted ? "pi pi-check" : "pi pi-book"}
-                                className={`p-button ${isCompleted ? "p-button-secondary" : "p-button-success"
-                                    }`}
-                                onClick={() => handleEnterLevel(level)}
-                                disabled={isCompleted}
-                                style={{ width: "100%" }}
-                            />
+                            label={isCompleted ? "הושלם" : "התחל"}
+                            icon={isCompleted ? "pi pi-check" : "pi pi-book"}
+                            className={`p-button ${isCompleted ? "p-button-secondary" : "p-button-success"}`}
+                            onClick={() => handleEnterLevel(level)}
+                            style={{
+                                width: "100%",
+                                backgroundColor: isCompleted ? "gray" : "", // אפור אם הושלם, אחרת ברירת מחדל
+                                color: isCompleted ? "white" : "", // צבע טקסט לבן עבור אפור
+                            }}
+                        />
                         );
-
+    
                         const header = (
                             <img
                                 alt={`Level ${level.number}`}
@@ -115,7 +146,7 @@ const Levels = () => {
                                 style={{ width: "100%", height: "auto" }}
                             />
                         );
-
+    
                         return (
                             <Card
                                 key={level._id}
@@ -124,15 +155,61 @@ const Levels = () => {
                                 style={{ width: "250px", fontSize: "0.9rem" }}
                                 className="md:w-20rem"
                             >
-                                <div style={{ textAlign: "center" }}>
-                                    <h3>שלב {level.number}</h3>
-                                </div>
                             </Card>
                         );
                     })}
             </div>
         </div>
     );
+
+//         <div>
+//             <div
+//                 style={{
+//                     display: "flex",
+//                     justifyContent: "center",
+//                     gap: "20px",
+//                     flexWrap: "wrap",
+//                 }}
+//             >
+//                 {levels
+//                     .sort((a, b) => a.number - b.number)
+//                     .map((level) => {
+//                         const isCompleted = validGrades.includes(level._id);
+
+//                         const footer = (
+//                             <Button
+//                                 label={isCompleted ? "הושלם" : "למד"}
+//                                 icon={isCompleted ? "pi pi-check" : "pi pi-book"}
+//                                 className={`p-button ${isCompleted ? "p-button-secondary" : "p-button-success"
+//                                     }`}
+//                                 onClick={() => handleEnterLevel(level)}
+//                                 disabled={isCompleted}
+//                                 style={{ width: "100%" }}
+//                             />
+//                         );
+
+//                         const header = (
+//                             <img
+//                                 alt={`Level ${level.number}`}
+//                                 src={getImageForLevel(level.number)}
+//                                 style={{ width: "100%", height: "auto" }}
+//                             />
+//                         );
+
+//                         return (
+//                             <Card
+//                                 key={level._id}
+//                                 header={header}
+//                                 footer={footer}
+//                                 style={{ width: "250px", fontSize: "0.9rem" }}
+//                                 className="md:w-20rem"
+//                             >
+//                             </Card>
+//                         );
+//                     })}
+//             </div>
+//         </div>
+//     );
 };
 
 export default Levels;
