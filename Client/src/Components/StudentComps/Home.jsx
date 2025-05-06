@@ -10,6 +10,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [studentCourses, setStudentCourses] = useState([]);
   const [Courses, setCourses] = useState([]);
+  const [teacherNames, setTeacherNames] = useState({});
   const _id = useSelector(state => state.token.user._id)
   
 const fetchCourses = async () => {
@@ -18,67 +19,24 @@ const fetchCourses = async () => {
       const courses = res.data;
 
       if (res.status === 200) {
-          console.log("קורסים שהתקבלו מהשרת:", courses);
-
-          // סינון קורסים עם פחות מ-4 רמות או רמות לא תקינות
-          const filteredCourses = await Promise.all(
-              courses.map(async (course) => {
-                  const levels = course.levels || [];
-                  if (levels.length < 4) {
-                      console.log(`קורס "${course.language}" נפסל - פחות מ-4 רמות (${levels.length})`);
-                      return null; // הסר קורסים עם פחות מ-4 רמות
-                  }
-
-                  // בדוק אם כל הרמות מכילות Learnings ו-Practices תקינים
-                  const allLevelsHaveContent = await Promise.all(
-                      levels.map(async (levelId, i) => {
-                          try {
-                              const learningsRes = await axios.get(`http://localhost:6660/learnings/`, {params:{level:levelId}});
-                              const learnings = learningsRes.data;
-
-                              if (!learnings || learnings.length === 0) {
-                                  console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין Learnings`);
-                                  return false;
-                              }
-                              const practicesRes = await axios.get(`http://localhost:6660/practices/`, {params:{level:levelId}});
-                              const practices = practicesRes.data;
-
-                              if (!practices || practices.length === 0) {
-                                  console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין practices`);
-                                  return false;
-                              }
-
-                              return true;
-                          } catch (error) {
-                              console.error(`שגיאה בשליפת Learnings עבור רמה ${i + 1} בקורס "${course.language}":`, error);
-                              return false;
-                          }
-                      })
-                  );
-
-                  // אם אחת הרמות לא תקינה, הסר את הקורס
-                  if (allLevelsHaveContent.includes(false)) {
-                      console.log(`קורס "${course.language}" נפסל - לא כל הרמות תקינות`);
-                      return null;
-                  }
-
-                  return course; // הקורס תקין
-              })
-          );
-
-          // הסר ערכים null מהתוצאה
-          const validCourses = filteredCourses.filter((course) => course !== null);
-
-          console.log("קורסים מסוננים:", validCourses);
-
-          // עדכן את ה-state עם הקורסים המסוננים
-          setCourses(validCourses);
-
-          // סינון הקורסים של הסטודנט
-          const studentFilteredCourses = validCourses.filter((course) =>
-              course.students.some((student) => student === _id)
-          );
-          setStudentCourses(studentFilteredCourses);
+        const courses = res.data;
+  
+        // שליפת שמות המורים
+        const teacherNamesMap = {};
+        await Promise.all(
+          courses.map(async (course) => {
+            if (course.teacher && !teacherNamesMap[course.teacher]) {
+              teacherNamesMap[course.teacher] = await TeacherName(course.teacher);
+            }
+          })
+        );
+  
+        setTeacherNames(teacherNamesMap); // עדכון שמות המורים ב-state
+        setCourses(courses); // עדכון הקורסים
+        const filteredCourses = courses.filter((course) => {
+          return course.students.some((student) => student === _id);
+        });
+        setStudentCourses(filteredCourses); // עדכון הקורסים של התלמיד
       }
   } catch (e) {
       console.error("שגיאה בשליפת קורסים:", e);
@@ -107,12 +65,15 @@ const fetchCourses = async () => {
   const DeleteStudentFromCourse = async (course) => {
     try {
       course.students = course.students.filter(student => student !== _id);  // Remove the student ID from the course's students array
+    const res1=  await axios.delete('http://localhost:6660/grades/deleteByStudentAndCourse', {data:{studentId: _id,courseId: course._id}});
+    console.log(res1.status);
       const res = await axios.put(`http://localhost:6660/courses/`, course);  // Update the course on the server
       console.log(res.status);
       if (res.status === 200) {
         console.log(res.data);  // Display the response from the server
       }
       fetchCourses();
+
     } catch (e) {
       console.error(e);  // Handle errors
     }
@@ -125,11 +86,24 @@ const fetchCourses = async () => {
         console.log(res.data);  // Display the course details
         const resCourse = res.data;
         navigate('/Course', { state: { course: resCourse } });  // Navigate to the Course page with the course data
-      }
+      }    
     } catch (e) {
       console.error(e);  // Handle errors
     }
   }
+
+
+  const TeacherName = async (teacherId) => {
+    try {
+      const res = await axios.get(`http://localhost:6660/users/${teacherId}`);
+      if (res.status === 200) {
+        return res.data.firstName+" "+res.data.lastName; // נניח ששם המורה נמצא בשדה `name`
+      }
+    } catch (e) {
+      console.error(`Error fetching teacher name for ID ${teacherId}:`, e);
+      return "Unknown Teacher"; // ערך ברירת מחדל במקרה של שגיאה
+    }
+  };
 
 
   const header = (
@@ -149,6 +123,7 @@ const fetchCourses = async () => {
         {Courses.map((course) => !course.students.includes(_id) ? (
           <Card header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
             <h1 className="m-0">{course.language}</h1>
+            <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3> 
             <Button label="הירשם" icon="pi pi-check" onClick={() => { AddStudentToCourse(course) }} />
           </Card>
         ) : null)}</div>
@@ -156,9 +131,10 @@ const fetchCourses = async () => {
         <p>הקורסים שלי</p>
         <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
           {studentCourses.map((course) => (
-            <Card footer={footer(course)} header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
-              <h1 className="m-0">{course.language}
-              </h1>
+            <Card  footer={footer(course)} header={header} style={{ width: '300px', height: '400px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
+              <h1 className="m-0">{course.language } </h1>
+               <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3> 
+              
             </Card>
           ))}
         </div>

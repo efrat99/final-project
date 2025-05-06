@@ -87,6 +87,7 @@ function App() {
         <Route path="/levels" element={<Levels />} />
         <Route path="/studentLearning" element={<StudentLearning />} />
         <Route path="/studentPractice" element={<StudentPractice />} />
+        <Route path="/course" element={<TeacherCourse />} />
         {user && (
           <Route
             path="/level"
@@ -99,12 +100,12 @@ function App() {
             element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
           />
         )}
-        {user && (
+        {/* {user && (
           <Route
             path="/course"
             element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />}
           />
-        )}
+        )} */}
       </Routes>
     </Router>
 

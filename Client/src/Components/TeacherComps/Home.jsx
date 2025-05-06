@@ -135,13 +135,6 @@ const Home = () => {
                 <Dropdown value={selectedlanguage} onChange={(e) => setSelectedlanguage(e.value)} options={getAvailableLanguages()} optionLabel="value"
                     placeholder="Select a language" className="w-full md:w-14rem" />
             </div>
-            <div className="courseListPerUser">
-                {courses.map((course) => (
-                    <div key={course._id} className="courseCard">
-                        <h2>{course.name}</h2>
-                    </div>
-                ))}
-            </div>
             <Button onClick={() => { saveCourse() }}>הוספת קורס</Button>
             <div className="courseList">
                 {courses.map((course) => (

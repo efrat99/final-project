@@ -76,6 +76,7 @@ const createLevel = async (req, res) => {
     try{
     const level = await Level.create({number , learning, practice })
     if (level) {
+        console.log('Level created:', level);
         res.json(level)//.status(201).json({message: 'Post is created successfully'})
     }
     else {
