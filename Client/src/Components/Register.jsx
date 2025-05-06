@@ -57,7 +57,7 @@ export const Register = ({ onClose }) => {
                         dispatch(setUser(res.data.userInfo))
                         console.log(res.data)
                         setFormData(data);
-                        alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
+                        // alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
                         setShowMessage(true);
                         setSelectedRole(false)
                         reset();

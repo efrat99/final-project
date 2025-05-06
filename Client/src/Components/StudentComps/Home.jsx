@@ -149,7 +149,9 @@ const fetchCourses = async () => {
       console.error(e);  // Handle errors
     }
   }
-
+const Grades= async (course) => {
+  navigate('/Grades');
+}
 
   const TeacherName = async (teacherId) => {
     try {
@@ -198,6 +200,7 @@ const fetchCourses = async () => {
           ))}
         </div>
       </div>
+      <Button onClick={Grades}></Button>
     </div>
   );
 }

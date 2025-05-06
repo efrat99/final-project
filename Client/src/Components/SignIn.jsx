@@ -27,7 +27,7 @@ const Signin = ({ onClose }) => {
                 dispatch(setUser(res.data.userInfo))
                 console.log(res.data.userInfo);
                 setFormData(data);
-                alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
+                // alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
                 setShowMessage(true);
                 reset();
                 onClose();

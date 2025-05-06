@@ -23,9 +23,9 @@ const getGradeById = async (req, res) => {
 //get all student's grades
 const getAllStudentGrades = async (req, res) => {
     const { _id } = req.params
-    if (!mongoose.Types.ObjectId.isValid(_id)) {
-        return res.status(400).json({ message: "Invalid student ID" });
-    }
+    // if (!mongoose.Types.ObjectId.isValid(_id)) {
+    //     return res.status(400).json({ message: "Invalid student ID" });
+    // }
     const grades = await Grade.find({ student: { _id: _id } }).exec()
     if (!grades?.length)
         return res.status(400).json({ message: 'There are no grades for this student' })
