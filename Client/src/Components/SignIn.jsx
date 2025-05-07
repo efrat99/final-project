@@ -27,7 +27,6 @@ const Signin = ({ onClose }) => {
                 dispatch(setUser(res.data.userInfo))
                 console.log(res.data.userInfo);
                 setFormData(data);
-                // alert(res.data.userInfo.email + "  נכנסת סופסוף!!!❤😍");
                 setShowMessage(true);
                 reset();
                 onClose();
@@ -36,7 +35,6 @@ const Signin = ({ onClose }) => {
             }
         } catch (e) {
             if (e.response && e.response.status === 401) {
-                // alert('שם משתמש או סיסמה שגויים');
                 setErrorMessage("שם המשתמש או הסיסמה שגויים");
             }
             else {
@@ -57,7 +55,7 @@ const Signin = ({ onClose }) => {
                                     render={({ field, fieldState }) => (
                                         <InputText id={field.name} {...field} className={classNames({ "p-invalid": fieldState.invalid })} />
                                     )} />
-                                <label htmlFor="email" className={classNames({ "p-error": errors.email })}>כתובת אימייל*</label>
+                                <label htmlFor="email" className={classNames({ "p-error": errors.email })}>כתובת מייל*</label>
                             </span>
                             {/* {getFormErrorMessage("email")} */}
                         </div>

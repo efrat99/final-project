@@ -52,7 +52,7 @@ function App() {
       }
     },
     {
-      label: 'בית',
+      label: 'דף הבית',
       icon: <img src={foxImage} alt="Home" style={{ width: '50px', height: 'auto' }} />,
       command: () => window.location.href = '/home'  // ניווט לעמוד הבית
     },
