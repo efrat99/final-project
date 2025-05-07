@@ -7,7 +7,7 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-const StudentLearning = () => {
+const Learning = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { level, practice, vocabulary, course, validGrades } = location.state || {};
@@ -94,24 +94,6 @@ const StudentLearning = () => {
             if(isCompleted) {
                 setIsPracticeDisabled(true);
             }
-
-            // console.log("Student:", user._id);
-            // console.log("Level:", level);
-            // try {
-            //     const response = await axios.get(`http://localhost:6660/grades`, {
-            //         params: {
-            //             student: user._id, // Filter by the current student
-            //             level: level, // Filter by the current course
-            //         },
-            //     });
-            //     if (response.data) {
-            //         setIsPracticeDisabled(true);
-            //         console.log(response.data._id + " - יש ציונים קיימים");
-            //     }
-
-            // } catch (error) {
-            //     console.error("Error fetching grades:", error);
-            // }
         };
 
 
@@ -195,4 +177,4 @@ const StudentLearning = () => {
     );
 };
 
-export default StudentLearning;
+export default Learning

@@ -10,7 +10,7 @@ import level2 from "../../Images/level2.jpg";
 import level3 from "../../Images/level3.jpg";
 import level4 from "../../Images/level4.jpg";
 
-const Levels = () => {
+const Level = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { course } = location.state || {};
@@ -148,5 +148,5 @@ const Levels = () => {
     );
 };
 
-export default Levels;
+export default Level;
 

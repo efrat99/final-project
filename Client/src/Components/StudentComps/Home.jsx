@@ -219,10 +219,6 @@ const fetchCourses = async () => {
     </>
   );
 
-//   const getCountryCode = (langName) => {
-//     const match = language.find(lang => lang.value === langName);
-//     return match ? match.label : null;
-// }
 
   return (
     <div className="home">
