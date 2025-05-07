@@ -55,13 +55,13 @@ const Home = () => {
         { "value": "אירית", "label": "ie" },  // Ireland (אירית)
         { "value": "וולשית", "label": "gb" }  // Wales (וולשית)
     ];
-    
+
 
     const user = useSelector(state => state.token.user);
     const navigate = useNavigate();
     const [courses, setCourses] = useState([]);
     const [selectedlanguage, setSelectedlanguage] = useState(null);
-
+    const [message, setMessage] = useState("");
     const _id = useSelector(state => state.token.user._id);
     const data = {
         language: selectedlanguage,
@@ -113,6 +113,7 @@ const Home = () => {
             }
         };
         fetchCoursesWithStudents();
+
     }, [_id]);
     // פונקציה לשליפת תלמיד לפי ID או לפי מערך IDs
     const fetchStudents = async (studentIds) => {
@@ -133,6 +134,45 @@ const Home = () => {
     const handleEnterCourse = (courseId) => {
         navigate(`/level`, { state: { courseId } });
     };
+    const checkCourse = async (course) => {
+        if (course.levels.length < 4)
+            setMessage("קורס זה לא הושלם ואינו מוצג לתלמיד")
+        else {
+            const allLevelsHaveContent = await Promise.all(
+                course.levels.map(async (levelId, i) => {
+                    try {
+                        const learningsRes = await axios.get(`http://localhost:6660/learnings/`, { params: { level: levelId } });
+                        const learnings = learningsRes.data;
+
+                        if (!learnings || learnings.length === 0) {
+                            console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין Learnings`);
+                            return false;
+                        }
+                        const practicesRes = await axios.get(`http://localhost:6660/practices/`, { params: { level: levelId } });
+                        const practices = practicesRes.data;
+
+                        if (!practices || practices.length === 0) {
+                            console.log(`קורס "${course.language}" - רמה ${i + 1} בעיה: אין practices`);
+                            return false;
+                        }
+
+                        return true;
+                    } catch (error) {
+                        console.error(`שגיאה בשליפת Learnings עבור רמה ${i + 1} בקורס "${course.language}":`, error);
+                        return false;
+                    }
+                })
+            );
+            if (allLevelsHaveContent.includes(false)) {
+                console.log(`קורס "${course.language}" נפסל - לא כל הרמות תקינות`);
+                setMessage("לא כל הרמות תקינות\\ קורס זה לא הושלם ואינו מוצג לתלמיד");
+            }
+            else {
+                setMessage("הושלם בהצלחה");
+            }
+
+        }
+    }
 
     return (
 
@@ -165,17 +205,14 @@ const Home = () => {
                                         </>) : (
                                         <h4 style={{ margin: "10px 0", fontSize: "1rem", color: "#666" }}>אין תלמידים</h4>
                                     )}
+                                    <>{checkCourse(course)}</>
+                                    <p>{message}</p>
                                     <Button label="כניסה לקורס" onClick={() => handleEnterCourse(course._id)} className="p-button-primary p-mt-3" style={{ width: "100%" }} />
                                 </div>
                             </Card>
                         ))}
                     </div>
                 </div>
-
-
-
-
-
 
                 {/*  הוספת קורס */}
                 <div style={{ position: "fixed", left: "50px", flex: "0 0 30%", backgroundColor: "#f9f9f9", borderRadius: "10px", padding: "20px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
