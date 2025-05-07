@@ -77,7 +77,7 @@ const Level = () => {
     };
 
     const handleEnterLevel = (level) => {
-        navigate("/studentLearning", {
+        navigate("/learning", {
             state: {
                 course,
                 level: level._id,

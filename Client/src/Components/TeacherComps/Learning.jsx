@@ -219,54 +219,53 @@ const Learning = () => {
     };
 
     return (
-        <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '5vw', marginRight: '5vw' }}>
-            <div style={{ flex: 1, display: 'flex', justifyContent: 'flex-end', marginRight: '15vw' }}>
-                <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
-                    <div className="p-inputgroup flex-1">
-                        <span className="p-inputgroup-addon">
-                            <i className="pi pi-arrow-right-arrow-left"></i>
-                        </span>
-                        <Controller name="word" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="מילה" className={classNames({ 'p-invalid': field.invalid })} />)} />
-                        <span className="p-inputgroup-addon">
-                            <i className="pi pi-arrow-right-arrow-left"></i>
-                        </span>
+        <div className="card flex gap-3" style={{ display: 'flex', alignItems: 'center', marginLeft: '20vw', marginRight: '20vw' }}>
+            <div style={{ flex: 1, display: 'flex' }}>
+                <div style={{ marginRight: "20px", marginTop: "25px" }}>
+                    <form onSubmit={handleSubmit(onSubmit)} className="p-fluid">
+                        <div className="p-inputgroup flex-1">
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-arrow-right-arrow-left"></i>
+                            </span>
+                            <Controller name="word" control={control} rules={{ required: true }} render={({ field }) => (
+                                <InputText {...field} placeholder="מילה" className={classNames({ 'p-invalid': field.invalid })} />)} />
+                            <span className="p-inputgroup-addon">
+                                <i className="pi pi-arrow-right-arrow-left"></i>
+                            </span>
+                            <br />
+                            <Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field }) => (
+                                <InputText {...field} placeholder="תרגום" className={classNames({ 'p-invalid': field.invalid })} />)} />
+                        </div>
                         <br />
-                        <Controller name="translatedWord" control={control} rules={{ required: true }} render={({ field }) => (
-                            <InputText {...field} placeholder="תרגום" className={classNames({ 'p-invalid': field.invalid })} />)} />
-                    </div>
-                    <br />
-                    <Button type="submit" label="הוסף" className="mt-2" />
+                        <Button type="submit" label="הוסף" className="mt-2" />
 
-                    <div style={{ flex: 2 }}>
-                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                        <div style={{ flex: 1 }}>
+                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '20px'}}>
 
-                        <Button
-                            icon="pi pi-info-circle"
-                            className="p-button-rounded p-button-info"
-                            // style={{ position: 'absolute', top: '10px', right: '10px' }}
-                            onClick={handleInfoButtonClick}
-                        />
-
-                        {/* רכיב העלאת קבצים */}
-                        <FileUpload
-                            ref={fileUploadRef}
-                            mode="basic"
-                            name="demo[]"
-                            accept=".xlsx, .xls"
-                            maxFileSize={1000000}
-                            customUpload
-                            uploadHandler={handleFileChange}
-                            auto
-                            chooseLabel= " בחר קובץ "
-                            className="p-button-primary"
-                        />
-                    </div>
+                                {/* רכיב העלאת קבצים */}
+                                <FileUpload
+                                    ref={fileUploadRef}
+                                    mode="basic"
+                                    name="demo[]"
+                                    accept=".xlsx, .xls"
+                                    maxFileSize={1000000}
+                                    customUpload
+                                    uploadHandler={handleFileChange}
+                                    auto
+                                    chooseLabel=" בחר קובץ "
+                                    className="p-button-primary"
+                                />
+                                 <Button
+                                    icon="pi pi-info-circle"
+                                    className="p-button-rounded p-button-info"
+                                    onClick={handleInfoButtonClick}
+                                />
+                            </div>
+                        </div>
+                    </form>
                 </div>
-                </form>
 
 
-                
 
                 <Dialog
                     visible={showInfoDialog}
@@ -290,19 +289,18 @@ const Learning = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>שלום</td>
                                 <td style={{ border: '1px solid #ddd', padding: '5px' }}>Hello</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>שלום</td>
                             </tr>
                             <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>תודה</td>
                                 <td style={{ border: '1px solid #ddd', padding: '5px' }}>Thank you</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>תודה</td>
                             </tr>
                         </tbody>
                     </table>
                 </Dialog>
 
-
-                <div className="card">
+                <div className="card" style={{ flex: 2, maxWidth: '40%', marginRight: "50px" }}>
                     <DataTable key={editId} value={learnings} responsiveLayout="scroll" rowClassName={(rowData) => (
                         rowData._id === editId ? 'editable-row' : ''
                     )}>
@@ -338,7 +336,7 @@ const Learning = () => {
                     </DataTable>
                 </div>
             </div>
-            <Button label="סיום" className="mt-2" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level, courseId: courseId } })} />
+            <Button label="סיום" disabled={learnings.length < 1} onClick={() => navigate('/practice', { state: { learning: learnings, level: level, courseId: courseId } })} />
         </div>
     );
 };

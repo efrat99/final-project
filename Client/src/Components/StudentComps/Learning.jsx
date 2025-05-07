@@ -168,7 +168,7 @@ const Learning = () => {
                 <Button
                     icon="pi pi-file-edit"
                     disabled={isPracticeDisabled}
-                    onClick={() => navigate('/studentPractice', { state: { practice, vocabulary, course, level } })}
+                    onClick={() => navigate('/practice', { state: { practice, vocabulary, course, level } })}
                     className="practice-button"
                 />
                 <span className="practice-text">מעבר למבחן</span> {/* טקסט מתחת לכפתור */}

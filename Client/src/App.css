@@ -160,32 +160,6 @@ label {
   border-color: rgb(255, 98, 0);    
 }
 
-/* .courseList {
-  display: flex;
-  flex-wrap: wrap; 
-  gap: 16px; 
-  justify-content: center; 
-  margin: 0; 
-  padding: 0;
-  background: none; 
-} */
-/* .courseCard {
-  flex: 1 1 calc(25% - 16px); 
-  box-sizing: border-box;
-  padding: 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #fff; 
-  min-height: 300px;
-  max-height: 300px; 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: center;
-  overflow:auto;
-} */
-
-
 .courseCard {
   flex: 1 1 calc(33.33% - 24px); /* כל כרטיס יתפוס 33.33% מהרוחב, עם מרווח */
   box-sizing: border-box;
@@ -225,3 +199,8 @@ label {
 .p-button-secondary:hover{
   background-color: rgb(109, 29, 3)!important;
 }
+
+.p-button-primary{
+  margin-top: 11px;
+}
+

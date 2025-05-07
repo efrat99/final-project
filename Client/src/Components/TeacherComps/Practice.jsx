@@ -10,6 +10,7 @@ import axios from 'axios';
 import { classNames } from 'primereact/utils';
 import { useNavigate } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
+import { Dialog } from 'primereact/dialog';
 
 const Practice = () => {
     const [practices, setPractices] = useState([]);
@@ -17,6 +18,7 @@ const Practice = () => {
     const [editedData, setEditedData] = useState({});
     const [errorMessage, setErrorMessage] = useState('');
     const fileUploadRef = useRef(null); // הפניה לרכיב FileUpload
+    const [showInfoDialog, setShowInfoDialog] = useState(false); // מצב למודל
 
     const { control, formState: { errors }, handleSubmit, reset } = useForm({
         defaultValues: {
@@ -118,6 +120,15 @@ const Practice = () => {
         reader.readAsArrayBuffer(file);
         fileUploadRef.current.clear();
     };
+
+    const handleInfoButtonClick = () => {
+        setShowInfoDialog(true); // הצגת המודל כשנלחץ על הכפתור
+    };
+
+    const handleDialogClose = () => {
+        setShowInfoDialog(false); // סגירת המודל
+    };
+
     const deletePracriceFromLevel = async (practice) => {
         const LevelRes = await axios.get(`http://localhost:6660/levels/${level}`);
         console.log("practice " + practice);
@@ -234,41 +245,9 @@ const Practice = () => {
                     </div>
                     <Button type="submit" label="הוסף" className="mt-3" />
                 </form>
-
-
+                
                 <div>
-                    {/* הסבר על סוג הקובץ */}
-                    <div style={{ marginBottom: '10px', color: '#555', fontSize: '14px' }}>
-                        <p>יש להעלות קובץ בפורמט Excel (.xlsx או .xls) עם המבנה הבא:</p>
-                        <ul>
-                            <li><strong>שאלה:</strong> טקסט השאלה.</li>
-                            <li><strong>תשובה 1, תשובה 2, תשובה 3, תשובה 4:</strong> ארבע תשובות אפשריות.</li>
-                            <li><strong>תשובה נכונה:</strong> מספר בין 1 ל-4 שמציין את התשובה הנכונה.</li>
-                        </ul>
-                        <p>לדוגמה:</p>
-                        <table style={{ border: '1px solid #ddd', borderCollapse: 'collapse', width: '100%', marginTop: '10px' }}>
-                            <thead>
-                                <tr>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>שאלה</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 1</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 2</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 3</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 4</th>
-                                    <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה נכונה</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>מהי בירת ישראל?</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>ירושלים</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>תל אביב</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>חיפה</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>אילת</td>
-                                    <td style={{ border: '1px solid #ddd', padding: '5px' }}>1</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+              
 
                     {/* רכיב העלאת קבצים */}
                     <FileUpload
@@ -283,7 +262,51 @@ const Practice = () => {
                         chooseLabel="בחר קובץ"
                         className="p-button-primary"
                     />
+
+                    <Button
+                        icon="pi pi-info-circle"
+                        className="p-button-rounded p-button-info"
+                        onClick={handleInfoButtonClick}
+                    />
                 </div>
+
+                <Dialog
+                    visible={showInfoDialog}
+                    onHide={handleDialogClose}
+                    header="הסבר על העלאת קובץ"
+                    footer={<Button label="סגור" icon="pi pi-times" onClick={handleDialogClose} />}
+                    style={{ width: '50vw' }}
+                >
+                    <p>יש להעלות קובץ בפורמט Excel (.xlsx או .xls) עם המבנה הבא:</p>
+                    <ul>
+                        <li><strong>שאלה:</strong> טקסט השאלה.</li>
+                        <li><strong>תשובה 1, תשובה 2, תשובה 3, תשובה 4:</strong> ארבע תשובות אפשריות.</li>
+                        <li><strong>תשובה נכונה:</strong> מספר בין 1 ל-4 שמציין את התשובה הנכונה.</li>
+                    </ul>
+                    <p>לדוגמה:</p>
+                    <table style={{ border: '1px solid #ddd', borderCollapse: 'collapse', width: '100%', marginTop: '10px' }}>
+                        <thead>
+                            <tr>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>שאלה</th>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 1</th>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 2</th>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 3</th>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה 4</th>
+                                <th style={{ border: '1px solid #ddd', padding: '5px' }}>תשובה נכונה</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>מהי בירת ישראל?</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>ירושלים</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>תל אביב</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>חיפה</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>אילת</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </Dialog>
 
                 {/* isplay existing questions */}
                 <div style={{ flex: 1 }}>

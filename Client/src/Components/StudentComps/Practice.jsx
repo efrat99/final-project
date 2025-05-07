@@ -111,7 +111,7 @@ const Practice = () => {
                 <div className="score-container">
                     <h2>הציון שלך: {score}%</h2>
                     <Button
-                        onClick={() => navigate('/levels', { state: { course: course } })}
+                        onClick={() => navigate('/level', { state: { course: course } })}
                         className="back-button">התקדם לשלב הבא</Button>
                 </div>
             ) : (

@@ -173,10 +173,6 @@ const Home = () => {
                 </div>
 
 
-
-
-
-
                 {/*  הוספת קורס */}
                 <div style={{ position: "fixed", left: "50px", flex: "0 0 30%", backgroundColor: "#f9f9f9", borderRadius: "10px", padding: "20px", boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" }}>
 
