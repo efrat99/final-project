@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 
-const StudentPractice = () => {
+const Practice = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { practice, course, level } = location.state || {};
@@ -97,11 +97,7 @@ const StudentPractice = () => {
                 course: course._id,
                 level: level,
             });
-
-            // if (response.status === 200) {
-            //     alert(`הציון שלך הוא: ${totalScore}%`);
-            // }
-            // navigate('/levels', { state: { course: course } }); // נווט לדף הבית של התלמיד
+            
         } catch (error) {
             console.error('Error saving grade:', error);
             alert('שגיאה בשמירת הציון.');
@@ -164,4 +160,4 @@ const StudentPractice = () => {
     );
 };
 
-export default StudentPractice;
+export default Practice;
