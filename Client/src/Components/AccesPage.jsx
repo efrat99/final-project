@@ -23,16 +23,12 @@ const AccesPage = () => {
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <img src={fox} alt="Logo" style={{ width: '250px', height: 'auto' }} />
-            {/* <h1 
+            <h1 
             // style={{ color: 'white' }}
-            >מלל</h1> */}
+            >WorldWise</h1>
+            <h3>היכנסו כדי ללמוד אוצר מילים בשפות רבות
+            </h3>
             <div style={{margin:"2%"}}></div>
-            {/* <Button className="button-orange" onClick={() => setShowRegisterDialog(true)}>הרשמה</Button> */}
-            {/* <Button className="button-orange" onClick={() => setShowSignInDialog(true)}>כניסה</Button>
-            <br /><br />
-            <Card visible={showSignInDialog} onHide={() => setShowSignInDialog(false)} header="כניסה" modal>
-                <SignIn onClose={() => setShowSignInDialog(false)} />
-            </Card> */}
             <Card style={{ width: '300px', margin: 'auto' }}>
                 <SignIn onClose={() => setShowSignInDialog(false)} />
                 <br />

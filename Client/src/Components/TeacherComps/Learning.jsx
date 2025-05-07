@@ -181,9 +181,9 @@ const Learning = () => {
                 word: row['מילה'], // שם העמודה הראשונה
                 translatedWord: row['תרגום'] // שם העמודה השנייה
             }));
-
-            setLearnings((prevLearnings) => [...prevLearnings, ...newLearnings]);
-
+            if (newLearnings.word && newLearnings.translatedWord)
+                setLearnings((prevLearnings) => [...prevLearnings, ...newLearnings]);
+            
             // שמירת המילים ב-DB
             try {
                 for (const learning of newLearnings) {
@@ -203,6 +203,7 @@ const Learning = () => {
                 }
             } catch (error) {
                 console.error("Error saving learnings to DB:", error);
+                alert("הכנס קובץ בפורמט נכון.")
             }
         };
 
@@ -240,7 +241,7 @@ const Learning = () => {
                         <Button type="submit" label="הוסף" className="mt-2" />
 
                         <div style={{ flex: 1 }}>
-                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '20px'}}>
+                            <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginTop: '20px' }}>
 
                                 {/* רכיב העלאת קבצים */}
                                 <FileUpload
@@ -255,7 +256,7 @@ const Learning = () => {
                                     chooseLabel=" בחר קובץ "
                                     className="p-button-primary"
                                 />
-                                 <Button
+                                <Button
                                     icon="pi pi-info-circle"
                                     className="p-button-rounded p-button-info"
                                     onClick={handleInfoButtonClick}

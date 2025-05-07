@@ -95,8 +95,9 @@ const Practice = () => {
                 answers: [row['תשובה 1'], row['תשובה 2'], row['תשובה 3'], row['תשובה 4']], // תשובות
                 correctAnswer: parseInt(row['תשובה נכונה'], 10) // תשובה נכונה
             }));
-
-            setPractices((prevPractices) => [...prevPractices, ...newPractices]);
+            if (newPractices[0].question && newPractices[0].answers[0] && newPractices[0].answers[1] && newPractices[0].answers[2] && newPractices[0].answers[3]
+                && newPractices[0].correctAnswer && newPractices[0].correctAnswer >= 1 && newPractices[0].correctAnswer <= 4)
+                setPractices((prevPractices) => [...prevPractices, ...newPractices]);
 
             // שמירת התרגולים ב-DB
             try {
@@ -114,6 +115,7 @@ const Practice = () => {
                 }
             } catch (error) {
                 console.error("Error saving practices to DB:", error);
+                alert("הכנס קובץ בפורמט נכון.")
             }
         };
 
@@ -148,8 +150,6 @@ const Practice = () => {
     };
 
     const handleInputChange = (e, field, index = null) => {
-        // const correctAnswer = parseInt(editedData.correctAnswer, 10);
-        // if (isNaN(correctAnswer) || correctAnswer < 1 || correctAnswer > 4) {
         setEditedData((prevData) => {
             const updatedData = { ...prevData };
 
@@ -245,36 +245,37 @@ const Practice = () => {
                     </div>
                     <Button type="submit" label="הוסף" className="mt-3" />
                 </form>
-                
+
                 <div>
-              
 
-                    {/* רכיב העלאת קבצים */}
-                    <FileUpload
-                        ref={fileUploadRef}
-                        mode="basic"
-                        name="demo[]"
-                        accept=".xlsx, .xls"
-                        maxFileSize={1000000}
-                        customUpload
-                        uploadHandler={handleFileChange}
-                        auto
-                        chooseLabel="בחר קובץ"
-                        className="p-button-primary"
-                    />
+                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center', marginRight: '45%', marginBottom: "60px" }}>
+                        {/* רכיב העלאת קבצים */}
+                        <FileUpload
+                            ref={fileUploadRef}
+                            mode="basic"
+                            name="demo[]"
+                            accept=".xlsx, .xls"
+                            maxFileSize={1000000}
+                            customUpload
+                            uploadHandler={handleFileChange}
+                            auto
+                            chooseLabel="בחר קובץ"
+                            className="p-button-primary"
+                        />
 
-                    <Button
-                        icon="pi pi-info-circle"
-                        className="p-button-rounded p-button-info"
-                        onClick={handleInfoButtonClick}
-                    />
+                        <Button
+                            icon="pi pi-info-circle"
+                            className="p-button-rounded p-button-info"
+                            onClick={handleInfoButtonClick}
+                        />
+                    </div>
                 </div>
 
                 <Dialog
                     visible={showInfoDialog}
                     onHide={handleDialogClose}
                     header="הסבר על העלאת קובץ"
-                    footer={<Button label="סגור" icon="pi pi-times" onClick={handleDialogClose} />}
+                    // footer={<Button label="סגור" icon="pi pi-times" onClick={handleDialogClose} />}
                     style={{ width: '50vw' }}
                 >
                     <p>יש להעלות קובץ בפורמט Excel (.xlsx או .xls) עם המבנה הבא:</p>
@@ -297,12 +298,12 @@ const Practice = () => {
                         </thead>
                         <tbody>
                             <tr>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>מהי בירת ישראל?</td>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>ירושלים</td>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>תל אביב</td>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>חיפה</td>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>אילת</td>
-                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>1</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>איך אומרים "לא"?</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>Yes</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>No</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>Right</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>Left</td>
+                                <td style={{ border: '1px solid #ddd', padding: '5px' }}>2</td>
                             </tr>
                         </tbody>
                     </table>
@@ -383,7 +384,7 @@ const Practice = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <Button label="עדכן" className="p-button-warning p-button-sm" onClick={() => handleEdit(rowData)} />
+                                            <Button label="עדכן" className="p-button-warning p-button-sm" style={{ marginLeft: "10px" }} onClick={() => handleEdit(rowData)} />
                                             <Button icon="pi pi-trash" className="p-button-danger p-button-sm" onClick={() => handleDelete(rowData._id)} />
                                         </>
                                     )}

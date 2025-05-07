@@ -8,53 +8,53 @@ import axios from 'axios';
 import Flag from 'react-world-flags';
 
 const Home = () => {
-  //   const language = [
-  //     { "value": "ערבית", "label": "ar" },
-  //     { "value": "אנגלית", "label": "en" },
-  //     { "value": "ספרדית", "label": "es" },
-  //     { "value": "צרפתית", "label": "fr" },
-  //     { "value": "גרמנית", "label": "de" },
-  //     { "value": "רוסית", "label": "ru" },
-  //     { "value": "סינית", "label": "zh" },
-  //     { "value": "הינדי", "label": "hi" },
-  //     { "value": "פורטוגזית", "label": "pt" },
-  //     { "value": "יפנית", "label": "ja" },
-  //     { "value": "איטלקית", "label": "it" },
-  //     { "value": "הולנדית", "label": "nl" },
-  //     { "value": "קוריאנית", "label": "ko" },
-  //     { "value": "טורקית", "label": "tr" },
-  //     { "value": "עברית", "label": "he" },
-  //     { "value": "פרסית", "label": "fa" },
-  //     { "value": "פולנית", "label": "pl" },
-  //     { "value": "אוקראינית", "label": "uk" },
-  //     { "value": "שוודית", "label": "sv" },
-  //     { "value": "פינית", "label": "fi" },
-  //     { "value": "נורווגית", "label": "no" },
-  //     { "value": "דנית", "label": "da" },
-  //     { "value": "צ'כית", "label": "cs" },
-  //     { "value": "יוונית", "label": "el" },
-  //     { "value": "תאית", "label": "th" },
-  //     { "value": "אינדונזית", "label": "id" },
-  //     { "value": "וייטנאמית", "label": "vi" },
-  //     { "value": "הונגרית", "label": "hu" },
-  //     { "value": "רומנית", "label": "ro" },
-  //     { "value": "בולגרית", "label": "bg" },
-  //     { "value": "סרבית", "label": "sr" },
-  //     { "value": "סלובקית", "label": "sk" },
-  //     { "value": "סלובנית", "label": "sl" },
-  //     { "value": "קרואטית", "label": "hr" },
-  //     { "value": "ליטאית", "label": "lt" },
-  //     { "value": "לטבית", "label": "lv" },
-  //     { "value": "אסטונית", "label": "et" },
-  //     { "value": "מלאית", "label": "ms" },
-  //     { "value": "בנגלית", "label": "bn" },
-  //     { "value": "טאגאלוג", "label": "tl" },
-  //     { "value": "סוואהילית", "label": "sw" },
-  //     { "value": "מלטזית", "label": "mt" },
-  //     { "value": "איסלנדית", "label": "is" },
-  //     { "value": "אירית", "label": "ga" },
-  //     { "value": "וולשית", "label": "cy" }
-  // ]
+  const language = [
+    { "value": "ערבית", "label": "ae" },  // United Arab Emirates (ערבית)
+    { "value": "אנגלית", "label": "us" },  // United States (אנגלית)
+    { "value": "ספרדית", "label": "es" },  // Spain (ספרדית)
+    { "value": "צרפתית", "label": "fr" },  // France (צרפתית)
+    { "value": "גרמנית", "label": "de" },  // Germany (גרמנית)
+    { "value": "רוסית", "label": "ru" },  // Russia (רוסית)
+    { "value": "סינית", "label": "cn" },  // China (סינית)
+    { "value": "הינדי", "label": "in" },  // India (הינדי)
+    { "value": "פורטוגזית", "label": "pt" },  // Portugal (פורטוגזית)
+    { "value": "יפנית", "label": "jp" },  // Japan (יפנית)
+    { "value": "איטלקית", "label": "it" },  // Italy (איטלקית)
+    { "value": "הולנדית", "label": "nl" },  // Netherlands (הולנדית)
+    { "value": "קוריאנית", "label": "kr" },  // South Korea (קוריאנית)
+    { "value": "טורקית", "label": "tr" },  // Turkey (טורקית)
+    { "value": "עברית", "label": "il" },  // Israel (עברית)
+    { "value": "פרסית", "label": "ir" },  // Iran (פרסית)
+    { "value": "פולנית", "label": "pl" },  // Poland (פולנית)
+    { "value": "אוקראינית", "label": "ua" },  // Ukraine (אוקראינית)
+    { "value": "שוודית", "label": "se" },  // Sweden (שוודית)
+    { "value": "פינית", "label": "fi" },  // Finland (פינית)
+    { "value": "נורווגית", "label": "no" },  // Norway (נורווגית)
+    { "value": "דנית", "label": "dk" },  // Denmark (דנית)
+    { "value": "צ'כית", "label": "cz" },  // Czech Republic (צ'כית)
+    { "value": "יוונית", "label": "gr" },  // Greece (יוונית)
+    { "value": "תאית", "label": "th" },  // Thailand (תאית)
+    { "value": "אינדונזית", "label": "id" },  // Indonesia (אינדונזית)
+    { "value": "וייטנאמית", "label": "vn" },  // Vietnam (וייטנאמית)
+    { "value": "הונגרית", "label": "hu" },  // Hungary (הונגרית)
+    { "value": "רומנית", "label": "ro" },  // Romania (רומנית)
+    { "value": "בולגרית", "label": "bg" },  // Bulgaria (בולגרית)
+    { "value": "סרבית", "label": "rs" },  // Serbia (סרבית)
+    { "value": "סלובקית", "label": "sk" },  // Slovakia (סלובקית)
+    { "value": "סלובנית", "label": "si" },  // Slovenia (סלובנית)
+    { "value": "קרואטית", "label": "hr" },  // Croatia (קרואטית)
+    { "value": "ליטאית", "label": "lt" },  // Lithuania (ליטאית)
+    { "value": "לטבית", "label": "lv" },  // Latvia (לטבית)
+    { "value": "אסטונית", "label": "ee" },  // Estonia (אסטונית)
+    { "value": "מלאית", "label": "my" },  // Malaysia (מלאית)
+    { "value": "בנגלית", "label": "bd" },  // Bangladesh (בנגלית)
+    { "value": "טאגאלוג", "label": "ph" },  // Philippines (טאגאלוג)
+    { "value": "סוואהילית", "label": "ke" },  // Kenya (סוואהילית)
+    { "value": "מלטזית", "label": "mt" },  // Malta (מלטזית)
+    { "value": "איסלנדית", "label": "is" },  // Iceland (איסלנדית)
+    { "value": "אירית", "label": "ie" },  // Ireland (אירית)
+    { "value": "וולשית", "label": "gb" }  // Wales (וולשית)
+  ];
 
   const navigate = useNavigate();
   const [studentCourses, setStudentCourses] = useState([]);
@@ -172,7 +172,7 @@ const Home = () => {
         const res1 = await axios.delete('http://localhost:6660/grades/deleteByStudentAndCourse', { data: { studentId: _id, courseId: course._id } });
       }
       catch (e) {
-          console.log(e);
+        console.log(e);
       }
       const res = await axios.put(`http://localhost:6660/courses/`, course);  // Update the course on the server
       console.log(res.status);
@@ -211,10 +211,17 @@ const Home = () => {
     }
   };
 
+  const getCountryCode = (langName) => {
+    const match = language.find(lang => lang.value === langName);
+    return match ? match.label : null;
+  }
 
 
-  const header = (
-    <img alt="Card" src="https://primefaces.org/cdn/primereact/images/usercard.png" />
+
+  const header = (course) => (
+    < div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+      <Flag code={getCountryCode(course.language)} style={{ width: '300px', height: '100px', objectFit: "cover", borderRadius: '5px' }} />
+    </div>
   );
   const footer = (course) => (
     <>
@@ -223,32 +230,31 @@ const Home = () => {
     </>
   );
 
-
-  return (
-    <div className="home">
-      <h1>קורסים לבחירה</h1>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-        {Courses.map((course) => !course.students.includes(_id) ? (
-          <Card header={header} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
-            <h1 className="m-0">{course.language}</h1>
-            <h3>מורה:{teacherNames[course.teacher] || "Loading..."}</h3>
-            <Button label="הירשם" icon="pi pi-check" onClick={() => { AddStudentToCourse(course) }} />
-          </Card>
-        ) : null)}</div>
-      <div className="myCourses">
-        <p>הקורסים שלי</p>
-        <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-          {studentCourses.map((course) => (
-            <Card footer={footer(course)} header={header} style={{ width: '300px', height: '400px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
-              <h1 className="m-0">{course.language} </h1>
-              <h3>מורה:  {teacherNames[course.teacher] || "Loading..."}</h3>
-
+    return (
+      <div className="home">
+        <h1>קורסים לבחירה</h1>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+          {Courses.map((course) => !course.students.includes(_id) ? (
+            <Card header={header(course)} style={{ width: '300px', height: '350px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
+              <h1 className="m-0">{course.language}</h1>
+              <h3>מורה: {teacherNames[course.teacher] || "Loading..."}</h3>
+              <Button label="הירשם" icon="pi pi-check" onClick={() => { AddStudentToCourse(course) }} />
             </Card>
-          ))}
+          ) : null)}</div>
+        <div className="myCourses">
+          <p>הקורסים שלי</p>
+          <div className="courseListPerUser" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
+            {studentCourses.map((course) => (
+              <Card footer={footer(course)} header={header(course)} style={{ width: '300px', height: '400px', fontSize: '0.9rem', flex: '0 1 auto' }} className="md:w-25rem">
+                <h1 className="m-0">{course.language} </h1>
+                <h3>מורה:  {teacherNames[course.teacher] || "Loading..."}</h3>
+
+              </Card>
+            ))}
+          </div>
         </div>
       </div>
-    </div>
 
-  );
+    );
 }
 export default Home;
