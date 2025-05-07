@@ -271,7 +271,7 @@ const Learning = () => {
                     visible={showInfoDialog}
                     onHide={handleDialogClose}
                     header="הסבר על העלאת קובץ"
-                    footer={<Button label="סגור" icon="pi pi-times" onClick={handleDialogClose} />}
+                    // footer={<Button label="סגור" icon="pi pi-times" onClick={handleDialogClose} />}
                     style={{ width: '50vw' }}
                 >
                     <p>יש להעלות קובץ בפורמט Excel (.xlsx או .xls) עם המבנה הבא:</p>

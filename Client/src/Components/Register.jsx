@@ -63,7 +63,6 @@ export const Register = ({ onClose }) => {
                         dispatch(setUser(res.data.userInfo))
                         console.log(res.data)
                         setFormData(data);
-                        // alert(data.firstName + "  נרשמת בהצלחה!🤞😊");
                         setShowMessage(true);
                         setSelectedRole(false)
                         reset();
@@ -101,10 +100,10 @@ export const Register = ({ onClose }) => {
             <Divider />
             <p className="mt-2">Suggestions</p>
             <ul className="pl-2 ml-2 mt-0" style={{ lineHeight: '1.5' }}>
-                <li>At least one lowercase</li>
-                <li>At least one uppercase</li>
-                <li>At least one numeric</li>
-                <li>Minimum 8 characters</li>
+                <li>לפחות אות קטנה אחת</li>
+                <li>לפחות אות גדולה אחת</li>
+                <li>לפחות סיפרה אחת</li>
+                <li>מינימום 8 תווים</li>
             </ul>
         </React.Fragment>
     );
@@ -122,7 +121,7 @@ export const Register = ({ onClose }) => {
                                 <Controller name="firstName" control={control} rules={{ required: 'firstName is required.', pattern: { value: /^[A-Zא-ת]{2,}$/i, message: 'First name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
-                                <label htmlFor="firstName" className={classNames({ 'p-error': errors.name })}>firstName*</label>
+                                <label htmlFor="firstName" className={classNames({ 'p-error': errors.name })}>שם פרטי*</label>
                             </span>
                             {getFormErrorMessage('firstName')}
                         </div>
@@ -133,7 +132,7 @@ export const Register = ({ onClose }) => {
                                 <Controller name="lastName" control={control} rules={{ required: 'lastName is required.', pattern: { value: /^[A-Zא-ת]{2,}$/i, message: 'Last name must be at least two chars long' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} autoFocus className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
-                                <label htmlFor="lastName" className={classNames({ 'p-error': errors.name })}>lastName*</label>
+                                <label htmlFor="lastName" className={classNames({ 'p-error': errors.name })}>שם משפחה*</label>
                             </span>
                             {getFormErrorMessage('lastName')}
                         </div>
@@ -146,7 +145,7 @@ export const Register = ({ onClose }) => {
                                     render={({ field, fieldState }) => (
                                         <InputText id={field.name} {...field} className={classNames({ 'p-invalid': fieldState.invalid })} />
                                     )} />
-                                <label htmlFor="email" className={classNames({ 'p-error': errors.email })}>Email*</label>
+                                <label htmlFor="email" className={classNames({ 'p-error': errors.email })}>אימייל*</label>
                             </span>
                             {getFormErrorMessage('email')}
                             
@@ -157,7 +156,7 @@ export const Register = ({ onClose }) => {
                                 <Controller name="password" control={control} rules={{ required: 'Password is required.' }} render={({ field, fieldState }) => (
                                     <Password id={field.name} {...field} toggleMask className={classNames({ 'p-invalid': fieldState.invalid })} header={passwordHeader} footer={passwordFooter} />
                                 )} />
-                                <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>Password*</label>
+                                <label htmlFor="password" className={classNames({ 'p-error': errors.password })}>סיסמה*</label>
                             </span>
                             {getFormErrorMessage('password')}
                         </div>
@@ -167,7 +166,7 @@ export const Register = ({ onClose }) => {
                                 <Controller name="phone" control={control} rules={{ pattern: { value: /^0[0-9]{8,9}$/, message: 'Invalid phone number. E.g. 0123456789' } }} render={({ field, fieldState }) => (
                                     <InputText id={field.name} {...field} type="tel" className={classNames({ 'p-invalid': fieldState.invalid })} />
                                 )} />
-                                <label htmlFor="phone" className={classNames({ 'p-error': errors.phone })}>Phone</label>
+                                <label htmlFor="phone" className={classNames({ 'p-error': errors.phone })}>טלפון</label>
                             </span>
                             {getFormErrorMessage('phone')}
                         </div>
@@ -229,9 +228,6 @@ export const Register = ({ onClose }) => {
                     </form>
                 </div>
             </div>
-            {/* <Dialog visible={showTermsDialog} onHide={toggleTermsDialog}>
-            <TermsOfService />
-        </Dialog> */}
         </div>
 
     );
