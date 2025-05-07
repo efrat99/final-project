@@ -5,8 +5,57 @@ import { useSelector } from 'react-redux';
 import { Card } from 'primereact/card';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import Flag from 'react-world-flags';
 
 const Home = () => {
+//   const language = [
+//     { "value": "ערבית", "label": "ar" },
+//     { "value": "אנגלית", "label": "en" },
+//     { "value": "ספרדית", "label": "es" },
+//     { "value": "צרפתית", "label": "fr" },
+//     { "value": "גרמנית", "label": "de" },
+//     { "value": "רוסית", "label": "ru" },
+//     { "value": "סינית", "label": "zh" },
+//     { "value": "הינדי", "label": "hi" },
+//     { "value": "פורטוגזית", "label": "pt" },
+//     { "value": "יפנית", "label": "ja" },
+//     { "value": "איטלקית", "label": "it" },
+//     { "value": "הולנדית", "label": "nl" },
+//     { "value": "קוריאנית", "label": "ko" },
+//     { "value": "טורקית", "label": "tr" },
+//     { "value": "עברית", "label": "he" },
+//     { "value": "פרסית", "label": "fa" },
+//     { "value": "פולנית", "label": "pl" },
+//     { "value": "אוקראינית", "label": "uk" },
+//     { "value": "שוודית", "label": "sv" },
+//     { "value": "פינית", "label": "fi" },
+//     { "value": "נורווגית", "label": "no" },
+//     { "value": "דנית", "label": "da" },
+//     { "value": "צ'כית", "label": "cs" },
+//     { "value": "יוונית", "label": "el" },
+//     { "value": "תאית", "label": "th" },
+//     { "value": "אינדונזית", "label": "id" },
+//     { "value": "וייטנאמית", "label": "vi" },
+//     { "value": "הונגרית", "label": "hu" },
+//     { "value": "רומנית", "label": "ro" },
+//     { "value": "בולגרית", "label": "bg" },
+//     { "value": "סרבית", "label": "sr" },
+//     { "value": "סלובקית", "label": "sk" },
+//     { "value": "סלובנית", "label": "sl" },
+//     { "value": "קרואטית", "label": "hr" },
+//     { "value": "ליטאית", "label": "lt" },
+//     { "value": "לטבית", "label": "lv" },
+//     { "value": "אסטונית", "label": "et" },
+//     { "value": "מלאית", "label": "ms" },
+//     { "value": "בנגלית", "label": "bn" },
+//     { "value": "טאגאלוג", "label": "tl" },
+//     { "value": "סוואהילית", "label": "sw" },
+//     { "value": "מלטזית", "label": "mt" },
+//     { "value": "איסלנדית", "label": "is" },
+//     { "value": "אירית", "label": "ga" },
+//     { "value": "וולשית", "label": "cy" }
+// ]
+
   const navigate = useNavigate();
   const [studentCourses, setStudentCourses] = useState([]);
   const [Courses, setCourses] = useState([]);
@@ -145,9 +194,6 @@ const fetchCourses = async () => {
       console.error(e);  // Handle errors
     }
   }
-const Grades= async () => {
-  navigate('/Grades');
-}
 
   const TeacherName = async (teacherId) => {
     try {
@@ -173,6 +219,11 @@ const Grades= async () => {
     </>
   );
 
+//   const getCountryCode = (langName) => {
+//     const match = language.find(lang => lang.value === langName);
+//     return match ? match.label : null;
+// }
+
   return (
     <div className="home">
       <h1>קורסים לבחירה</h1>
@@ -197,6 +248,7 @@ const Grades= async () => {
         </div>
       </div>
     </div>
+    
   );
 }
 export default Home;

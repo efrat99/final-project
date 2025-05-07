@@ -15,7 +15,7 @@ import TeacherHomePage from './Components/TeacherComps/Home';
 import StudentHomePage from './Components/StudentComps/Home';
 import StudentPractice from './Components/StudentComps/StudentPractice';
 import foxImage from './Images/fox.png';
-// import Grades from './Components/StudentComps/Grades';  
+import Grades from './Components/StudentComps/Grades';
 
 import './App.css';
 import './login.css';
@@ -30,6 +30,7 @@ import { setToken, logOut } from './redux/tokenSlice';
 
 import './index.css';
 import './flags.css';
+// import 'flag-icon-css/css/flag-icon.min.css';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
   const items = [
     {
       icon: 'pi pi-sign-out',
+      label: user ? user.firstName : '',
       command: () => {
         console.log("User logged out");
         dispatch(logOut());
@@ -54,19 +56,11 @@ function App() {
       icon: <img src={foxImage} alt="Home" style={{ width: '50px', height: 'auto' }} />,
       command: () => window.location.href = '/home'  // ניווט לעמוד הבית
     },
-    // {
-    //   label: 'Students',
-    //   icon: 'pi pi-star',
-    // },
-    // {
-    //   label: 'Teachers',
-    //   icon: 'pi pi-search',
-    // },
-    {
-      label: ' ציונים     ' ,
+    user && user.role === 'Student' && {
+      label: 'ציונים',
       icon: 'pi pi-graduation-cap',
       command: () => window.location.href = '/grades' // ניווט לעמוד הקורסים
-    },
+    }
 
   ];
 
@@ -102,7 +96,7 @@ function App() {
             element={user.role === 'Teacher' ? <TeacherHomePage /> : <StudentHomePage />}
           />
         )}
-          {/* {user && (
+        {/* {user && (
           <Route
             path="/course"
             element={user.role === 'Teacher' ? <TeacherCourse /> : <StudentCourse />}

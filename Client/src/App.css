@@ -160,31 +160,58 @@ label {
   border-color: rgb(255, 98, 0);    
 }
 
-.courseList {
+/* .courseList {
   display: flex;
-  flex-wrap: wrap; /* מאפשר מעבר לשורה חדשה אם אין מקום */
-  gap: 16px; /* מרווח בין הכרטיסים */
-  justify-content: center; /* ליישור הכרטיסים במרכז */
-  margin: 0; /* מסיר רווחים מסביב */
-  padding: 0; /* מסיר רווחים פנימיים */
+  flex-wrap: wrap; 
+  gap: 16px; 
+  justify-content: center; 
+  margin: 0; 
+  padding: 0;
   background: none; 
-}
-.courseCard {
-  flex: 1 1 calc(25% - 16px); /* כל כרטיס יתפוס 25% מהרוחב, עם מרווח */
+} */
+/* .courseCard {
+  flex: 1 1 calc(25% - 16px); 
   box-sizing: border-box;
   padding: 16px;
-  border: 1px solid #ccc; /* גבול לכרטיס */
-  border-radius: 8px; /* פינות מעוגלות */
-  background-color: #fff; /* צבע רקע */
-  min-height: 300px; /* גובה מינימלי */
-  max-height: 300px; /* גובה מקסימלי */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #fff; 
+  min-height: 300px;
+  max-height: 300px; 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   text-align: center;
-  overflow:auto; /* למנוע גלילה פנימית */
+  overflow:auto;
+} */
+
+
+.courseCard {
+  flex: 1 1 calc(33.33% - 24px); /* כל כרטיס יתפוס 33.33% מהרוחב, עם מרווח */
+  box-sizing: border-box;
+  padding: 20px;
+  /* border: 1px solid #e0e0e0;  */
+  border-radius: 12px; /* פינות מעוגלות יותר */
+  background-color: #fff; /* צבע רקע לבן */
+  min-height: 350px; /* גובה מינימלי */
+  max-height: 400px; /* גובה מקסימלי */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: center;
+  overflow: hidden; /* למנוע גלילה פנימית */
+  transition: all 0.3s ease; /* מעבר חלק בעת שינוי */
 }
 
+.courseCard:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* צלליות בעת ריחוף על כרטיס */
+  transform: translateY(-5px); /* הרמה קלה של הכרטיס בעת ריחוף */
+}
+
+.courseCard h3 {
+  line-height: 1.5; /* גובה שורה אחיד */
+  text-align: center;
+}
 
 .p-card-footer {
   padding: 0.5rem !important;
