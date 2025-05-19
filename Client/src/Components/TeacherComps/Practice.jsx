@@ -350,7 +350,7 @@ const Practice = () => {
                                         ) : (
                                             <div>
                                                 {/* {practices.find((p) => p._id === rowData._id)?.answers[index]}  */}
-                                                {answer} {rowData.correctAnswer === index + 1 ? "✔️" : "❌"}
+                                                 {rowData.correctAnswer === index + 1 ? "✔️" : "❌"}{answer}
                                             </div>
                                         )}
                                     </div>
